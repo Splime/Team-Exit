@@ -19,7 +19,19 @@ curr_y = 0 --The screen is a subset of the world, so store where the screen star
 cloud9 = Cloud:new()
 
 
+local function onGyroscopeUpdate(event)
+    print("event.x is " + (event.xRotation * event.deltaTime * (180/math.pi) ) )
+    print("event.y is " + (event.yRotation * event.deltaTime * (180/math.pi) ) )
+    print("event.z is " + (event.zRotation * event.deltaTime * (180/math.pi) ) )
+end
+
 
 
 
 --Put our event listeners here!
+
+if system.hasEventSource("gyroscope") then
+    Runtime:addEventListener("gyroscope", onGyroscopeUpdate)
+else
+    print("no gyroscope found")
+end

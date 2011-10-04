@@ -15,7 +15,17 @@ function new()
         cloudobj.img.y = cloudobj.img.y + cloudobj.speed
     end
     
+    function cloudobj:onGyroscopeUpdate(event)
+        --code courtesy of ansca sample--
+        local deltaRadians = event.zRotation * event.deltaTime
+        local deltaDegrees = deltaRadians * (180 / math.pi)
+        cloudobj.img.rotate(deltaDegrees)
+    end
+    
     Runtime:addEventListener("enterFrame", cloudobj.update)
+    if system.hasEventSource("gyroscope") then
+        Runtime:addEventListener("gyroscope", cloudobj.onGyroscopeUpdate)
+    end
     
     return cloudobj
 
