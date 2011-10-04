@@ -2,9 +2,7 @@
 sprite = require "sprite"
 physics = require "physics"
 --Our own "classes" go here
-local Cloud = require("Cloud")
-
-module("Main", package.seeall)
+local Cloud = require("cloud")
 
 --Start physics and other initializations
 physics.start()
@@ -20,6 +18,7 @@ cloud9 = Cloud:new()
 
 
 local function onGyroscopeUpdate(event)
+    background:setFillColor(0,100,0)
     print("event.x is " + (event.xRotation * event.deltaTime * (180/math.pi) ) )
     print("event.y is " + (event.yRotation * event.deltaTime * (180/math.pi) ) )
     print("event.z is " + (event.zRotation * event.deltaTime * (180/math.pi) ) )
