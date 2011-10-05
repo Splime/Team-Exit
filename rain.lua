@@ -8,14 +8,14 @@ module(..., package.seeall)
 
 function new(obj, x, y)
 
-    local rainobj = { img = display.newImage("rain.png"), speed = 4}
+    local rainobj = { img = display.newImage("img/rain.png"), speed = 4}
     -- set location
     rainobj.img.x = x
     rainobj.img.y = y
 
     -- set scale
-    rainobj.img.xScale = 5
-    rainobj.img.yScale = 5
+    rainobj.img.xScale = 2
+    rainobj.img.yScale = 2
 
 
 

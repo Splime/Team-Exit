@@ -19,7 +19,8 @@ curr_y = 0 --The screen is a subset of the world, so store where the screen star
 cloud9 = Cloud:new(0, 10, 1)
 drillList = {}
 rainList = {}
-numDrills = 0
+cloudList = {}
+table.insert(cloudList, cloud9)
 
 --On Accel, deals with accelerator input
 local function onAccel(event)
@@ -28,22 +29,25 @@ end
 
 --Update, happens every frame
 local function update(event)
-    cloud9.update(event)
+    for key,aCloud in pairs(cloudList) do
+        aCloud:update(event)
+        --Make it rain!
+        table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y))
+    end
     for key,aDrill in pairs(drillList) do
         aDrill:update(event) 
     end
     for key,aRain in pairs(rainList) do
         toKeep = aRain:update(event)
         if toKeep == false then
-            rainList.remove(rainList, key)
+            table.remove(rainList, key)
         end
     end
 end
 
 --What happens if we touch the creen
 local function onTouch(event)
-    numDrills = numDrills + 1
-    drillList[numDrills] = Drill:new(event.x, event.y, 0)
+    table.insert(drillList, Drill:new(event.x, event.y, 0))
 end
 
 --Put our event listeners here!
