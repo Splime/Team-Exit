@@ -25,7 +25,7 @@ local function onGyroscopeUpdate(event)
 end
 
 local function onAccel(event)
-    background:setFillColor(event.xGravity*10+127,event.yGravity*10+127,event.zGravity*10+127)
+    --background:setFillColor(event.xGravity*10+127,event.yGravity*10+127,event.zGravity*10+127)
 end
 
 
