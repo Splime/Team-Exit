@@ -5,6 +5,8 @@ physics = require "physics"
 local Cloud = require("cloud")
 local Drill = require("drill")
 local Rain = require("rain")
+local Bird = require("bird")
+local Crap = require("crap")
 
 --Start physics and other initializations
 physics.start()
@@ -20,7 +22,12 @@ cloud9 = Cloud:new(0, 10, 1)
 drillList = {}
 rainList = {}
 cloudList = {}
+birdList = {}
+crapList = {}
 table.insert(cloudList, cloud9)
+
+birdtest = Bird:new(display.contentWidth - 100, 10, -1)
+table.insert(birdList, birdtest)
 
 --On Accel, deals with accelerator input
 local function onAccel(event)
@@ -34,6 +41,13 @@ local function update(event)
         --Make it rain!
         table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y))
     end
+    for key,aBird in pairs(birdList) do
+        aBird:update(event)
+        --Make it rain!
+        if math.random(1,10) == 1 then
+            table.insert(crapList, Crap:new(math.random(aBird.img.x-aBird.img.width/4, aBird.img.x+aBird.img.width/4), aBird.img.y))
+        end
+    end
     for key,aDrill in pairs(drillList) do
         aDrill:update(event) 
     end
@@ -41,6 +55,12 @@ local function update(event)
         toKeep = aRain:update(event)
         if toKeep == false then
             table.remove(rainList, key)
+        end
+    end
+    for key,aCrap in pairs(crapList) do
+        toKeep = aCrap:update(event)
+        if toKeep == false then
+            table.remove(crapList, key)
         end
     end
 end
