@@ -1,12 +1,11 @@
 module(..., package.seeall)
 
-defCloud = {img = display.newImage("img/detailed_cloud.png"), speed = 1}
+--defCloud = {img = display.newImage("img/detailed_cloud.png"), speed = 1}
 
-function new()
-    local cloudobj = { img = display.newImage("img/detailed_cloud.png"), speed = 1}
-    print(speed)
-    cloudobj.img.x = 0
-    cloudobj.img.y = 10
+function new(cloudizzle, anx, any, anspeed)
+    local cloudobj = { img = display.newImage("img/detailed_cloud.png"), speed = anspeed}
+    cloudobj.img.x = anx
+    cloudobj.img.y = any
     cloudobj.img.xScale = 0.5
     cloudobj.img.yScale = 0.5
     
@@ -14,12 +13,12 @@ function new()
     --print("creating cloud")
     
     --Update Function...
-    function cloudobj:update(event)
+    function cloudobj:update(cloudizzle, event)
         cloudobj.img.x = cloudobj.img.x + cloudobj.speed
     end
     
     
-    Runtime:addEventListener("enterFrame", cloudobj.update)
+    --Runtime:addEventListener("enterFrame", cloudobj.update)
 
     
     return cloudobj
