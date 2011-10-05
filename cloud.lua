@@ -26,7 +26,8 @@ function new(cloudizzle, anx, any, anspeed)
     
     --Runtime:addEventListener("enterFrame", cloudobj.update)
 
-    
+    physics.addBody(cloudobj.img, {density = 1, friction = 1, bounce = 1})
+
     return cloudobj
 
 end

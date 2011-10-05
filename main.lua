@@ -11,6 +11,7 @@ local Crap = require("crap")
 --Start physics and other initializations
 physics.start()
 physics.setDrawMode("hybrid")
+physics.setGravity(0, 0)
 local background = display.newRect(0, 0, display.contentWidth, display.contentHeight)
 background:setFillColor(0,100,200)
 system.setIdleTimer(false) --No more screen going to sleep!
