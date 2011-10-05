@@ -36,29 +36,43 @@ end
 
 --Update, happens every frame
 local function update(event)
+    --Clouds
     for key,aCloud in pairs(cloudList) do
-        aCloud:update(event)
+        local toKeep = aCloud:update(event)
+        if toKeep == false then
+            table.remove(cloudList, key)
+        end
         --Make it rain!
         table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y))
     end
+    --Birds
     for key,aBird in pairs(birdList) do
-        aBird:update(event)
+        local toKeep = aBird:update(event)
+        if toKeep == false then
+            table.remove(birdList, key)
+        end
         --Make it rain!
         if math.random(1,10) == 1 then
             table.insert(crapList, Crap:new(math.random(aBird.img.x-aBird.img.width/4, aBird.img.x+aBird.img.width/4), aBird.img.y))
         end
     end
+    --Drills
     for key,aDrill in pairs(drillList) do
-        aDrill:update(event) 
+        local toKeep = aDrill:update(event)
+        if toKeep == false then
+            table.remove(drillList, key)
+        end
     end
+    --Rains
     for key,aRain in pairs(rainList) do
-        toKeep = aRain:update(event)
+        local toKeep = aRain:update(event)
         if toKeep == false then
             table.remove(rainList, key)
         end
     end
+    --Craps
     for key,aCrap in pairs(crapList) do
-        toKeep = aCrap:update(event)
+        local toKeep = aCrap:update(event)
         if toKeep == false then
             table.remove(crapList, key)
         end

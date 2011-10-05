@@ -16,6 +16,14 @@ function new(drizzil, ax, ay, degrees)--x and y are the location of the center, 
         drillobj.y = drillobj.y + drillobj.yvcomp*drillobj.speed
         drillobj.img.x = drillobj.img.x + drillobj.xvcomp*drillobj.speed
         drillobj.img.y = drillobj.img.y + drillobj.yvcomp*drillobj.speed
+        
+        if drillobj.img.x < 0 or drillobj.img.x > display.contentWidth or 
+            drillobj.img.y < 0 or drillobj.img.y > display.contentHeight then
+            drillobj.img:removeSelf()
+            return false
+        end
+        
+        return true
     
     end
     
