@@ -1,5 +1,7 @@
 module(..., package.seeall)
 
+defCloud = {img = display.newImage("img/detailed_cloud.png"), speed = 1}
+
 function new()
     local cloudobj = { img = display.newImage("img/detailed_cloud.png"), speed = 1}
     cloudobj.img.x = display.contentWidth / 2
@@ -7,7 +9,7 @@ function new()
     cloudobj.img.xScale = 1
     cloudobj.img.yScale = 1
     
-    setmetatable(cloudobj, { __index = Cloud } )
+    setmetatable(cloudobj, { __index = defCloud } )
     --print("creating cloud")
     
     --Update Function...
@@ -15,17 +17,9 @@ function new()
         cloudobj.img.y = cloudobj.img.y + cloudobj.speed
     end
     
-    function cloudobj:onGyroscopeUpdate(event)
-        --code courtesy of ansca sample--
-        local deltaRadians = event.zRotation * event.deltaTime
-        local deltaDegrees = deltaRadians * (180 / math.pi)
-        cloudobj.img.rotate(deltaDegrees)
-    end
     
     Runtime:addEventListener("enterFrame", cloudobj.update)
-    if system.hasEventSource("gyroscope") then
-        Runtime:addEventListener("gyroscope", cloudobj.onGyroscopeUpdate)
-    end
+
     
     return cloudobj
 
