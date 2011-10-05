@@ -40,7 +40,6 @@ function new(obj, x, y)
     end
     
     -- event listeners
-    Runtime:addEventListener("enterFrame", rainobj.update)
 
     return rainobj
 
