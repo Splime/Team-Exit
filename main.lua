@@ -43,7 +43,7 @@ end
 --What happens if we touch the creen
 local function onTouch(event)
     numDrills = numDrills + 1
-    drillList[numDrills] = Drill:new(display, math, event.x, event.y, 0)
+    drillList[numDrills] = Drill:new(event.x, event.y, 0)
 end
 
 --Put our event listeners here!
