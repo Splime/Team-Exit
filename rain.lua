@@ -21,13 +21,21 @@ function new(obj, x, y)
 
     
     --Update Function
-    function rainobj:update(event)
+    function rainobj:update(self, event)
         -- update speed based on gravity
         rainobj.speed = rainobj.speed + .1
 
         -- update location
         rainobj.img.y = rainobj.img.y + rainobj.speed
 
+        -- delete self if offscreen
+        if rainobj.img.y > display.contentHeight then
+            return false
+        end
+
+
+        -- do not remove this
+        return true
     end
     
     -- event listeners
