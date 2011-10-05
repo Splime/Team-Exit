@@ -19,7 +19,7 @@ function new(drizzil, ax, ay, degrees)--x and y are the location of the center, 
     
     end
     
-    
+    physics.addBody(drillobj.img, {density = 1, friction = 1, bounce = 1})
     
     return drillobj
     
