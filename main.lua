@@ -24,7 +24,9 @@ local function onGyroscopeUpdate(event)
     print("event.z is " + (event.zRotation * event.deltaTime * (180/math.pi) ) )
 end
 
-
+local function onAccel(event)
+    background:setFillColor(event.xGravity*10+127,event.yGravity*10+127,event.zGravity*10+127)
+end
 
 
 --Put our event listeners here!
@@ -34,3 +36,5 @@ if system.hasEventSource("gyroscope") then
 else
     print("no gyroscope found")
 end
+
+Runtime:addEventListener("accelerometer", onAccel)
