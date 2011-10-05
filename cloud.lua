@@ -15,12 +15,19 @@ function new(cloudizzle, anx, any, anspeed)
     --Update Function...
     function cloudobj:update(cloudizzle, event)
         cloudobj.img.x = cloudobj.img.x + cloudobj.speed
+        if cloudobj.img.x < 0 or cloudobj.img.x > display.contentWidth then
+            cloudobj.img:removeSelf()
+            return false
+        end
+        
+        return true
     end
     
     
     --Runtime:addEventListener("enterFrame", cloudobj.update)
 
-    
+    physics.addBody(cloudobj.img, {density = 1, friction = 1, bounce = 1})
+
     return cloudobj
 
 end
