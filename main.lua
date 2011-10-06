@@ -155,7 +155,7 @@ end
 
 
 --Put our event listeners here!
---Runtime:addEventListener("accelerometer", onAccel)
+Runtime:addEventListener("accelerometer", onAccel)
 Runtime:addEventListener("enterFrame", update)
 Runtime:addEventListener("touch", onTouch)
 Runtime:addEventListener("collision", onCollision)
