@@ -7,6 +7,7 @@ local Drill = require("drill")
 local Rain = require("rain")
 local Bird = require("bird")
 local Crap = require("crap")
+local Player = require("player")
 
 --Start physics and other initializations
 physics.start()
@@ -20,6 +21,7 @@ system.setIdleTimer(false) --No more screen going to sleep!
 world_width = 1600
 curr_y = 0 --The screen is a subset of the world, so store where the screen starts
 cloud9 = Cloud:new(0, 10, 1)
+balloon = Player:new(200, 200)
 drillList = {}
 rainList = {}
 cloudList = {}
@@ -31,9 +33,10 @@ birdtest = Bird:new(display.contentWidth - 100, 10, -1)
 table.insert(birdList, birdtest)
 
 --On Accel, deals with accelerator input
-local function onAccel(event)
-    
-end
+-- local function onAccel(event)
+    -- accelSpeed = centerX + (centerX * event.xGravity)
+	-- -- Circle.y = centerY + (centerY * event.yGravity * -1)
+-- end
 
 --Update, happens every frame
 local function update(event)
@@ -64,6 +67,7 @@ local function update(event)
             table.remove(crapList, key)
         end
     end
+    balloon:update(event, accelSpeed)
 end
 
 --What happens if we touch the creen
@@ -72,6 +76,6 @@ local function onTouch(event)
 end
 
 --Put our event listeners here!
-Runtime:addEventListener("accelerometer", onAccel)
+--Runtime:addEventListener("accelerometer", onAccel)
 Runtime:addEventListener("enterFrame", update)
 Runtime:addEventListener("touch", onTouch)
