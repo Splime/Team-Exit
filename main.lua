@@ -7,6 +7,7 @@ local Drill = require("drill")
 local Rain = require("rain")
 local Bird = require("bird")
 local Crap = require("crap")
+local Player = require("player")
 
 --Start physics and other initializations
 physics.start()
@@ -23,9 +24,11 @@ sounds = {
 
 
 --Some variables
-world_width = 1600
-curr_y = 0 --The screen is a subset of the world, so store where the screen starts
+maxDrillDelay = 200
+lastFrameTime = 0
 cloud9 = Cloud:new(0, 10, 1)
+drillCooldown = 0
+balloon = Player:new(200, 200)
 drillList = {}
 rainList = {}
 cloudList = {}
@@ -37,12 +40,18 @@ birdtest = Bird:new(display.contentWidth - 100, 10, -1)
 table.insert(birdList, birdtest)
 
 --On Accel, deals with accelerator input
-local function onAccel(event)
-    
-end
+-- local function onAccel(event)
+    -- accelSpeed = centerX + (centerX * event.xGravity)
+	-- -- Circle.y = centerY + (centerY * event.yGravity * -1)
+-- end
 
 --Update, happens every frame
 local function update(event)
+    timePassed = (event.time-lastFrameTime)
+    --Adjust cooldown
+    if drillCooldown > 0 then
+        drillCooldown = drillCooldown - timePassed
+    end
     --Clouds
     for key,aCloud in pairs(cloudList) do
         local toKeep = aCloud:update(event)
@@ -50,7 +59,9 @@ local function update(event)
             table.remove(cloudList, key)
         end
         --Make it rain!
-        table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y))
+        if aCloud.img.mood == "sad" then
+            table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y, onCollision))
+        end
     end
     --Birds
     for key,aBird in pairs(birdList) do
@@ -60,7 +71,7 @@ local function update(event)
         end
         --Make it rain!
         if math.random(1,10) == 1 then
-            table.insert(crapList, Crap:new(math.random(aBird.img.x-aBird.img.width/4, aBird.img.x+aBird.img.width/4), aBird.img.y))
+            table.insert(crapList, Crap:new(math.random(aBird.img.x-aBird.img.width/4, aBird.img.x+aBird.img.width/4), aBird.img.y, onCollision))
         end
     end
     --Drills
@@ -84,6 +95,10 @@ local function update(event)
             table.remove(crapList, key)
         end
     end
+    --Player
+    balloon:update(event, accelSpeed)
+    --Finished updating? Now change the previous time
+    lastFrameTime = event.time
 end
 
 
@@ -100,25 +115,47 @@ end
 
 local function onCollision(self, event)
 
+    -- drill and not clouds
+    if self.name == "drill" and event.other.name ~= "cloud" then
+        self.isSensor = true
+        return
+    end
+
     -- drill and cloud
     if self.name == "drill" and event.other.name == "cloud" then
         deleteImageFromTable(drillList, self)
+        event.other.mood = "sad"
         audio.play(sounds.drill_cloud)
-        -- cloud needs to take damage/something
+        return
     end
 
-    -- something else and something else
+
+    -- rain/crap and not player
+    if (self.name == "rain" or self.name == "crap") and event.other.name ~= "player" then
+        self.isSensor = true
+        return
+    end
+
+    
+
 end
 
 
 
 --What happens if we touch the creen
 local function onTouch(event)
-    table.insert(drillList, Drill:new(event.x, event.y, 0, onCollision))
+    if drillCooldown <= 0 then
+        table.insert(drillList, Drill:new(balloon.img.x, balloon.img.y, event.x, event.y, onCollision))
+        drillCooldown = maxDrillDelay
+    end
+end
+local function onAccel(event)
+    balloon:movement(event, event.yGravity)
 end
 
+
 --Put our event listeners here!
-Runtime:addEventListener("accelerometer", onAccel)
+--Runtime:addEventListener("accelerometer", onAccel)
 Runtime:addEventListener("enterFrame", update)
 Runtime:addEventListener("touch", onTouch)
--- Runtime:addEventListener("collision", onCollision)
+Runtime:addEventListener("collision", onCollision)
