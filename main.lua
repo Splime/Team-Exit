@@ -95,6 +95,7 @@ local function update(event)
             table.remove(crapList, key)
         end
     end
+    --Player
     balloon:update(event, accelSpeed)
     --Finished updating? Now change the previous time
     lastFrameTime = event.time
@@ -144,7 +145,7 @@ end
 --What happens if we touch the creen
 local function onTouch(event)
     if drillCooldown <= 0 then
-        table.insert(drillList, Drill:new(display.contentWidth/2, display.contentHeight/2, event.x, event.y, onCollision))
+        table.insert(drillList, Drill:new(balloon.img.x, balloon.img.y, event.x, event.y, onCollision))
         drillCooldown = maxDrillDelay
     end
 end

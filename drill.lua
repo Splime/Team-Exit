@@ -30,6 +30,12 @@ function new(drizzil, ax, ay, tx, ty, onCollision)--x and y are the location of 
     local vx = drillobj.speed * (tx-ax)/math.sqrt((tx-ax)^2+(ty-ay)^2)
     local vy = drillobj.speed * (ty-ay)/math.sqrt((tx-ax)^2+(ty-ay)^2)
     drillobj.img:setLinearVelocity(vx, vy)
+    local theta = math.asin((ty-ay)/math.sqrt((tx-ax)^2+(ty-ay)^2))
+    if tx-ax < 0 then
+        theta = -theta
+    end
+    drillobj.img:rotate(math.deg(theta))
+    print("rotated to "..(math.deg(theta)))
     drillobj.img.collision = onCollision
     drillobj.img:addEventListener("collision", drillobj.img)
     
