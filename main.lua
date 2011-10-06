@@ -50,7 +50,9 @@ local function update(event)
             table.remove(cloudList, key)
         end
         --Make it rain!
-        table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y))
+        if aCloud.img.mood == "sad" then
+            table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y))
+        end
     end
     --Birds
     for key,aBird in pairs(birdList) do
@@ -103,8 +105,8 @@ local function onCollision(self, event)
     -- drill and cloud
     if self.name == "drill" and event.other.name == "cloud" then
         deleteImageFromTable(drillList, self)
+        event.other.mood = "sad"
         audio.play(sounds.drill_cloud)
-        -- cloud needs to take damage/something
     end
 
     -- something else and something else
