@@ -17,9 +17,10 @@ background:setFillColor(0,100,200)
 system.setIdleTimer(false) --No more screen going to sleep!
 
 --Some variables
-world_width = 1600
-curr_y = 0 --The screen is a subset of the world, so store where the screen starts
+maxDrillDelay = 200
+lastFrameTime = 0
 cloud9 = Cloud:new(0, 10, 1)
+drillCooldown = 0
 drillList = {}
 rainList = {}
 cloudList = {}
@@ -37,6 +38,11 @@ end
 
 --Update, happens every frame
 local function update(event)
+    timePassed = (event.time-lastFrameTime)
+    --Adjust cooldown
+    if drillCooldown > 0 then
+        drillCooldown = drillCooldown - timePassed
+    end
     --Clouds
     for key,aCloud in pairs(cloudList) do
         local toKeep = aCloud:update(event)
@@ -78,6 +84,8 @@ local function update(event)
             table.remove(crapList, key)
         end
     end
+    --Finished updating? Now change the previous time
+    lastFrameTime = event.time
 end
 
 
@@ -107,7 +115,10 @@ end
 
 --What happens if we touch the creen
 local function onTouch(event)
-    table.insert(drillList, Drill:new(event.x, event.y, 0, onCollision))
+    if drillCooldown <= 0 then
+        table.insert(drillList, Drill:new(display.contentWidth/2, display.contentHeight/2, event.x, event.y, onCollision))
+        drillCooldown = maxDrillDelay
+    end
 end
 
 --Put our event listeners here!
