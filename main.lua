@@ -16,6 +16,12 @@ local background = display.newRect(0, 0, display.contentWidth, display.contentHe
 background:setFillColor(0,100,200)
 system.setIdleTimer(false) --No more screen going to sleep!
 
+--sound effects
+sounds = {
+    drill_cloud = audio.loadSound("sounds/test.wav")
+}
+
+
 --Some variables
 world_width = 1600
 curr_y = 0 --The screen is a subset of the world, so store where the screen starts
@@ -80,12 +86,39 @@ local function update(event)
     end
 end
 
+
+local function deleteImageFromTable(objList, img)
+    for key,obj in pairs(objList) do
+        if obj.img == img then
+            img:removeSelf()
+            table.remove(objList, key)
+            break
+        end
+    end
+end
+
+
+local function onCollision(self, event)
+
+    -- drill and cloud
+    if self.name == "drill" and event.other.name == "cloud" then
+        deleteImageFromTable(drillList, self)
+        audio.play(sounds.drill_cloud)
+        -- cloud needs to take damage/something
+    end
+
+    -- something else and something else
+end
+
+
+
 --What happens if we touch the creen
 local function onTouch(event)
-    table.insert(drillList, Drill:new(event.x, event.y, 0))
+    table.insert(drillList, Drill:new(event.x, event.y, 0, onCollision))
 end
 
 --Put our event listeners here!
 Runtime:addEventListener("accelerometer", onAccel)
 Runtime:addEventListener("enterFrame", update)
 Runtime:addEventListener("touch", onTouch)
+-- Runtime:addEventListener("collision", onCollision)
