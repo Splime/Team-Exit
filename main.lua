@@ -115,6 +115,11 @@ end
 
 local function onCollision(self, event)
 
+    -- drill and drill
+    if self.name == "drill" and event.other.name ~= "cloud" then
+        self.isSensor = true
+    end
+
     -- drill and cloud
     if self.name == "drill" and event.other.name == "cloud" then
         deleteImageFromTable(drillList, self)
