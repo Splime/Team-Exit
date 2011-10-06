@@ -17,7 +17,12 @@ function new(birdizzle, anx, any, anspeed)
     function birdobj:update(birdizzle, event)
         birdobj.img.x = birdobj.img.x + birdobj.speed
 
+        if birdobj.img.x < 0 or birdobj.img.x > display.contentWidth then
+            birdobj.img:removeSelf()
+            return false
+        end
         
+        return true
     end
     
     

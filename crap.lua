@@ -30,6 +30,7 @@ function new(obj, x, y)
 
         -- delete self if offscreen
         if crapobj.img.y > display.contentHeight then
+            crapobj.img:removeSelf()
             return false
         end
 
@@ -39,7 +40,6 @@ function new(obj, x, y)
     end
     
     -- event listeners
-    Runtime:addEventListener("enterFrame", crapobj.update)
 
     return crapobj
 
