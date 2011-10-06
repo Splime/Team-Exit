@@ -23,9 +23,6 @@ function new(playa, zx, zy)
 
 end
 
-local function onAccel(event)
-    balloon.speed = zx + (zx * event.xGravity)
-	--Circle.y = centerY + (centerY * event.yGravity * -1)
+function movement(event, accel)
+    balloon.speed = (zx * event.yGravity * -1)
 end
-
-Runtime:addEventListener("accelerometer", onAccel)

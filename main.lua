@@ -134,13 +134,17 @@ end
 --What happens if we touch the creen
 local function onTouch(event)
     if drillCooldown <= 0 then
-        table.insert(drillList, Drill:new(display.contentWidth/2, display.contentHeight/2, event.x, event.y, onCollision))
+        table.insert(drillList, Drill:new(balloon.img.x, balloon.img.y, event.x, event.y, onCollision))
         drillCooldown = maxDrillDelay
     end
 end
+local function onAccel(event)
+    balloon:movement(event, event.yGravity)
+end
+
 
 --Put our event listeners here!
 --Runtime:addEventListener("accelerometer", onAccel)
 Runtime:addEventListener("enterFrame", update)
 Runtime:addEventListener("touch", onTouch)
--- Runtime:addEventListener("collision", onCollision)
+Runtime:addEventListener("collision", onCollision)
