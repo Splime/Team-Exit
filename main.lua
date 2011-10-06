@@ -16,6 +16,12 @@ local background = display.newRect(0, 0, display.contentWidth, display.contentHe
 background:setFillColor(0,100,200)
 system.setIdleTimer(false) --No more screen going to sleep!
 
+--sound effects
+sounds = {
+    drill_cloud = audio.loadSound("sounds/test.wav")
+}
+
+
 --Some variables
 world_width = 1600
 curr_y = 0 --The screen is a subset of the world, so store where the screen starts
@@ -97,6 +103,7 @@ local function onCollision(self, event)
     -- drill and cloud
     if self.name == "drill" and event.other.name == "cloud" then
         deleteImageFromTable(drillList, self)
+        audio.play(sounds.drill_cloud)
         -- cloud needs to take damage/something
     end
 
