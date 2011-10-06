@@ -3,7 +3,7 @@ module(..., package.seeall)
 --defCloud = {img = display.newImage("img/detailed_cloud.png"), speed = 1}
 
 function new(playa, zx, zy)
-    local balloon = { img = display.newImage("img/detailed_cloud.png"), speed = 0}
+    local balloon = { img = display.newImage("img/player_sub.png"), speed = 0}
     balloon.img.x = zx
     balloon.img.y = zy
     balloon.img.xScale = 0.5
