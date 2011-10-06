@@ -4,6 +4,7 @@ module(..., package.seeall)
 
 function new(cloudizzle, anx, any, anspeed)
     local cloudobj = { img = display.newImage("img/detailed_cloud.png"), speed = anspeed}
+    cloudobj.img.name = "cloud"
     cloudobj.img.x = anx
     cloudobj.img.y = any
     cloudobj.img.xScale = 0.5
@@ -26,7 +27,7 @@ function new(cloudizzle, anx, any, anspeed)
     
     --Runtime:addEventListener("enterFrame", cloudobj.update)
 
-    physics.addBody(cloudobj.img, {density = 1, friction = 1, bounce = 1})
+    physics.addBody(cloudobj.img, "static")
 
     return cloudobj
 
