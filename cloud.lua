@@ -3,8 +3,9 @@ module(..., package.seeall)
 --defCloud = {img = display.newImage("img/detailed_cloud.png"), speed = 1}
 
 function new(cloudizzle, anx, any, anspeed)
-    local cloudobj = { img = display.newImage("img/detailed_cloud.png"), speed = anspeed}
+    local cloudobj = { img = display.newImage("img/detailed_cloud.png"), speed = anspeed }
     cloudobj.img.name = "cloud"
+    cloudobj.img.mood = "happy"
     cloudobj.img.x = anx
     cloudobj.img.y = any
     cloudobj.img.xScale = 0.5
