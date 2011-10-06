@@ -4,6 +4,7 @@ module(..., package.seeall)
 
 function new(playa, zx, zy)
     local balloon = { img = display.newImage("img/detailed_cloud.png"), speed = 0}
+    balloon.name = "player"
     balloon.img.x = zx
     balloon.img.y = zy
     balloon.img.xScale = 0.5
@@ -17,7 +18,7 @@ function new(playa, zx, zy)
     
   --Runtime:addEventListener("enterFrame", cloudobj.update)
 
-   -- physics.addBody(balloon.img, {density = 1, friction = 1, bounce = 1})
+    physics.addBody(balloon.img, "static")
     
     return balloon
 

@@ -60,7 +60,7 @@ local function update(event)
         end
         --Make it rain!
         if aCloud.img.mood == "sad" then
-            table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y))
+            table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y, onCollision))
         end
     end
     --Birds
@@ -71,7 +71,7 @@ local function update(event)
         end
         --Make it rain!
         if math.random(1,10) == 1 then
-            table.insert(crapList, Crap:new(math.random(aBird.img.x-aBird.img.width/4, aBird.img.x+aBird.img.width/4), aBird.img.y))
+            table.insert(crapList, Crap:new(math.random(aBird.img.x-aBird.img.width/4, aBird.img.x+aBird.img.width/4), aBird.img.y, onCollision))
         end
     end
     --Drills
@@ -114,9 +114,10 @@ end
 
 local function onCollision(self, event)
 
-    -- drill and drill
+    -- drill and not clouds
     if self.name == "drill" and event.other.name ~= "cloud" then
         self.isSensor = true
+        return
     end
 
     -- drill and cloud
@@ -124,9 +125,18 @@ local function onCollision(self, event)
         deleteImageFromTable(drillList, self)
         event.other.mood = "sad"
         audio.play(sounds.drill_cloud)
+        return
     end
 
-    -- something else and something else
+
+    -- rain/crap and not player
+    if (self.name == "rain" or self.name == "crap") and event.other.name ~= "player" then
+        self.isSensor = true
+        return
+    end
+
+    
+
 end
 
 
