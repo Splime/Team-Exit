@@ -19,12 +19,16 @@ system.setIdleTimer(false) --No more screen going to sleep!
 
 --sound effects
 sounds = {
-    drill_cloud = audio.loadSound("sounds/test.wav")
+    drill_cloud = audio.loadSound("test.wav")
 }
 
 
 --Some variables
-maxDrillDelay = 200
+maxDrillDelay = 250
+minDrillDelay = 100
+firing = false
+aimposx = 0
+aimposy = 0
 lastFrameTime = 0
 cloud9 = Cloud:new(0, 10, 1)
 drillCooldown = 0
@@ -75,6 +79,10 @@ local function update(event)
         end
     end
     --Drills
+    if firing and drillCooldown <= 0 then
+        table.insert(drillList, Drill:new(balloon.img.x, balloon.img.y, aimposx, aimposy, onCollision))
+        drillCooldown = maxDrillDelay
+    end
     for key,aDrill in pairs(drillList) do
         local toKeep = aDrill:update(event)
         if toKeep == false then
@@ -134,9 +142,17 @@ end
 
 --What happens if we touch the creen
 local function onTouch(event)
-    if drillCooldown <= 0 then
-        table.insert(drillList, Drill:new(balloon.img.x, balloon.img.y, event.x, event.y, onCollision))
+    aimposx = event.x
+    aimposy = event.y
+    if drillCooldown <= 0 and event.phase ~= "ended" then
+        table.insert(drillList, Drill:new(balloon.img.x, balloon.img.y, aimposx, aimposy, onCollision))
         drillCooldown = maxDrillDelay
+        firing = true
+        drillCooldown = maxDrillDelay
+    end
+    if event.phase == "ended" or event.phase == "cancelled" then
+        firing = false
+        drillCooldown = minDrillDelay
     end
 end
 
