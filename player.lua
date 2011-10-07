@@ -25,5 +25,5 @@ function new(playa, zx, zy)
 end
 
 function movement(event, accel)
-    balloon.speed = (zx * event.yGravity * -1)
+    balloon.speed = (balloon.img.x * accel)
 end
