@@ -2,6 +2,7 @@ module(..., package.seeall)
 
 --defDrill = {x = 0, y = 0, xvcomp = 1, xycomp = 0, speed = 1, img = display.newImage("img/detailed_cloud.png")}
 
+
 function new(drizzil, ax, ay, tx, ty, onCollision)--x and y are the location of the center, degrees is the 
     local drillobj = { img = display.newImage("img/drill_proxy.png"), x = ax, y = ay}
     drillobj.speed = 500

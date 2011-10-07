@@ -6,9 +6,10 @@ module(..., package.seeall)
 -- update gravity based on time
 
 
-function new(obj, x, y)
+function new(obj, x, y, onCollision)
 
     local crapobj = { img = display.newImage("img/crap.png"), speed = 4}
+    crapobj.name = "crap"
     -- set location
     crapobj.img.x = x
     crapobj.img.y = y
@@ -39,7 +40,10 @@ function new(obj, x, y)
         return true
     end
     
-    -- event listeners
+
+    physics.addBody(crapobj.img)
+    crapobj.img.collision = onCollision
+    crapobj.img:addEventListener("collision", crapobj.img)
 
     return crapobj
 
