@@ -8,3 +8,4 @@ function new(boom, zx, zy)
     balloon.img.y = zy
     balloon.img.xScale = 0.5
     balloon.img.yScale = 0.5
+end

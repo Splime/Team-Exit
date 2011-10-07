@@ -19,12 +19,14 @@ system.setIdleTimer(false) --No more screen going to sleep!
 
 --sound effects
 sounds = {
-    drill_cloud = audio.loadSound("sounds/test.wav")
+    drill_cloud = audio.loadSound("test.wav")
 }
 
 
 --Some variables
-maxDrillDelay = 200
+maxDrillDelay = 100
+aimposx = 0
+aimposy = 0
 lastFrameTime = 0
 cloud9 = Cloud:new(0, 10, 1)
 drillCooldown = 0
@@ -144,8 +146,10 @@ end
 
 --What happens if we touch the creen
 local function onTouch(event)
-    if drillCooldown <= 0 then
-        table.insert(drillList, Drill:new(balloon.img.x, balloon.img.y, event.x, event.y, onCollision))
+    aimposx = event.x
+    aimposy = event.y
+    if drillCooldown <= 0 and event.phase == "began" then
+        table.insert(drillList, Drill:new(balloon.img.x, balloon.img.y, aimposx, aimposy, onCollision))
         drillCooldown = maxDrillDelay
     end
 end
@@ -155,7 +159,7 @@ end
 
 
 --Put our event listeners here!
---Runtime:addEventListener("accelerometer", onAccel)
+Runtime:addEventListener("accelerometer", onAccel)
 Runtime:addEventListener("enterFrame", update)
 Runtime:addEventListener("touch", onTouch)
 Runtime:addEventListener("collision", onCollision)

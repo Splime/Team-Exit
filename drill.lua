@@ -5,7 +5,7 @@ module(..., package.seeall)
 
 function new(drizzil, ax, ay, tx, ty, onCollision)--x and y are the location of the center, degrees is the 
     local drillobj = { img = display.newImage("img/drill_proxy.png"), x = ax, y = ay}
-    drillobj.speed = 200
+    drillobj.speed = 500
     drillobj.img.name = "drill"
     drillobj.img.x = ax
     drillobj.img.y = ay
@@ -36,7 +36,7 @@ function new(drizzil, ax, ay, tx, ty, onCollision)--x and y are the location of 
         theta = -theta
     end
     drillobj.img:rotate(math.deg(theta))
-    print("rotated to "..(math.deg(theta)))
+    --print("rotated to "..(math.deg(theta)))
     drillobj.img.collision = onCollision
     drillobj.img:addEventListener("collision", drillobj.img)
     
