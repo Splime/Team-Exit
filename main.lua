@@ -62,7 +62,7 @@ local function update(event)
         end
         --Make it rain!
         if aCloud.img.mood == "sad" then
-            table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y, onCollision))
+            table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y, onRainCollision))
         end
     end
     --Birds
@@ -73,7 +73,7 @@ local function update(event)
         end
         --Make it rain!
         if math.random(1,10) == 1 then
-            table.insert(crapList, Crap:new(math.random(aBird.img.x-aBird.img.width/4, aBird.img.x+aBird.img.width/4), aBird.img.y, onCollision))
+            table.insert(crapList, Crap:new(math.random(aBird.img.x-aBird.img.width/4, aBird.img.x+aBird.img.width/4), aBird.img.y))
         end
     end
     --Drills
@@ -115,26 +115,49 @@ local function deleteImageFromTable(objList, img)
 end
 
 
-local function onCollision(self, event)
+local function onCollision(event)
 
     -- drill and not clouds
-    if self.name == "drill" and event.other.name ~= "cloud" then
-        self.isSensor = true
+    if (event.object1.name == "drill" and event.object2.name ~= "cloud") or (event.object2.name == "drill" and event.object1.name ~= "cloud") then
+        event.object1.isSensor = true
         return
     end
 
     -- drill and cloud
-    if self.name == "drill" and event.other.name == "cloud" then
-        deleteImageFromTable(drillList, self)
-        event.other.mood = "sad"
+    if event.object1.name == "drill" and event.object2.name == "cloud" then
+        deleteImageFromTable(drillList, event.object1)
+        event.object2.mood = "sad"
+        audio.play(sounds.drill_cloud)
+        return
+    elseif event.object2.name == "drill" and event.object1.name == "cloud" then
+        deleteImageFromTable(drillList, event.object2)
+        event.object1.mood = "sad"
         audio.play(sounds.drill_cloud)
         return
     end
 
 
     -- rain/crap and not player
-    if (self.name == "rain" or self.name == "crap") and event.other.name ~= "player" then
-        self.isSensor = true
+    if ((event.object1.name == "rain" or event.object1.name == "crap") and event.object2.name ~= "player") or ((event.object2.name == "rain" or event.object2.name == "crap") and event.object1.name ~= "player") then
+        event.object1.isSensor = true
+        return
+    end
+
+    -- rain and player
+    if event.object1.name == "rain" and event.object2.name == "player" then
+        deleteImageFromTable(rainList, event.object1)
+        return
+    elseif event.object2.name == "rain" and event.object1.name == "player" then
+        deleteImageFromTable(rainList, event.object2)
+        return
+    end
+
+    -- crap and player
+    if event.object1.name == "crap" and event.object2.name == "player" then
+        deleteImageFromTable(crapList, event.object1)
+        return
+    elseif event.object2.name == "crap" and event.object1.name == "player" then
+        deleteImageFromTable(crapList, event.object2)
         return
     end
 
@@ -149,7 +172,7 @@ local function onTouch(event)
     aimposx = event.x
     aimposy = event.y
     if drillCooldown <= 0 and event.phase == "began" then
-        table.insert(drillList, Drill:new(balloon.img.x, balloon.img.y, aimposx, aimposy, onCollision))
+        table.insert(drillList, Drill:new(balloon.img.x, balloon.img.y, aimposx, aimposy))
         drillCooldown = maxDrillDelay
     end
 end
