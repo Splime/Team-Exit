@@ -24,9 +24,7 @@ sounds = {
 
 
 --Some variables
-maxDrillDelay = 250
-minDrillDelay = 100
-firing = false
+maxDrillDelay = 100
 aimposx = 0
 aimposy = 0
 lastFrameTime = 0
@@ -79,10 +77,6 @@ local function update(event)
         end
     end
     --Drills
-    if firing and drillCooldown <= 0 then
-        table.insert(drillList, Drill:new(balloon.img.x, balloon.img.y, aimposx, aimposy, onCollision))
-        drillCooldown = maxDrillDelay
-    end
     for key,aDrill in pairs(drillList) do
         local toKeep = aDrill:update(event)
         if toKeep == false then
@@ -154,15 +148,9 @@ end
 local function onTouch(event)
     aimposx = event.x
     aimposy = event.y
-    if drillCooldown <= 0 and event.phase ~= "ended" then
+    if drillCooldown <= 0 and event.phase == "began" then
         table.insert(drillList, Drill:new(balloon.img.x, balloon.img.y, aimposx, aimposy, onCollision))
         drillCooldown = maxDrillDelay
-        firing = true
-        drillCooldown = maxDrillDelay
-    end
-    if event.phase == "ended" or event.phase == "cancelled" then
-        firing = false
-        drillCooldown = minDrillDelay
     end
 end
 local function onAccel(event)
