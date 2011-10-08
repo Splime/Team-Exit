@@ -72,7 +72,7 @@ local function update(event)
             table.remove(birdList, key)
         end
         --Make it rain!
-        if math.random(1,10) == 1 then
+        if math.random(1,20) == 1 then
             table.insert(crapList, Crap:new(math.random(aBird.img.x-aBird.img.width/4, aBird.img.x+aBird.img.width/4), aBird.img.y))
         end
     end
@@ -146,18 +146,22 @@ local function onCollision(event)
     -- rain and player
     if event.object1.name == "rain" and event.object2.name == "player" then
         deleteImageFromTable(rainList, event.object1)
+        event.object2.rain = event.object2.rain + 1
         return
     elseif event.object2.name == "rain" and event.object1.name == "player" then
         deleteImageFromTable(rainList, event.object2)
+        event.object1.rain = event.object1.rain + 1
         return
     end
 
     -- crap and player
     if event.object1.name == "crap" and event.object2.name == "player" then
         deleteImageFromTable(crapList, event.object1)
+        event.object2.health = event.object2.health - 5
         return
     elseif event.object2.name == "crap" and event.object1.name == "player" then
         deleteImageFromTable(crapList, event.object2)
+        event.object1.health = event.object1.health - 5
         return
     end
 
