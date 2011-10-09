@@ -8,6 +8,7 @@ local Rain = require("rain")
 local Bird = require("bird")
 local Crap = require("crap")
 local Player = require("player")
+local Lightning = require("lightning")
 
 --Start physics and other initializations
 physics.start()
@@ -31,6 +32,7 @@ lastFrameTime = 0
 cloud9 = Cloud:new(0, 10, 1)
 drillCooldown = 0
 balloon = Player:new(200, 200)
+boltList = {}
 drillList = {}
 rainList = {}
 cloudList = {}
@@ -64,6 +66,9 @@ local function update(event)
         if aCloud.img.mood == "sad" then
             table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y, onRainCollision))
         end
+        if aCloud.img.mood == "angry" then
+            table.insert(boltList, Lightning:new(aCloud.img.x, aCloud.img.y, balloon.img.x, balloon.img.y))
+        end
     end
     --Birds
     for key,aBird in pairs(birdList) do
@@ -83,6 +88,13 @@ local function update(event)
             table.remove(drillList, key)
         end
     end
+    --Lightning
+    -- for key,aLightning in pairs(blotList) do
+        -- local toKeep = aLightning:update(event)
+        -- if toKeep == false then
+            -- table.remove(boltList, key)
+        -- end
+    -- end
     --Rains
     for key,aRain in pairs(rainList) do
         local toKeep = aRain:update(event)
@@ -124,12 +136,12 @@ local function onCollision(event)
     end
 
     -- drill and cloud
-    if event.object1.name == "drill" and event.object2.name == "cloud" then
+    if event.object1.name == "drill" and event.object2.name == "cloud" and (event.object2.mood == "happy" or event.object1.mood == "sad") then
         deleteImageFromTable(drillList, event.object1)
         event.object2.mood = "sad"
         audio.play(sounds.drill_cloud)
         return
-    elseif event.object2.name == "drill" and event.object1.name == "cloud" then
+    elseif event.object2.name == "drill" and event.object1.name == "cloud" and (event.object1.mood == "happy" or event.object1.mood == "sad") then
         deleteImageFromTable(drillList, event.object2)
         event.object1.mood = "sad"
         audio.play(sounds.drill_cloud)
@@ -167,7 +179,7 @@ end
 
 
 
---What happens if we touch the creen
+--What happens if we touch the screen
 local function onTouch(event)
     aimposx = event.x
     aimposy = event.y
