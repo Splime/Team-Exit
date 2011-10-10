@@ -28,7 +28,7 @@ function new(playa, zx, zy)
     end
 
     function balloon:movement(event, accel)
-        balloon.speed = (balloon.img.x * accel)
+        balloon.speed = (balloon.img.x * -1 * accel)
     end
     
   --Runtime:addEventListener("enterFrame", cloudobj.update)
