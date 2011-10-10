@@ -30,7 +30,7 @@ function new(obj, x, y)
         rainobj.img.y = rainobj.img.y + rainobj.speed
 
         -- delete self if offscreen
-        if rainobj.img.y > display.contentHeight then
+        if outOfBounds(rainobj) then
             rainobj.img:removeSelf()
             return false
         end

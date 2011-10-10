@@ -1,0 +1,51 @@
+level
+	need levels
+	show how much rain is necessary to collect and progress
+	teaching mechanics
+	show how close the player is to the end of the level (time limit, background sun, visual cues)
+
+
+cloud types + related collisions/rain
+	something about what Eric is currently doing
+	fix collisions again
+
+
+drones
+	just another object
+
+
+lightning/crap hurting player
+	what happens to the player specifically
+
+
+pre/post level stuff
+	take care of end of level and go to next level
+	touch to start/continue
+	pause
+	main menu
+
+
+emp and fire
+	finalize how this works
+
+	implementation
+	buttons on-screen to activate these
+	usage, cooldown/limits/other
+
+
+art implementation
+	need the art first
+
+	animations
+
+
+sound effects
+	music
+
+
+player start location and movement?
+
+ADDENDUM: Mike is about to do another android test, will report results soon
+- Accelerometer should work now, something should be adjusted to tone it down a bit though...
+- Maybe a max speed or something?
+- I'll probably get around to that later
