@@ -41,12 +41,6 @@ table.insert(cloudList, cloud9)
 birdtest = Bird:new(display.contentWidth - 100, 10, -1)
 table.insert(birdList, birdtest)
 
---On Accel, deals with accelerator input
--- local function onAccel(event)
-    -- accelSpeed = centerX + (centerX * event.xGravity)
-	-- -- Circle.y = centerY + (centerY * event.yGravity * -1)
--- end
-
 --Update, happens every frame
 local function update(event)
     timePassed = (event.time-lastFrameTime)
