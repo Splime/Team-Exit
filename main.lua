@@ -39,6 +39,7 @@ cloudList = {}
 birdList = {}
 crapList = {}
 table.insert(cloudList, cloud9)
+atk_clk = 0
 
 birdtest = Bird:new(display.contentWidth - 100, 10, -1)
 table.insert(birdList, birdtest)
@@ -51,6 +52,7 @@ table.insert(birdList, birdtest)
 
 --Update, happens every frame
 local function update(event)
+    atk_clk = atk_clk + 1
     timePassed = (event.time-lastFrameTime)
     --Adjust cooldown
     if drillCooldown > 0 then
@@ -66,8 +68,9 @@ local function update(event)
         if aCloud.img.mood == "sad" then
             table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y, onRainCollision))
         end
-        if aCloud.img.mood == "angry" then
+        if aCloud.img.mood == "angry" and atk_clk == 100 then
             table.insert(boltList, Lightning:new(aCloud.img.x, aCloud.img.y, balloon.img.x, balloon.img.y))
+            atk_clk = 0
         end
     end
     --Birds
@@ -89,12 +92,12 @@ local function update(event)
         end
     end
     --Lightning
-    -- for key,aLightning in pairs(blotList) do
-        -- local toKeep = aLightning:update(event)
-        -- if toKeep == false then
-            -- table.remove(boltList, key)
-        -- end
-    -- end
+    for key,aLightning in pairs(boltList) do
+        local toKeep = aLightning:update(event)
+        if toKeep == false then
+            table.remove(boltList, key)
+        end
+    end
     --Rains
     for key,aRain in pairs(rainList) do
         local toKeep = aRain:update(event)

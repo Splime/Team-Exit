@@ -4,7 +4,7 @@ module(..., package.seeall)
 
 
 function new(thor, ax, ay, tx, ty)--x and y are the location of the center, tx and ty are the target's location
-    local bolt = { img = display.newImage("img/lightningbolt.png"), x = ax, y = ay}
+    local bolt = { img = display.newImage("img/lightning.png"), x = ax, y = ay}
     bolt.speed = 250
     bolt.img.name = "lightning"
     bolt.img.x = ax
