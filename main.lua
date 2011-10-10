@@ -104,17 +104,19 @@ local function loadLevel()
     local pathval = (levelkey[1] .. startlevel .. levelkey[2])
     print (pathval)
     local path = system.pathForFile(pathval)--system.ResourceDirectory
-    local file = io.open(path, "r")
-    if not file then
-        print("error loading level, game aborted")
-        --os.exit()
-    else
-        print("file exists")
-        print(file.path)
-    end
+    -- local file = io.open(path, "r")
+    -- if not file then
+        -- print("error loading level, game aborted")
+        -- os.exit()
+    -- else
+        -- print("file exists")
+        -- print(file.path)
+    -- end
+    io.input(path, "r")
     
     --first get our level
-    local levelVal = assert (io.read("*l"), "error reading the file")
+    -- local levelVal = assert (io.read("*l"), "error reading the file")
+    local levelVal = io.read("*l")
     --string stripping operation from http://lua-users.org/wiki/StringTrim
     --levelVal = levelVal:match'^%s*(.*%S)'
     print(levelval)
@@ -126,48 +128,43 @@ local function loadLevel()
     local wave = {}
     local obj = {}
     wave["time"] = 0
-    local fullLine = ''
-    while not eof do
-        fullLine = assert(io.read("*l"), "error reading the file")
-        if (fullLine ~= nil) then
-            fullLine = Split(fullLine, delimiter)
-            if(fullLine[1] == "ENDWAVE" ) then
-                levelList[wave["time"]] = wave
-            elseif (fullLine[1] == "BEGINWAVE") then
-                wave={}
-                if (fullLine[2] == nil) then
-                    wave["time"] = 0
-                else
-                    wave["time"] = fullLine[2]
-                end--else we have a class to add to the wave
-            elseif (fullLine[1] == "Cloud") then--cloud, x pos, y pos, speed
-                obj={}
-                table.insert(obj, fullLine[1])
-                table.insert(obj, fullLine[2])
-                table.insert(obj, fullLine[3])
-                table.insert(obj, fullLine[4])
-                table.insert(wave, obj)
-            elseif (fullLine[1] == "Bird") then--bird, x pos, y pos, speed
-                obj={}
-                table.insert(obj, fullLine[1])
-                table.insert(obj, fullLine[2])
-                table.insert(obj, fullLine[3])
-                table.insert(obj, fullLine[4])
-                table.insert(wave, obj)
+    local fullLine = io.read("*l")
+    while fullLine ~= nil do
+        local splitLine = Split(fullLine, delimiter)
+        if(fullLine == "ENDWAVE" ) then
+            levelList[wave["time"]] = wave
+        elseif (splitLine[1] == "BEGINWAVE") then
+            wave={}
+            if (splitLine[2] == nil) then
+                wave["time"] = 0
             else
-                print("error reading file")
-            end
+                wave["time"] = splitLine[2]
+            end--else we have a class to add to the wave
+        elseif (splitLine[1] == "Cloud") then--cloud, x pos, y pos, speed
+            obj={}
+            table.insert(obj, splitLine[1])
+            table.insert(obj, splitLine[2])
+            table.insert(obj, splitLine[3])
+            table.insert(obj, splitLine[4])
+            table.insert(wave, obj)
+        elseif (splitLine[1] == "Bird") then--bird, x pos, y pos, speed
+            obj={}
+            table.insert(obj, splitLine[1])
+            table.insert(obj, splitLine[2])
+            table.insert(obj, splitLine[3])
+            table.insert(obj, splitLine[4])
+            table.insert(wave, obj)
         else
-            eof = true
-        
+            print("error reading file")
         end
+        
+        fullLine = io.read("*l")
         
     end
     
-    
     wave={}
     obj={}
-    file:close()
+    -- file:close()
     
 
 end
@@ -248,7 +245,7 @@ local function populate(event)
             if (value[1] == "Cloud") then
                 local newCloud = Cloud:new(value[2], value[3], value[4])
                 table.insert(birdList, newBird)
-            else if (value[1] == "Bird") then
+            elseif (value[1] == "Bird") then
                 local newBird = Bird:new(value[2], value[3], value[4])
                 table.insert(birdList, newBird)
             else
@@ -260,8 +257,6 @@ local function populate(event)
     end
 
 end
-
-end--?why do we need this end i don't even
 
 
 local function deleteImageFromTable(objList, img)
@@ -347,13 +342,13 @@ end
 
 --Put our event listeners here!
 Runtime:addEventListener("accelerometer", onAccel)
-Runtime:addEventListener("enterFrame", update)
+-- Runtime:addEventListener("enterFrame", update)
 Runtime:addEventListener("touch", onTouch)
 Runtime:addEventListener("collision", onCollision)
 --start our timer
---timer.performWithDelay(33, update, 0)
---timer.performWithDelay(33, populate, 0)
+timer.performWithDelay(33, update, 0)
+timer.performWithDelay(33, populate, 0)
 
 
 --start the actual game
---loadLevel()
+loadLevel()
