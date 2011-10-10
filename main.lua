@@ -74,12 +74,12 @@ birdList = {}
 crapList = {}
 levelList = {}
 
-atk_clk = 0
+num_frames = 0--number of frames
 
-cloud9 = Cloud:new(0, 10, 1)
-table.insert(cloudList, cloud9)
-birdtest = Bird:new(display.contentWidth - 100, 10, -1)
-table.insert(birdList, birdtest)
+-- cloud9 = Cloud:new(0, 10, 1)
+-- table.insert(cloudList, cloud9)
+-- birdtest = Bird:new(display.contentWidth - 100, 10, -1)
+-- table.insert(birdList, birdtest)
 
 
 balloon = Player:new(200, 200)
@@ -95,6 +95,7 @@ balloon = Player:new(200, 200)
 local function loadLevel()
     --start by clearing the level
     levelList={}
+    num_frames = 0
     -- print ("loading a level")
     startlevel = startlevel + 1
     if(startlevel > maxlevel) then
@@ -132,7 +133,7 @@ local function loadLevel()
     while fullLine ~= nil do
         local splitLine = Split(fullLine, delimiter)
         if(fullLine == "ENDWAVE" ) then
-            levelList[wave["time"]] = wave
+            table.insert(levelList, wave["time"], wave)
         elseif (splitLine[1] == "BEGINWAVE") then
             wave={}
             if (splitLine[2] == nil) then
@@ -146,6 +147,7 @@ local function loadLevel()
             table.insert(obj, splitLine[2])
             table.insert(obj, splitLine[3])
             table.insert(obj, splitLine[4])
+            table.insert(obj, splitLine[5])
             table.insert(wave, obj)
         elseif (splitLine[1] == "Bird") then--bird, x pos, y pos, speed
             obj={}
@@ -171,7 +173,7 @@ end
 
 --Update, happens every frame
 local function update(event)
-    atk_clk = atk_clk + 1
+    num_frames = num_frames + 1
     timePassed = (event.time-lastFrameTime)
     --Adjust cooldown
     if drillCooldown > 0 then
@@ -184,12 +186,12 @@ local function update(event)
             table.remove(cloudList, key)
         end
         --Make it rain!
-        if aCloud.img.mood == "sad" then
+        if aCloud.mood == "sad" and ( (num_frames - aCloud.hitFrame) < aCloud.hitDiff ) then
             table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y, onRainCollision))
         end
-        if aCloud.img.mood == "angry" and atk_clk == 100 then
+        if aCloud.img.mood == "angry" and num_frames == 100 then
             table.insert(boltList, Lightning:new(aCloud.img.x, aCloud.img.y, balloon.img.x, balloon.img.y))
-            atk_clk = 0
+            num_frames = 0
         end
     end
     --Birds
@@ -241,11 +243,14 @@ local function populate(event)
     if (levelList[event.count] == nil) then
         return--then there is no wave at this time
     else
+        print("waveFound")
         for index, value in ipairs(levelList[event.count]) do
             if (value[1] == "Cloud") then
-                local newCloud = Cloud:new(value[2], value[3], value[4])
-                table.insert(birdList, newBird)
+                print("inserting cloud")
+                local newCloud = Cloud:new(value[2], value[3], value[4], value[5])
+                table.insert(cloudList, newCloud)
             elseif (value[1] == "Bird") then
+                print("inserting bird")
                 local newBird = Bird:new(value[2], value[3], value[4])
                 table.insert(birdList, newBird)
             else
@@ -271,22 +276,28 @@ end
 
 
 local function onCollision(event)
-
     -- drill and not clouds
     if (event.object1.name == "drill" and event.object2.name ~= "cloud") or (event.object2.name == "drill" and event.object1.name ~= "cloud") then
         event.object1.isSensor = true
         return
     end
-
     -- drill and cloud
-    if event.object1.name == "drill" and event.object2.name == "cloud" and (event.object2.mood == "happy" or event.object1.mood == "sad") then
+    if event.object1.name == "drill" and event.object2.name == "cloud" then
+        local numval = num_frames
         deleteImageFromTable(drillList, event.object1)
-        event.object2.mood = "sad"
+        local val = event.object2:takeDrillHit(numval)
+        if (val == false) then
+            deleteImageFromTable(cloudList, event.object2)
+        end
         audio.play(sounds.drill_cloud)
         return
-    elseif event.object2.name == "drill" and event.object1.name == "cloud" and (event.object1.mood == "happy" or event.object1.mood == "sad") then
+    elseif event.object2.name == "drill" and event.object1.name == "cloud" then
+        local numval = num_frames
         deleteImageFromTable(drillList, event.object2)
-        event.object1.mood = "sad"
+        local val = event.object1:takeDrillHit(numval)
+        if (val == false) then
+            deleteImageFromTable(cloudList, event.object1)
+        end
         audio.play(sounds.drill_cloud)
         return
     end
