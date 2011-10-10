@@ -95,14 +95,14 @@ balloon = Player:new(200, 200)
 local function loadLevel()
     --start by clearing the level
     levelList={}
-    print ("loading a level")
+    -- print ("loading a level")
     startlevel = startlevel + 1
     if(startlevel > maxlevel) then
         print ("no more levels to load")
         return
     end
     local pathval = (levelkey[1] .. startlevel .. levelkey[2])
-    print (pathval)
+    -- print (pathval)
     local path = system.pathForFile(pathval)--system.ResourceDirectory
     -- local file = io.open(path, "r")
     -- if not file then
@@ -119,7 +119,7 @@ local function loadLevel()
     local levelVal = io.read("*l")
     --string stripping operation from http://lua-users.org/wiki/StringTrim
     --levelVal = levelVal:match'^%s*(.*%S)'
-    print(levelval)
+    -- print(levelVal)
     local levelDescription = Split(levelVal, delimiter)
     --set the description of the level
     levelList[levelDescription[1]] = {levelDescription[2], levelDescription[3]}
@@ -330,7 +330,9 @@ end
 local function onTouch(event)
     aimposx = event.x
     aimposy = event.y
-    if drillCooldown <= 0 and event.phase == "began" then
+    if event.y > display.contentHeight - 80 then
+        print("PRESS A BUTTON")
+    elseif drillCooldown <= 0 and event.phase == "began" then
         table.insert(drillList, Drill:new(balloon.img.x, balloon.img.y, aimposx, aimposy))
         drillCooldown = maxDrillDelay
     end
