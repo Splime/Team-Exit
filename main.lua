@@ -245,7 +245,7 @@ local function populate(event)
             if (value[1] == "Cloud") then
                 local newCloud = Cloud:new(value[2], value[3], value[4])
                 table.insert(birdList, newBird)
-            else if (value[1] == "Bird") then
+            elseif (value[1] == "Bird") then
                 local newBird = Bird:new(value[2], value[3], value[4])
                 table.insert(birdList, newBird)
             else
@@ -257,8 +257,6 @@ local function populate(event)
     end
 
 end
-
-end--?why do we need this end i don't even
 
 
 local function deleteImageFromTable(objList, img)
