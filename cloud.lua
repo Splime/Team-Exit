@@ -5,7 +5,7 @@ module(..., package.seeall)
 function new(cloudizzle, anx, any, anspeed)
     local cloudobj = { img = display.newImage("img/detailed_cloud.png"), speed = anspeed }
     cloudobj.img.name = "cloud"
-    cloudobj.img.mood = "happy"
+    cloudobj.img.mood = "angry"
     cloudobj.img.x = anx
     cloudobj.img.y = any
     cloudobj.img.xScale = 0.5
@@ -24,7 +24,6 @@ function new(cloudizzle, anx, any, anspeed)
         
         return true
     end
-    
     
     --Runtime:addEventListener("enterFrame", cloudobj.update)
 
