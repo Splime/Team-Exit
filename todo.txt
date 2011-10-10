@@ -45,8 +45,4 @@ sound effects
 
 player start location and movement?
 
-
-
-
-
-
+ADDENDUM: Mike is about to do another android test, will report results soon
