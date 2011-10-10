@@ -1,7 +1,5 @@
 module(..., package.seeall)
 
---defCloud = {img = display.newImage("img/detailed_cloud.png"), speed = 1}
-
 function new(cloudizzle, anx, any, anspeed)
     local cloudobj = { img = display.newImage("img/detailed_cloud.png"), speed = anspeed }
     cloudobj.img.name = "cloud"
@@ -17,7 +15,7 @@ function new(cloudizzle, anx, any, anspeed)
     --Update Function...
     function cloudobj:update(cloudizzle, event)
         cloudobj.img.x = cloudobj.img.x + cloudobj.speed
-        if cloudobj.img.x < 0 or cloudobj.img.x > display.contentWidth then
+        if outOfBounds(cloudobj) then
             cloudobj.img:removeSelf()
             return false
         end

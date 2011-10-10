@@ -76,6 +76,15 @@ levelList = {}
 
 atk_clk = 0
 
+background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
+background.x = display.contentWidth/2
+background.y = display.contentHeight/2
+--Now some quick shortcut variables for figuring out the min/max coords for objects to be at before removal
+maxX = display.contentWidth/2 + background.contentWidth/2
+minX = display.contentWidth/2 - background.contentWidth/2
+maxY = display.contentHeight/2 + background.contentHeight/2
+minY = display.contentHeight/2 - background.contentHeight/2
+
 cloud9 = Cloud:new(0, 10, 1)
 table.insert(cloudList, cloud9)
 birdtest = Bird:new(display.contentWidth - 100, 10, -1)
@@ -83,11 +92,16 @@ table.insert(birdList, birdtest)
 
 balloon = Player:new(200, 200)
 
---On Accel, deals with accelerator input
--- local function onAccel(event)
-    -- accelSpeed = centerX + (centerX * event.xGravity)
-	-- -- Circle.y = centerY + (centerY * event.yGravity * -1)
--- end
+--outOfBounds: Takes one of our classes, figures out if it's out of bounds or not (usually for removal purposes)
+--obj MUST HAVE a field obj.img
+function outOfBounds(obj)
+    if obj.img.x < minX - obj.img.contentWidth/2 or obj.img.x > maxX + obj.img.contentWidth/2 or 
+        obj.img.y < minY - obj.img.contentHeight/2 or obj.img.y > maxY + obj.img.contentHeight/2 then
+        return true
+    end
+    
+    return false
+end
 
 --loads a level from a text file
 --note that time is in frames each of which is 33 milliseconds, 30 frames a second

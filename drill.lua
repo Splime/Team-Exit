@@ -15,8 +15,7 @@ function new(drizzil, ax, ay, tx, ty)--x and y are the location of the center, d
     --Update Function...
     function drillobj:update(drizzil, event)
         
-        if drillobj.img.x < 0 or drillobj.img.x > display.contentWidth or 
-            drillobj.img.y < 0 or drillobj.img.y > display.contentHeight then
+        if outOfBounds(drillobj) then
             drillobj.img:removeSelf()
             return false
         end

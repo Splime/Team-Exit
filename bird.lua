@@ -17,7 +17,7 @@ function new(birdizzle, anx, any, anspeed)
     function birdobj:update(birdizzle, event)
         birdobj.img.x = birdobj.img.x + birdobj.speed
 
-        if birdobj.img.x < 0 or birdobj.img.x > display.contentWidth then
+        if outOfBounds(birdobj) then
             birdobj.img:removeSelf()
             return false
         end
