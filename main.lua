@@ -17,6 +17,8 @@ local startlevel = 0
 local levelkey = {"level", ".txt"}
 local delimiter = "^"
 
+
+
 --string splitting function for level reading, attributed to http://lua-users.org/wiki/SplitJoin
 
 function Split(str, delim, maxNb)
@@ -64,10 +66,10 @@ function startGame(event)
     maxY = display.contentHeight/2 + background.contentHeight/2
     minY = display.contentHeight/2 - background.contentHeight/2
 
-    cloud9 = Cloud:new(0, 10, 1)
-    table.insert(cloudList, cloud9)
-    birdtest = Bird:new(display.contentWidth - 100, 10, -1)
-    table.insert(birdList, birdtest)
+    --cloud9 = Cloud:new(0, 10, 1)
+    --table.insert(cloudList, cloud9)
+    --birdtest = Bird:new(display.contentWidth - 100, 10, -1)
+    --table.insert(birdList, birdtest)
 
     balloon = Player:new(200, 200)
     
