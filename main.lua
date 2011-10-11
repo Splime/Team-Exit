@@ -45,13 +45,52 @@ function Split(str, delim, maxNb)
     return result
 end
 
---Start physics and other initializations
-physics.start()
-physics.setDrawMode("hybrid")
-physics.setGravity(0, 0)
-local background = display.newRect(0, 0, display.contentWidth, display.contentHeight)
-background:setFillColor(0,100,200)
-system.setIdleTimer(false) --No more screen going to sleep!
+--startGame: Starts the game (put in a function so it won't happen pre-menu)
+function startGame(event)
+    --Start physics and other initializations
+    physics.start()
+    physics.setDrawMode("hybrid")
+    physics.setGravity(0, 0)
+    background:removeSelf()
+    button:removeSelf()
+    system.setIdleTimer(false) --No more screen going to sleep!
+    
+    background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
+    background.x = display.contentWidth/2
+    background.y = display.contentHeight/2
+    --Now some quick shortcut variables for figuring out the min/max coords for objects to be at before removal
+    maxX = display.contentWidth/2 + background.contentWidth/2
+    minX = display.contentWidth/2 - background.contentWidth/2
+    maxY = display.contentHeight/2 + background.contentHeight/2
+    minY = display.contentHeight/2 - background.contentHeight/2
+
+    cloud9 = Cloud:new(0, 10, 1)
+    table.insert(cloudList, cloud9)
+    birdtest = Bird:new(display.contentWidth - 100, 10, -1)
+    table.insert(birdList, birdtest)
+
+    balloon = Player:new(200, 200)
+    
+    startListeners()
+    
+    --start the actual game
+    loadLevel()
+
+end
+
+--Menu function! Right now, only works as a starting menu, not a pause menu
+function displayMenu()
+    background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
+    background.x = display.contentWidth/2
+    background.y = display.contentHeight/2
+    --Make a big red button
+    button = display.newImage("img/temp_button.png")
+    button.x = display.contentWidth/2
+    button.y = display.contentHeight/2
+    --Make the button do something
+    button:addEventListener("touch", startGame)
+end
+
 
 
 --sound effects
@@ -76,22 +115,6 @@ levelList = {}
 
 num_frames = 0--number of frames
 
--- cloud9 = Cloud:new(0, 10, 1)
--- table.insert(cloudList, cloud9)
--- birdtest = Bird:new(display.contentWidth - 100, 10, -1)
--- table.insert(birdList, birdtest)
-
-background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
-background.x = display.contentWidth/2
-background.y = display.contentHeight/2
---Now some quick shortcut variables for figuring out the min/max coords for objects to be at before removal
-maxX = display.contentWidth/2 + background.contentWidth/2
-minX = display.contentWidth/2 - background.contentWidth/2
-maxY = display.contentHeight/2 + background.contentHeight/2
-minY = display.contentHeight/2 - background.contentHeight/2
-
-balloon = Player:new(200, 200)
-
 --outOfBounds: Takes one of our classes, figures out if it's out of bounds or not (usually for removal purposes)
 --obj MUST HAVE a field obj.img
 function outOfBounds(obj)
@@ -105,7 +128,7 @@ end
 
 --loads a level from a text file
 --note that time is in frames each of which is 33 milliseconds, 30 frames a second
-local function loadLevel()
+function loadLevel()
     --start by clearing the level
     levelList={}
     num_frames = 0
@@ -185,7 +208,7 @@ local function loadLevel()
 end
 
 --Update, happens every frame
-local function update(event)
+function update(event)
     num_frames = num_frames + 1
     timePassed = (event.time-lastFrameTime)
     --Adjust cooldown
@@ -252,7 +275,7 @@ local function update(event)
     lastFrameTime = event.time
 end
 
-local function populate(event)
+function populate(event)
     if (levelList[event.count] == nil) then
         return--then there is no wave at this time
     else
@@ -277,7 +300,7 @@ local function populate(event)
 end
 
 
-local function deleteImageFromTable(objList, img)
+function deleteImageFromTable(objList, img)
     for key,obj in pairs(objList) do
         if obj.img == img then
             img:removeSelf()
@@ -288,7 +311,8 @@ local function deleteImageFromTable(objList, img)
 end
 
 
-local function onCollision(event)
+
+function onCollision(event)
     -- drill and not clouds
     if (event.object1.name == "drill" and event.object2.name ~= "cloud") or (event.object2.name == "drill" and event.object1.name ~= "cloud") then
         event.object1.isSensor = true
@@ -351,7 +375,7 @@ end
 
 
 --What happens if we touch the screen
-local function onTouch(event)
+function onTouch(event)
     aimposx = event.x
     aimposy = event.y
     if event.y > display.contentHeight - 80 then
@@ -367,14 +391,15 @@ end
 
 
 --Put our event listeners here!
-Runtime:addEventListener("accelerometer", onAccel)
--- Runtime:addEventListener("enterFrame", update)
-Runtime:addEventListener("touch", onTouch)
-Runtime:addEventListener("collision", onCollision)
---start our timer
-timer.performWithDelay(33, update, 0)
-timer.performWithDelay(33, populate, 0)
+function startListeners()
+    Runtime:addEventListener("accelerometer", onAccel)
+    -- Runtime:addEventListener("enterFrame", update)
+    Runtime:addEventListener("touch", onTouch)
+    Runtime:addEventListener("collision", onCollision)
+    --start our timer
+    timer.performWithDelay(33, update, 0)
+    timer.performWithDelay(33, populate, 0)
+end
 
-
---start the actual game
-loadLevel()
+--And now the actual main code:
+displayMenu()
