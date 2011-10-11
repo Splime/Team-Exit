@@ -71,6 +71,7 @@ local function update(event)
         if aCloud.img.mood == "angry" and atk_clk == 100 then
             table.insert(boltList, Lightning:new(aCloud.img.x, aCloud.img.y, balloon.img.x, balloon.img.y))
             atk_clk = 0
+            if cloud
         end
     end
     --Birds
@@ -139,16 +140,26 @@ local function onCollision(event)
     end
 
     -- drill and cloud
-    if event.object1.name == "drill" and event.object2.name == "cloud" and (event.object2.mood == "happy" or event.object1.mood == "sad") then
-        deleteImageFromTable(drillList, event.object1)
-        event.object2.mood = "sad"
-        audio.play(sounds.drill_cloud)
-        return
-    elseif event.object2.name == "drill" and event.object1.name == "cloud" and (event.object1.mood == "happy" or event.object1.mood == "sad") then
-        deleteImageFromTable(drillList, event.object2)
-        event.object1.mood = "sad"
-        audio.play(sounds.drill_cloud)
-        return
+    if event.object1.name == "drill" and event.object2.name == "cloud" then
+        if (event.object2.mood == "happy" or event.object2.mood == "sad") then
+            deleteImageFromTable(drillList, event.object1)
+            event.object2.mood = "sad"
+            audio.play(sounds.drill_cloud)
+            return
+        elseif (event.object2.mood == "angry") then
+            event.object2.hp = event.object2.hp - 1
+            return
+        end
+    elseif event.object2.name == "drill" and event.object1.name == "cloud" then
+        if (event.object1.mood == "happy" or event.object1.mood == "sad") then
+            deleteImageFromTable(drillList, event.object2)
+            event.object1.mood = "sad"
+            audio.play(sounds.drill_cloud)
+            return
+         elseif (event.object1.mood == "angry") then
+            event.object1.hp = event.object1.hp - 1
+            return
+        end
     end
 
 

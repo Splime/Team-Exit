@@ -10,6 +10,7 @@ function new(cloudizzle, anx, any, anspeed)
     cloudobj.img.y = any
     cloudobj.img.xScale = 0.5
     cloudobj.img.yScale = 0.5
+    cloudobj.img.hp = 10
     
     setmetatable(cloudobj, { __index = defCloud } )
     --print("creating cloud")
