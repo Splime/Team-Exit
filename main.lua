@@ -17,6 +17,11 @@ local EMP = require("emp")
 birdSheet = sprite.newSpriteSheet("img/goose_sheet_15fps.png", 53, 35)
 birdSet = sprite.newSpriteSet(birdSheet, 1, 14)
 sprite.add(birdSet, "birdfly", 1, 14, 1000)
+cloudSheet = sprite.newSpriteSheet("img/happysad_cloud_sheet(anim_frames4-7).png", 156, 76)
+happyCloudSet = sprite.newSpriteSet(cloudSheet, 1, 1)
+sadCloudSet = sprite.newSpriteSet(cloudSheet, 4, 4)
+angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet_15fps.png", 163, 186)
+angryCloudSet = sprite.newSpriteSet(angryCloudSheet, 1, 10)
 
 --level loading related variables
 local maxlevel = 2--the last level in the game
