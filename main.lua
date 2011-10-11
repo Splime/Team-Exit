@@ -10,12 +10,19 @@ local Bird = require("bird")
 local Crap = require("crap")
 local Player = require("player")
 local Lightning = require("lightning")
+local ClickableButton = require("clickablebutton")
+local EMP = require("emp")
 
 --level loading related variables
 local maxlevel = 1--the last level in the game
 local startlevel = 0
 local levelkey = {"level", ".txt"}
 local delimiter = "^"
+
+--level requirements variables
+
+local rainRequirement = 0
+local levelTime = 10000--in frames
 
 --string splitting function for level reading, attributed to http://lua-users.org/wiki/SplitJoin
 
@@ -96,7 +103,7 @@ end
 
 --sound effects
 sounds = {
-    music1 = audio.loadSound("level1song.wav"),
+    music1 = audio.loadSound("level1song.mp3"),
     drill_cloud = audio.loadSound("test.wav")
 }
 

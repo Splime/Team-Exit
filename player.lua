@@ -32,7 +32,17 @@ function new(playa, zx, zy)
     end
 
     function balloon:movement(event, accel)
-        balloon.speed = (balloon.img.x * -1 * accel)
+        --Some debug accels
+        --local accel = .2
+        local maxSpeed = 5
+        local minSpeed = -5
+        balloon.speed = (-50 * accel)
+        if balloon.speed > maxSpeed then
+            balloon.speed = maxSpeed
+        end
+        if balloon.speed < minSpeed then
+            balloon.speed = minSpeed
+        end
     end
     
   --Runtime:addEventListener("enterFrame", cloudobj.update)
