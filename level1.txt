@@ -1,4 +1,4 @@
-level1^4363^10
+level1^1819^10
 BEGINWAVE^60
 Cloud^50^50^3^happy
 Cloud^450^70^-2^happy

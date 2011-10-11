@@ -6,10 +6,11 @@ module(..., package.seeall)
 -- update gravity based on time
 
 
-function new(obj, x, y)
+function new(obj, x, y, frz)
 
     local rainobj = { img = display.newImage("img/raindrop.png"), speed = 4}
     rainobj.img.name = "rain"
+    rainobj.img.frozen = frz
     -- set location
     rainobj.img.x = x
     rainobj.img.y = y

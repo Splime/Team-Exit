@@ -13,8 +13,18 @@ local Lightning = require("lightning")
 local ClickableButton = require("clickablebutton")
 local EMP = require("emp")
 
+--Some global spriteset variables
+birdSheet = sprite.newSpriteSheet("img/goose_sheet_15fps.png", 53, 35)
+birdSet = sprite.newSpriteSet(birdSheet, 1, 14)
+sprite.add(birdSet, "birdfly", 1, 14, 1000)
+cloudSheet = sprite.newSpriteSheet("img/happysad_cloud_sheet(anim_frames4-7).png", 156, 76)
+happyCloudSet = sprite.newSpriteSet(cloudSheet, 1, 1)
+sadCloudSet = sprite.newSpriteSet(cloudSheet, 4, 4)
+angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet_15fps.png", 163, 186)
+angryCloudSet = sprite.newSpriteSet(angryCloudSheet, 1, 10)
+
 --level loading related variables
-local maxlevel = 1--the last level in the game
+local maxlevel = 2--the last level in the game
 local startlevel = 0
 local levelkey = {"level", ".txt"}
 local delimiter = "^"
@@ -52,11 +62,62 @@ function Split(str, delim, maxNb)
     return result
 end
 
+function clearEverything()
+
+    lastFrameTime = 0
+    drillCooldown = 0
+    for key,thing in pairs(boltList) do
+        thing.img:removeSelf()
+        boltList[key] = nil
+    end
+    for key,thing in pairs(drillList) do
+        thing.img:removeSelf()
+        drillList[key] = nil
+    end
+    for key,thing in pairs(rainList) do
+        thing.img:removeSelf()
+        rainList[key] = nil
+    end
+    for key,thing in pairs(cloudList) do
+        thing.img:removeSelf()
+        cloudList[key] = nil
+    end
+    for key,thing in pairs(birdList) do
+        thing.img:removeSelf()
+        birdList[key] = nil
+    end
+    for key,thing in pairs(crapList) do
+        thing.img:removeSelf()
+        crapList[key] = nil
+    end
+    boltList = {}
+    drillList = {}
+    rainList = {}
+    cloudList = {}
+    birdList = {}
+    crapList = {}
+    num_frames = 0
+    if balloon ~= nil then
+        balloon.img:removeSelf()
+        balloon = nil
+    end
+    if emp_button ~= nil then
+        emp_button:removeSelf()
+        emp_button = nil
+    end
+    if fire_button ~= nil then
+        fire_button:removeSelf()
+        fire_button = nil
+    end
+
+end
+
+
 --startGame: Starts the game (put in a function so it won't happen pre-menu)
 function startGame(event)
     --Start physics and other initializations
     physics.start()
-    physics.setDrawMode("hybrid")
+    --physics.setDrawMode("hybrid")
     physics.setGravity(0, 0)
     background:removeSelf()
     button:removeSelf()
@@ -76,10 +137,12 @@ function startGame(event)
     --birdtest = Bird:new(display.contentWidth - 100, 10, -1)
     --table.insert(birdList, birdtest)
 
-    balloon = Player:new(200, 200)
+    clearEverything()
     
     startListeners()
     
+    startlevel = 0
+
     --start the actual game
     loadLevel()
     audio.play(sounds.music1, {loops=-1})
@@ -101,10 +164,15 @@ end
 
 function endLevelFailure()
     print("you have lost the game")
+    clearEverything()
+    displayMenu()
 end
 
 function endLevelSuccess()
     print("you have won the game")
+    clearEverything()
+    loadLevel()
+    timer.performWithDelay(33, update, 0)
 end
 
 
@@ -225,6 +293,17 @@ function loadLevel()
     wave={}
     obj={}
     -- file:close()
+
+    balloon = Player:new(200,200)
+
+    emp_button = display.newImage("img/emp_button.png")
+    emp_button.x = 32
+    emp_button.y = display.contentHeight - 16
+    emp_button:addEventListener("touch", useEMP)
+    fire_button = display.newImage("img/fire_button.png")
+    fire_button.x = display.contentWidth - 32
+    fire_button.y = display.contentHeight - 16
+    fire_button:addEventListener("touch", useFire)
     
 
 end
@@ -246,7 +325,7 @@ function update(event)
         end
         --Make it rain!
         if aCloud.mood == "sad" and ( (num_frames - aCloud.hitFrame) < aCloud.hitDiff ) then
-            table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y, onRainCollision))
+            table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y, aCloud.frozen))
         end
         if aCloud.mood == "angry" and math.random(1,45) == 1 then
             table.insert(boltList, Lightning:new(aCloud.img.x, aCloud.img.y, balloon.img.x, balloon.img.y))
@@ -386,12 +465,16 @@ function onCollision(event)
 
     -- rain and player
     if event.object1.name == "rain" and event.object2.name == "player" then
+        if not event.object1.frozen then
+            event.object2.rain = event.object2.rain + 1
+        end
         deleteImageFromTable(rainList, event.object1)
-        event.object2.rain = event.object2.rain + 1
         return
     elseif event.object2.name == "rain" and event.object1.name == "player" then
+        if not event.object2.frozen then
+            event.object1.rain = event.object1.rain + 1
+        end
         deleteImageFromTable(rainList, event.object2)
-        event.object1.rain = event.object1.rain + 1
         return
     end
 
@@ -422,15 +505,49 @@ function onCollision(event)
 end
 
 
+function useEMP()
+    if balloon.img.stuntime > 0 or balloon.img.cooldown > 0 then
+        return
+    end
+    print("EMP")
+    balloon.img.cooldown = 150
+    for key,aBolt in pairs(boltList) do
+        aBolt.img:removeSelf()
+        table.remove(boltList, key)
+    end
+    for key,aCloud in pairs(cloudList) do
+        if aCloud.mood == "angry" then
+            aCloud.mood = "happy"
+        end
+    end
+end
+
+function useFire()
+    if balloon.img.stuntime > 0 or balloon.img.cooldown > 0 then
+        return
+    end
+    print("FIRE")
+    balloon.img.cooldown = 150
+    for key,aRain in pairs(rainList) do
+        aRain.img.frozen = false
+    end
+    for key,aCloud in pairs(cloudList) do
+        aCloud.frozen = false
+    end
+end
+
+
+
 
 --What happens if we touch the screen
 function onTouch(event)
+    if num_frames == 0 then
+        return
+    end
     aimposx = event.x
     aimposy = event.y
     if balloon.img.stuntime == 0 then
-        if event.y > display.contentHeight - 80 then
-            print("PRESS A BUTTON")
-        elseif drillCooldown <= 0 and event.phase == "began" then
+        if drillCooldown <= 0 and event.phase == "began" then
             table.insert(drillList, Drill:new(balloon.img.x, balloon.img.y, aimposx, aimposy))
             drillCooldown = maxDrillDelay
         end
