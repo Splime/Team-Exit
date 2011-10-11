@@ -2,7 +2,7 @@ module(..., package.seeall)
 
 
 
-function new(buttonizzil, ax, ay, width, height, text, function func)--x and y are the location of the center, degrees is the 
+function new(buttonizzil, ax, ay, width, height, text, func)--x and y are the location of the center, degrees is the 
     local buttonobj = { x = ax, y = ay, width = width, height = height, text = text}
     buttonobj.rect = display.newRect(ax, ay, width, height)
     buttonobj.img.name = "drill"

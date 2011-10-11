@@ -10,6 +10,8 @@ local Bird = require("bird")
 local Crap = require("crap")
 local Player = require("player")
 local Lightning = require("lightning")
+local ClickableButton = require("clickablebutton")
+local EMP = require("emp")
 
 --level loading related variables
 local maxlevel = 1--the last level in the game
