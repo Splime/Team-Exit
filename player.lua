@@ -8,8 +8,6 @@ function new(playa, zx, zy)
 
     balloon.img.x = zx
     balloon.img.y = zy
-    balloon.img.xScale = 0.5
-    balloon.img.yScale = 0.5
     
     function balloon:newlevel()
         balloon.img.rain = 0
