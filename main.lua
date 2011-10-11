@@ -327,7 +327,6 @@ function populate(event)
 end
 
 function checkLevel(event)
-    print(levelTime)
     if(event.count == levelTime) then
         timer.cancel(event.source)--cancel the timer
         if (balloon.img.rain >= rainRequirement) then
