@@ -4,13 +4,18 @@ module(..., package.seeall)
 
 
 function new(birdizzle, anx, any, anspeed)
-    local birdobj = { img = display.newImage("img/temp_bird.png"), speed = anspeed}
+    local birdobj = { speed = anspeed}
+    birdobj.img = sprite.newSprite(birdSet)
+    if anspeed > "0" then
+        birdobj.img:scale(-1,1)
+    end
     birdobj.img.x = anx
     birdobj.img.y = any
-    birdobj.img.xScale = 1
-    birdobj.img.yScale = 1
-    
+    birdobj.img:prepare("birdfly")
+    birdobj.img:play()
 
+    
+    --TODO: Adjust image based on direction!
 
 
     --Update Function...

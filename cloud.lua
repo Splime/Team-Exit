@@ -3,7 +3,13 @@ module(..., package.seeall)
 
 
 function new(cloudizzle, anx, any, anspeed, mood)
-    local cloudobj = { img = display.newImage("img/smallcloud1.png"), speed = anspeed, mood = mood, health = 1, angryThreshold = 7, happyThreshold = 7, frozen = false, hitFrame=0, hitDiff = 15}
+    local cloudobj = { speed = anspeed, mood = mood, health = 1, angryThreshold = 7, happyThreshold = 7, frozen = false, hitFrame=0, hitDiff = 15}
+    cloudType = math.random(1, 2)
+    if cloudType == 1 then
+        cloudobj.img = display.newImage("img/smallcloud1.png")
+    else
+        cloudobj.img = display.newImage("img/smallcloud2.png")
+    end
     cloudobj.img.name = "cloud"
     cloudobj.img.x = anx
     cloudobj.img.y = any

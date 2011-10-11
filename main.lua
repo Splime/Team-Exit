@@ -13,6 +13,11 @@ local Lightning = require("lightning")
 local ClickableButton = require("clickablebutton")
 local EMP = require("emp")
 
+--Some global spriteset variables
+birdSheet = sprite.newSpriteSheet("img/goose_sheet_15fps.png", 53, 35)
+birdSet = sprite.newSpriteSet(birdSheet, 1, 14)
+sprite.add(birdSet, "birdfly", 1, 14, 1000)
+
 --level loading related variables
 local maxlevel = 1--the last level in the game
 local startlevel = 0
@@ -56,7 +61,7 @@ end
 function startGame(event)
     --Start physics and other initializations
     physics.start()
-    physics.setDrawMode("hybrid")
+    --physics.setDrawMode("hybrid")
     physics.setGravity(0, 0)
     background:removeSelf()
     button:removeSelf()
