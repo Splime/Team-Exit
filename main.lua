@@ -10,6 +10,8 @@ local Bird = require("bird")
 local Crap = require("crap")
 local Player = require("player")
 local Lightning = require("lightning")
+local ClickableButton = require("clickablebutton")
+local EMP = require("emp")
 
 --level loading related variables
 local maxlevel = 1--the last level in the game
@@ -246,7 +248,7 @@ function update(event)
         if aCloud.mood == "sad" and ( (num_frames - aCloud.hitFrame) < aCloud.hitDiff ) then
             table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y, onRainCollision))
         end
-        if aCloud.mood == "angry" and math.random(1,20) == 1 then
+        if aCloud.mood == "angry" and math.random(1,45) == 1 then
             table.insert(boltList, Lightning:new(aCloud.img.x, aCloud.img.y, balloon.img.x, balloon.img.y))
             num_frames = 0
         end
@@ -408,11 +410,11 @@ function onCollision(event)
     -- crap and player
     if event.object1.name == "lightning" and event.object2.name == "player" then
         deleteImageFromTable(boltList, event.object1)
-        event.object2.health = event.object2.health - 5
+        event.object2.stuntime = 30
         return
     elseif event.object2.name == "lightning" and event.object1.name == "player" then
         deleteImageFromTable(boltList, event.object2)
-        event.object1.health = event.object1.health - 5
+        event.object1.stuntime = 30
         return
     end
 
@@ -426,11 +428,13 @@ end
 function onTouch(event)
     aimposx = event.x
     aimposy = event.y
-    if event.y > display.contentHeight - 80 then
-        print("PRESS A BUTTON")
-    elseif drillCooldown <= 0 and event.phase == "began" then
-        table.insert(drillList, Drill:new(balloon.img.x, balloon.img.y, aimposx, aimposy))
-        drillCooldown = maxDrillDelay
+    if balloon.img.stuntime == 0 then
+        if event.y > display.contentHeight - 80 then
+            print("PRESS A BUTTON")
+        elseif drillCooldown <= 0 and event.phase == "began" then
+            table.insert(drillList, Drill:new(balloon.img.x, balloon.img.y, aimposx, aimposy))
+            drillCooldown = maxDrillDelay
+        end
     end
 end
 local function onAccel(event)
