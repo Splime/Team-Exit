@@ -6,6 +6,7 @@ function new(playa, zx, zy)
     balloon.img.rain = 0
     balloon.img.health = 100
     balloon.img.stuntime = 0
+    balloon.img.cooldown = 0
 
     balloon.img.x = zx
     balloon.img.y = zy
@@ -20,6 +21,9 @@ function new(playa, zx, zy)
     function balloon:update(playa, event, speed)
         if balloon.img.stuntime > 0 then
             balloon.img.stuntime = balloon.img.stuntime - 1
+        end
+        if balloon.img.cooldown > 0 then
+            balloon.img.cooldown = balloon.img.cooldown - 1
         end
 
         balloon.img.x = balloon.img.x + balloon.speed

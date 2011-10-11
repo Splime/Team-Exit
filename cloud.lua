@@ -11,6 +11,7 @@ function new(cloudizzle, anx, any, anspeed, mood)
         cloudobj.health = 10--
         cloudobj.frozen = false
     elseif mood == "frozen" then
+        cloudobj.mood = "happy"
         cloubobj.health = 8
         cloudobj.frozen = true
     else--if the cloud is happy
