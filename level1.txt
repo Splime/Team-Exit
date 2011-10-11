@@ -1,0 +1,7 @@
+level1^400^10
+BEGINWAVE^60
+Cloud^50^50^3^angry
+ENDWAVE
+BEGINWAVE^300
+Cloud^450^32^-2^angry
+ENDWAVE

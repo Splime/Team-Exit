@@ -5,19 +5,23 @@ function new(playa, zx, zy)
     balloon.img.name = "player"
     balloon.img.rain = 0
     balloon.img.health = 100
+    balloon.img.stuntime = 0
 
     balloon.img.x = zx
     balloon.img.y = zy
-    balloon.img.xScale = 0.5
-    balloon.img.yScale = 0.5
     
     function balloon:newlevel()
         balloon.img.rain = 0
         balloon.img.health = 100
+        balloon.img.stuntime = 0
     end
 
     --Update Function...
     function balloon:update(playa, event, speed)
+        if balloon.img.stuntime > 0 then
+            balloon.img.stuntime = balloon.img.stuntime - 1
+        end
+
         balloon.img.x = balloon.img.x + balloon.speed
         if balloon.img.x <= 0 then
             balloon.img.x = 0
@@ -26,9 +30,19 @@ function new(playa, zx, zy)
             balloon.img.x = display.contentWidth
         end
     end
-    
-    function movement(event, accel)
-        balloon.speed = (accel * -.5)
+
+    function balloon:movement(event, accel)
+        --Some debug accels
+        --local accel = .2
+        local maxSpeed = 5
+        local minSpeed = -5
+        balloon.speed = (-50 * accel)
+        if balloon.speed > maxSpeed then
+            balloon.speed = maxSpeed
+        end
+        if balloon.speed < minSpeed then
+            balloon.speed = minSpeed
+        end
     end
     
   --Runtime:addEventListener("enterFrame", cloudobj.update)
@@ -38,5 +52,4 @@ function new(playa, zx, zy)
     return balloon
 
 end
-
 

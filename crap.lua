@@ -30,7 +30,7 @@ function new(obj, x, y)
         crapobj.img.y = crapobj.img.y + crapobj.speed
 
         -- delete self if offscreen
-        if crapobj.img.y > display.contentHeight then
+        if outOfBounds(crapobj) then
             crapobj.img:removeSelf()
             return false
         end
