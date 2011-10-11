@@ -2,24 +2,24 @@ module(..., package.seeall)
 
 
 
-function new(buttonizzil, ax, ay, width, height, text)--x and y are the location of the center, degrees is the 
+function new(buttonizzil, ax, ay, width, height, text, function func)--x and y are the location of the center, degrees is the 
     local buttonobj = { x = ax, y = ay, width = width, height = height, text = text}
-    drillobj.rect = display.newRect(ax, ay, display.contentWidth, display.contentHeight)
-    drillobj.img.name = "drill"
-    drillobj.rect.x = ax
-    drillobj.rect.y = ay
-    drillobj.img.xScale = 1
-    drillobj.img.yScale = 1
+    buttonobj.rect = display.newRect(ax, ay, width, height)
+    buttonobj.img.name = "drill"
+    buttonobj.rect.x = ax
+    buttonobj.rect.y = ay
+    buttonobj.img.xScale = 1
+    buttonobj.img.yScale = 1
     
     --Update Function...
-    function drillobj:click(buttonizzil, event)
+    function buttonobj:click(buttonizzil, event)
+        --if event.x < 
         
-        
-    
+        return false
     end
     
     
     
-    return drillobj
+    return buttonobj
     
 end
