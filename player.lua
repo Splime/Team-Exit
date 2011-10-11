@@ -5,6 +5,7 @@ function new(playa, zx, zy)
     balloon.img.name = "player"
     balloon.img.rain = 0
     balloon.img.health = 100
+    balloon.img.stuntime = 0
 
     balloon.img.x = zx
     balloon.img.y = zy
@@ -12,10 +13,15 @@ function new(playa, zx, zy)
     function balloon:newlevel()
         balloon.img.rain = 0
         balloon.img.health = 100
+        balloon.img.stuntime = 0
     end
 
     --Update Function...
     function balloon:update(playa, event, speed)
+        if balloon.img.stuntime > 0 then
+            balloon.img.stuntime = balloon.img.stuntime - 1
+        end
+
         balloon.img.x = balloon.img.x + balloon.speed
         if balloon.img.x <= 0 then
             balloon.img.x = 0
