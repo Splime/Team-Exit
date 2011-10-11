@@ -27,11 +27,15 @@ function new(playa, zx, zy)
 
     function balloon:movement(event, accel)
         --Some debug accels
-        local accela = .2
+        --local accel = .2
         local maxSpeed = 5
-        balloon.speed = (-50 * accela)
+        local minSpeed = -5
+        balloon.speed = (-50 * accel)
         if balloon.speed > maxSpeed then
             balloon.speed = maxSpeed
+        end
+        if balloon.speed < minSpeed then
+            balloon.speed = minSpeed
         end
     end
     
