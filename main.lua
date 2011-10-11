@@ -77,6 +77,7 @@ function startGame(event)
     
     --start the actual game
     loadLevel()
+    audio.play(sounds.music1, {loops=-1})
 
 end
 
@@ -97,6 +98,7 @@ end
 
 --sound effects
 sounds = {
+    music1 = audio.loadSound("level1song.wav"),
     drill_cloud = audio.loadSound("test.wav")
 }
 
@@ -227,7 +229,7 @@ function update(event)
         if aCloud.mood == "sad" and ( (num_frames - aCloud.hitFrame) < aCloud.hitDiff ) then
             table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y, onRainCollision))
         end
-        if aCloud.img.mood == "angry" and num_frames == 100 then
+        if aCloud.mood == "angry" and math.random(1,20) == 1 then
             table.insert(boltList, Lightning:new(aCloud.img.x, aCloud.img.y, balloon.img.x, balloon.img.y))
             num_frames = 0
         end
@@ -343,7 +345,7 @@ function onCollision(event)
 
 
     -- rain/crap and not player
-    if ((event.object1.name == "rain" or event.object1.name == "crap") and event.object2.name ~= "player") or ((event.object2.name == "rain" or event.object2.name == "crap") and event.object1.name ~= "player") then
+    if ((event.object1.name == "rain" or event.object1.name == "crap" or event.object1.name == "lightning") and event.object2.name ~= "player") or ((event.object2.name == "rain" or event.object2.name == "crap" or event.object2.name == "lightning") and event.object1.name ~= "player") then
         event.object1.isSensor = true
         return
     end
@@ -366,6 +368,17 @@ function onCollision(event)
         return
     elseif event.object2.name == "crap" and event.object1.name == "player" then
         deleteImageFromTable(crapList, event.object2)
+        event.object1.health = event.object1.health - 5
+        return
+    end
+
+    -- crap and player
+    if event.object1.name == "lightning" and event.object2.name == "player" then
+        deleteImageFromTable(boltList, event.object1)
+        event.object2.health = event.object2.health - 5
+        return
+    elseif event.object2.name == "lightning" and event.object1.name == "player" then
+        deleteImageFromTable(boltList, event.object2)
         event.object1.health = event.object1.health - 5
         return
     end

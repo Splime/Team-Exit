@@ -7,8 +7,6 @@ function new(cloudizzle, anx, any, anspeed, mood)
     cloudobj.img.name = "cloud"
     cloudobj.img.x = anx
     cloudobj.img.y = any
-    cloudobj.img.xScale = 0.5
-    cloudobj.img.yScale = 0.5
     if mood == "angry" then
         cloudobj.health = 10--
         cloudobj.frozen = false
