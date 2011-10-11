@@ -13,8 +13,13 @@ local Lightning = require("lightning")
 local ClickableButton = require("clickablebutton")
 local EMP = require("emp")
 
+--Some global spriteset variables
+birdSheet = sprite.newSpriteSheet("img/goose_sheet_15fps.png", 53, 35)
+birdSet = sprite.newSpriteSet(birdSheet, 1, 14)
+sprite.add(birdSet, "birdfly", 1, 14, 1000)
+
 --level loading related variables
-local maxlevel = 1--the last level in the game
+local maxlevel = 2--the last level in the game
 local startlevel = 0
 local levelkey = {"level", ".txt"}
 local delimiter = "^"
@@ -58,27 +63,27 @@ function clearEverything()
     drillCooldown = 0
     for key,thing in pairs(boltList) do
         thing.img:removeSelf()
-        table.remove(boltList, key)
+        boltList[key] = nil
     end
     for key,thing in pairs(drillList) do
         thing.img:removeSelf()
-        table.remove(drillList, key)
+        drillList[key] = nil
     end
     for key,thing in pairs(rainList) do
         thing.img:removeSelf()
-        table.remove(rainList, key)
+        rainList[key] = nil
     end
     for key,thing in pairs(cloudList) do
         thing.img:removeSelf()
-        table.remove(cloudList, key)
+        cloudList[key] = nil
     end
     for key,thing in pairs(birdList) do
         thing.img:removeSelf()
-        table.remove(birdList, key)
+        birdList[key] = nil
     end
     for key,thing in pairs(crapList) do
         thing.img:removeSelf()
-        table.remove(crapList, key)
+        crapList[key] = nil
     end
     boltList = {}
     drillList = {}
@@ -89,8 +94,16 @@ function clearEverything()
     num_frames = 0
     if balloon ~= nil then
         balloon.img:removeSelf()
+        balloon = nil
     end
-    balloon = Player:new(200,200)
+    if emp_button ~= nil then
+        emp_button:removeSelf()
+        emp_button = nil
+    end
+    if fire_button ~= nil then
+        fire_button:removeSelf()
+        fire_button = nil
+    end
 
 end
 
@@ -99,7 +112,7 @@ end
 function startGame(event)
     --Start physics and other initializations
     physics.start()
-    physics.setDrawMode("hybrid")
+    --physics.setDrawMode("hybrid")
     physics.setGravity(0, 0)
     background:removeSelf()
     button:removeSelf()
@@ -113,16 +126,6 @@ function startGame(event)
     minX = display.contentWidth/2 - background.contentWidth/2
     maxY = display.contentHeight/2 + background.contentHeight/2
     minY = display.contentHeight/2 - background.contentHeight/2
-
--- buttons
-    emp_button = display.newImage("img/emp_button.png")
-    emp_button.x = 32
-    emp_button.y = display.contentHeight - 16
-    emp_button:addEventListener("touch", useEMP)
-    fire_button = display.newImage("img/fire_button.png")
-    fire_button.x = display.contentWidth - 32
-    fire_button.y = display.contentHeight - 16
-    fire_button:addEventListener("touch", useFire)
 
     --cloud9 = Cloud:new(0, 10, 1)
     --table.insert(cloudList, cloud9)
@@ -163,7 +166,8 @@ end
 function endLevelSuccess()
     print("you have won the game")
     clearEverything()
-    displayMenu()
+    loadLevel()
+    timer.performWithDelay(33, update, 0)
 end
 
 
@@ -284,6 +288,17 @@ function loadLevel()
     wave={}
     obj={}
     -- file:close()
+
+    balloon = Player:new(200,200)
+
+    emp_button = display.newImage("img/emp_button.png")
+    emp_button.x = 32
+    emp_button.y = display.contentHeight - 16
+    emp_button:addEventListener("touch", useEMP)
+    fire_button = display.newImage("img/fire_button.png")
+    fire_button.x = display.contentWidth - 32
+    fire_button.y = display.contentHeight - 16
+    fire_button:addEventListener("touch", useFire)
     
 
 end
@@ -523,6 +538,9 @@ end
 
 --What happens if we touch the screen
 function onTouch(event)
+    if num_frames == 0 then
+        return
+    end
     aimposx = event.x
     aimposy = event.y
     if balloon.img.stuntime == 0 then
