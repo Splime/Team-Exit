@@ -87,7 +87,7 @@ function clearEverything()
     birdList = {}
     crapList = {}
     num_frames = 0
-    if balloon.img ~= nil then
+    if balloon ~= nil then
         balloon.img:removeSelf()
     end
     balloon = Player:new(200,200)
