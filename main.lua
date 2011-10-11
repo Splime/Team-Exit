@@ -97,6 +97,14 @@ function displayMenu()
     button:addEventListener("touch", startGame)
 end
 
+function endLevelFailure()
+    print("you have lost the game")
+end
+
+function endLevelSuccess()
+    print("you have won the game")
+end
+
 
 
 --sound effects
@@ -167,6 +175,11 @@ function loadLevel()
     local levelDescription = Split(levelVal, delimiter)
     --set the description of the level
     levelList[levelDescription[1]] = {levelDescription[2], levelDescription[3]}
+    --set the variables for this level
+    rainRequirement = 0 + levelDescription[3]--force number
+    print(rainRequirement)
+    levelTime = 0 + levelDescription[2]--force number, in frames
+    print(levelTime)
     --establish variable to decide whether or not we are done reading
     local eof = false
     local wave = {}
@@ -217,6 +230,7 @@ end
 --Update, happens every frame
 function update(event)
     num_frames = num_frames + 1
+    populate(event)
     timePassed = (event.time-lastFrameTime)
     --Adjust cooldown
     if drillCooldown > 0 then
@@ -280,6 +294,10 @@ function update(event)
     balloon:update(event, accelSpeed)
     --Finished updating? Now change the previous time
     lastFrameTime = event.time
+    
+    --check whether the level is over or not
+    
+    checkLevel(event)
 end
 
 function populate(event)
@@ -304,6 +322,18 @@ function populate(event)
     
     end
 
+end
+
+function checkLevel(event)
+    print(levelTime)
+    if(event.count == levelTime) then
+        timer.cancel(event.source)--cancel the timer
+        if (balloon.img.rain >= rainRequirement) then
+            endLevelSuccess()
+        else
+            endLevelFailure()
+        end
+    end
 end
 
 
@@ -415,8 +445,8 @@ function startListeners()
     Runtime:addEventListener("touch", onTouch)
     Runtime:addEventListener("collision", onCollision)
     --start our timer
+    
     timer.performWithDelay(33, update, 0)
-    timer.performWithDelay(33, populate, 0)
 end
 
 --And now the actual main code:
