@@ -3,7 +3,7 @@ module(..., package.seeall)
 
 
 function new(cloudizzle, anx, any, anspeed, mood)
-    local cloudobj = { img = display.newImage("img/detailed_cloud.png"), speed = anspeed, mood = mood, health = 1, angryThreshold = 7, happyThreshold = 7, frozen = false, hitFrame=0, hitDiff = 15}
+    local cloudobj = { img = display.newImage("img/smallcloud1.png"), speed = anspeed, mood = mood, health = 1, angryThreshold = 7, happyThreshold = 7, frozen = false, hitFrame=0, hitDiff = 15}
     cloudobj.img.name = "cloud"
     cloudobj.img.x = anx
     cloudobj.img.y = any
@@ -11,6 +11,7 @@ function new(cloudizzle, anx, any, anspeed, mood)
         cloudobj.health = 10--
         cloudobj.frozen = false
     elseif mood == "frozen" then
+        cloudobj.mood = "happy"
         cloubobj.health = 8
         cloudobj.frozen = true
     else--if the cloud is happy
