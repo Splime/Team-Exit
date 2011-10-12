@@ -12,6 +12,8 @@ local Player = require("player")
 local Lightning = require("lightning")
 local ClickableButton = require("clickablebutton")
 local EMP = require("emp")
+local Drone = require("drone")
+
 
 linesPrinted = 0
 line = {}
@@ -42,6 +44,11 @@ sprite.add(happyCloudSet, "neutral", 2, 1, 1)
 sprite.add(happyCloudSet2, "neutral2", 2, 1, 1)
 sprite.add(happyCloudSet, "cry", 3, 4, 400, -1)
 sprite.add(happyCloudSet2, "cry2", 4, 1, 400, -1)
+frozenCloudSheet = sprite.newSpriteSheet("img/frozen_sheet.png", 153, 73)
+frozenCloudSet = sprite.newSpriteSet(frozenCloudSheet, 1, 4)
+sprite.add(frozenCloudSet, "happy", 1, 1, 1)
+sprite.add(frozenCloudSet, "neutral", 2, 1, 1)
+sprite.add(frozenCloudSet, "cry", 3, 2, 400, -1)
 angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet2.png", 163, 186)
 angryCloudSet = sprite.newSpriteSet(angryCloudSheet, 1, 13)
 sprite.add(angryCloudSet, "angry", 1, 10, 1000, 0)
@@ -275,6 +282,15 @@ function youWin()
     titleimg.y = display.contentHeight/2
 end
 
+function nextLevel()
+    --[[background = display.newImage("img/bg_day.png", true) --Background image, covers up all the black space
+    background.x = display.contentWidth/2
+    background.y = display.contentHeight/2]]
+    titleimg = display.newImage("img/nextlevel.png", true) --Background image, covers up all the black space
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
+end
+
 function endLevelFailure()
     print_d("you have lost the game")
     clearEverything()
@@ -286,16 +302,27 @@ function endLevelSuccess()
     print_d("you have won the game")
     print_d(balloon.img.rain)
     clearEverything()
+    nextLevel()
+    timer.performWithDelay(2000, clearNextLevel, 1)
+    
     loadLevel()
-    timer.performWithDelay(33, update, 0)
 end
 
+function clearNextLevel()
+    if titleimg ~= nil then
+        titleimg:removeSelf()
+        titleimg = nil
+    end
+end
 
 
 --sound effects
 sounds = {
     music1 = audio.loadSound("level1song.mp3"),
-    drill_cloud = audio.loadSound("test.wav")
+    drill_cloud = audio.loadSound("test.wav"),
+    lightning = audio.loadSound("lightning.wav"),
+    emp = audio.loadSound("emp.wav"),
+    fire = audio.loadSound("fire.wav")
 }
 
 
@@ -312,6 +339,7 @@ cloudList = {}
 birdList = {}
 crapList = {}
 levelList = {}
+droneList = {}
 
 num_frames = 0--number of frames
 
@@ -339,6 +367,7 @@ function loadLevel()
         youWin()
         return
     end
+    timer.performWithDelay(33, update, 0)
     local pathval = (levelkey[1] .. startlevel .. levelkey[2])
     local path = system.pathForFile(pathval)
     --Print the whole file
@@ -416,7 +445,7 @@ function loadLevel()
     sunset.y = display.contentHeight/2
     transition.to(sunset, {time = 60000, alpha = 1})
 
-    balloon = Player:new(200,200)
+    balloon = Player:new(200,240)
 
     emp_button = display.newImage("img/emp_button.png")
     emp_button.x = 32
@@ -428,13 +457,13 @@ function loadLevel()
     fire_button:addEventListener("touch", useFire)
     --Setup for rain counter
     --raincount = display.newText("Rain Collected: "..balloon.img.rain.."/"..rainRequirement, 80, display.contentHeight-32, native.systemFont, 32)
-    rainbase = display.newImage("img/rainbar_base.png")
-    rainbase.x = display.contentWidth/2
-    rainbase.y = display.contentHeight - 24
     raincount = display.newImage("img/rainbar.png")
     raincount.xScale = 1
     raincount.x = display.contentWidth/2
     raincount.y = display.contentHeight - 24
+    rainbase = display.newImage("img/status_bar.png")
+    rainbase.x = display.contentWidth/2
+    rainbase.y = display.contentHeight - 24
 
 end
 
@@ -454,12 +483,13 @@ function update(event)
             table.remove(cloudList, key)
         end
         --Make it rain!
-        if aCloud.mood == "sad" and ( (num_frames - aCloud.hitFrame) < aCloud.hitDiff ) then
+        if (aCloud.mood == "sad" and ( (num_frames - aCloud.hitFrame) < aCloud.hitDiff )) or aCloud.frozen then
             table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y, aCloud.frozen))
         end
         if aCloud.mood == "angry" and math.random(1,45) == 1 then
             table.insert(boltList, Lightning:new(aCloud.img.x, aCloud.img.y, aCloud.img.x, aCloud.img.y + 1))
             num_frames = 0
+
         end
     end
     --Birds
@@ -515,6 +545,14 @@ function update(event)
     lastFrameTime = event.time
     
     --check whether the level is over or not
+
+    if balloon.img.cooldown > 0 or balloon.img.stuntime > 0 then
+        emp_button.alpha = .25
+        fire_button.alpha = .25
+    else
+        emp_button.alpha = 1
+        fire_button.alpha = 1
+    end
     
     checkLevel(event)
 end
@@ -575,6 +613,7 @@ function onCollision(event)
     end
     -- drill and cloud
     if event.object1.name == "drill" and event.object2.name == "cloud" then
+
         local numval = num_frames
         deleteImageFromTable(drillList, event.object1)
         local val = event.object2:takeDrillHit(numval)
@@ -627,14 +666,16 @@ function onCollision(event)
         return
     end
 
-    -- crap and player
+    -- lightning and player
     if event.object1.name == "lightning" and event.object2.name == "player" then
         deleteImageFromTable(boltList, event.object1)
         event.object2.stuntime = 30
+        audio.play(sounds.lightning)
         return
     elseif event.object2.name == "lightning" and event.object1.name == "player" then
         deleteImageFromTable(boltList, event.object2)
         event.object1.stuntime = 30
+        audio.play(sounds.lightning)
         return
     end
 
@@ -648,6 +689,7 @@ function useEMP()
         return
     end
     print_d("EMP")
+    audio.play(sounds.emp)
     emp_image = display.newImage("img/empring.png", true)
     emp_image.x = balloon.img.x
     emp_image.y = balloon.img.y
@@ -671,6 +713,7 @@ function useFire()
         return
     end
     print_d("FIRE")
+    audio.play(sounds.fire)
     fire_image = display.newImage("img/firering.png")
     fire_image.x = balloon.img.x
     fire_image.y = balloon.img.y
@@ -679,7 +722,7 @@ function useFire()
     transition.to(fire_image, {time = 500, xScale = 2, yScale = 2, alpha = 0.0})
     balloon.img.cooldown = 150
     for key,aRain in pairs(rainList) do
-        aRain.img.frozen = false
+        aRain:thaw()
     end
     for key,aCloud in pairs(cloudList) do
         aCloud.frozen = false

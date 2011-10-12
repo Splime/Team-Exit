@@ -2,21 +2,11 @@ level
 	test levels: frozen, birds
 
 
-feedback for lightning/crap hitting player
-
-
-pre/post level stuff
-	currently immediate to next level
-	pause?
-
-
-emp and fire
-	buttons on-screen to activate these
-	visible cooldown
+feedback for lightning hitting player
 
 
 art implementation
-	finish this
+	finish this?
 
 
 sound effects

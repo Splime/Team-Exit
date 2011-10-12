@@ -11,7 +11,7 @@ function new(cloudizzle, anx, any, anspeed, mood)
         cloudobj.frozen = false
         cloudobj.img:prepare("angry")
     elseif mood == "frozen" then
-        cloudobj.img = sprite.newSprite(happyCloudSet)
+        cloudobj.img = sprite.newSprite(frozenCloudSet)
         cloudobj.mood = "happy"
         cloudobj.health = 9
         cloudobj.frozen = true
@@ -28,10 +28,12 @@ function new(cloudizzle, anx, any, anspeed, mood)
         cloudobj.health = 9
         cloudobj.frozen = false
     end
+
     cloudobj.img.name = "cloud"
     cloudobj.img.x = anx
     cloudobj.img.y = any
     cloudobj.img:play()
+
     
     setmetatable(cloudobj, { __index = defCloud } )
     --print("creating cloud")
@@ -43,7 +45,6 @@ function new(cloudizzle, anx, any, anspeed, mood)
             cloudobj.img:removeSelf()
             return false
         end
-        
         return true
     end
     
