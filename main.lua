@@ -34,9 +34,14 @@ sprite.add(birdSet, "birdfly", 1, 14, 1000)
 --Clouds
 cloudSheet = sprite.newSpriteSheet("img/happysad_cloud_sheet(anim_frames4-7).png", 156, 76)
 happyCloudSet = sprite.newSpriteSet(cloudSheet, 1, 7)
+cloudSheet2 = sprite.newSpriteSheet("img/small_cloud_sheet.png", 99, 64)
+happyCloudSet2 = sprite.newSpriteSet(cloudSheet2, 1, 4)
 sprite.add(happyCloudSet, "happy", 1, 1, 1)
+sprite.add(happyCloudSet2, "happy2", 1, 1, 1)
 sprite.add(happyCloudSet, "neutral", 2, 1, 1)
+sprite.add(happyCloudSet2, "neutral2", 2, 1, 1)
 sprite.add(happyCloudSet, "cry", 3, 4, 400, -1)
+sprite.add(happyCloudSet2, "cry2", 4, 1, 400, -1)
 frozenCloudSheet = sprite.newSpriteSheet("img/frozen_sheet.png", 153, 73)
 frozenCloudSet = sprite.newSpriteSet(frozenCloudSheet, 1, 4)
 sprite.add(frozenCloudSet, "happy", 1, 1, 1)
@@ -266,6 +271,15 @@ function gameOvar()
     titleimg.y = display.contentHeight/2
 end
 
+function youWin()
+    background = display.newImage("img/bg_day.png", true) --Background image, covers up all the black space
+    background.x = display.contentWidth/2
+    background.y = display.contentHeight/2
+    titleimg = display.newImage("img/youwin.png", true) --Background image, covers up all the black space
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
+end
+
 function endLevelFailure()
     print_d("you have lost the game")
     clearEverything()
@@ -327,6 +341,7 @@ function loadLevel()
     startlevel = startlevel + 1
     if(startlevel > maxlevel) then
         --print_d ("no more levels to load")
+        youWin()
         return
     end
     local pathval = (levelkey[1] .. startlevel .. levelkey[2])

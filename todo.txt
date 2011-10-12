@@ -27,8 +27,3 @@ sound effects
 
 
 player start location and movement?
-
-ADDENDUM: Mike is about to do another android test, will report results soon
-- Accelerometer should work now, something should be adjusted to tone it down a bit though...
-- Maybe a max speed or something?
-- I'll probably get around to that later
