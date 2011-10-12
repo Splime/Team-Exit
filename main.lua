@@ -158,6 +158,10 @@ function startGame(event)
     if titleimg ~= nil then
         titleimg:removeSelf()
     end
+    if instbutton ~= nil then
+        instbutton:removeSelf()
+        instbutton = nil
+    end
     system.setIdleTimer(false) --No more screen going to sleep!
     
     background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
