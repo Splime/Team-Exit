@@ -166,13 +166,13 @@ function startGame(event)
 
     clearEverything()
     
-    startListeners()
     
     startlevel = 0
 
     --start the actual game
     loadLevel()
     audio.play(sounds.music1, {loops=-1})
+    timer.performWithDelay(33, update, 0)
 
 end
 
@@ -485,7 +485,7 @@ end
 
 function onCollision(event)
     -- drill and not clouds
-    if (event.object1.name == "drill" and event.object2.name ~= "cloud") or (event.object2.name == "drill" and event.object1.name ~= "cloud") then
+    if (event.object1.name == "drill" and event.object2.name ~= "cloud" and event.object2.name ~= "drone") or (event.object2.name == "drill" and event.object1.name ~= "cloud" and event.object1.name ~= "drone") then
         event.object1.isSensor = true
         return
     end
@@ -536,11 +536,11 @@ function onCollision(event)
     -- crap and player
     if event.object1.name == "crap" and event.object2.name == "player" then
         deleteImageFromTable(crapList, event.object1)
-        event.object2.health = event.object2.health - 5
+        event.object2.rain = event.object2.rain - 5
         return
     elseif event.object2.name == "crap" and event.object1.name == "player" then
         deleteImageFromTable(crapList, event.object2)
-        event.object1.health = event.object1.health - 5
+        event.object1.rain = event.object1.rain - 5
         return
     end
 
@@ -617,6 +617,9 @@ function onTouch(event)
     end
 end
 local function onAccel(event)
+    if num_frames == 0 then
+        return
+    end
     balloon:movement(event, event.yGravity)
 end
 
@@ -629,8 +632,8 @@ function startListeners()
     Runtime:addEventListener("collision", onCollision)
     --start our timer
     
-    timer.performWithDelay(33, update, 0)
 end
 
 --And now the actual main code:
+startListeners()
 displayMenu()

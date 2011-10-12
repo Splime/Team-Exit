@@ -3,7 +3,7 @@ module(..., package.seeall)
 
 
 function new(cloudizzle, anx, any, anspeed, mood)
-    local cloudobj = { speed = anspeed, mood = mood, health = 1, angryThreshold = 7, happyThreshold = 6, frozen = false, hitFrame=0, hitDiff = 15}
+    local cloudobj = { speed = anspeed, mood = mood, health = 1, angryThreshold = 7, happyThreshold = 7, frozen = false, hitFrame=0, hitDiff = 15}
     -- cloudType = math.random(1, 2)
     -- if cloudType == 1 then
         -- cloudobj.img = display.newImage("img/smallcloud1.png")
@@ -19,12 +19,12 @@ function new(cloudizzle, anx, any, anspeed, mood)
     elseif mood == "frozen" then
         cloudobj.img = sprite.newSprite(happyCloudSet)
         cloudobj.mood = "happy"
-        cloubobj.health = 8
+        cloubobj.health = 9
         cloudobj.frozen = true
         cloudobj.img:prepare("happy")
     else--if the cloud is happy
         cloudobj.img = sprite.newSprite(happyCloudSet)
-        cloudobj.health = 8
+        cloudobj.health = 9
         cloudobj.frozen = false
         cloudobj.img:prepare("happy")
     end
