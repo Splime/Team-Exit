@@ -19,7 +19,7 @@ linesPrinted = 0
 line = {}
 
 function print_d(text)
-    --OOPS! I switched debug mode off!
+    --OOPS! I switched debug mode off! :D
     --[[print(text)
     if linesPrinted >= 100 then
         line[linesPrinted%100 + 1]:removeSelf()
@@ -39,10 +39,10 @@ happyCloudSet = sprite.newSpriteSet(cloudSheet, 1, 7)
 sprite.add(happyCloudSet, "happy", 1, 1, 1)
 sprite.add(happyCloudSet, "neutral", 2, 1, 1)
 sprite.add(happyCloudSet, "cry", 3, 4, 400, -1)
-angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet_15fps.png", 163, 186)
-angryCloudSet = sprite.newSpriteSet(angryCloudSheet, 1, 10)
+angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet2.png", 163, 126)
+angryCloudSet = sprite.newSpriteSet(angryCloudSheet, 1, 13)
 sprite.add(angryCloudSet, "angry", 1, 10, 66, 0)
-sprite.add(angryCloudSet, "cry", 5, 1, 1000, 0)
+sprite.add(angryCloudSet, "cry", 12, 2, 400, -1)
 --Drills
 drillSheet = sprite.newSpriteSheet("img/drill_sheet.png", 17, 23)
 drillSet = sprite.newSpriteSet(drillSheet, 1, 2)
@@ -142,6 +142,14 @@ function clearEverything()
         sunset:removeSelf()
         sunset = nil
     end
+    if raincount ~= nil then
+        raincount:removeSelf()
+        raincount = nil
+    end
+    if rainbase ~= nil then
+        rainbase:removeSelf()
+        rainbase = nil
+    end
 
 end
 
@@ -160,9 +168,13 @@ function startGame(event)
     if titleimg ~= nil then
         titleimg:removeSelf()
     end
+    if instbutton ~= nil then
+        instbutton:removeSelf()
+        instbutton = nil
+    end
     system.setIdleTimer(false) --No more screen going to sleep!
     
-    background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
+    background = display.newImage("img/bg_day.png", true) --Background image, covers up all the black space
     background.x = display.contentWidth/2
     background.y = display.contentHeight/2
     --Now some quick shortcut variables for figuring out the min/max coords for objects to be at before removal
@@ -188,7 +200,7 @@ end
 
 --Menu function! Right now, only works as a starting menu, not a pause menu
 function displayMenu()
-    background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
+    background = display.newImage("img/bg_day.png", true) --Background image, covers up all the black space
     background.x = display.contentWidth/2
     background.y = display.contentHeight/2
     titleimg = display.newImage("img/title2.png", true) --Background image, covers up all the black space
@@ -217,11 +229,12 @@ function displayInst()
     end
     if instbutton ~= nil then
         instbutton:removeSelf()
+        instbutton = nil
     end
     if titleimg ~= nil then
         titleimg:removeSelf()
     end
-    background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
+    background = display.newImage("img/bg_day.png", true) --Background image, covers up all the black space
     background.x = display.contentWidth/2
     background.y = display.contentHeight/2
     titleimg = display.newImage("img/instructions_screen.png", true) --Background image, covers up all the black space
@@ -236,7 +249,7 @@ function displayInst()
 end
 
 function gameOvar()
-    background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
+    background = display.newImage("img/bg_night.png", true) --Background image, covers up all the black space
     background.x = display.contentWidth/2
     background.y = display.contentHeight/2
     titleimg = display.newImage("img/game_over.png", true) --Background image, covers up all the black space
@@ -379,7 +392,7 @@ function loadLevel()
     obj={}
     -- file:close()
 
-    sunset = display.newImage("img/temp_bg2.png", true)
+    sunset = display.newImage("img/bg_night.png", true)
     sunset.alpha = 0
     sunset.x = display.contentWidth/2
     sunset.y = display.contentHeight/2
@@ -395,6 +408,15 @@ function loadLevel()
     fire_button.x = display.contentWidth - 32
     fire_button.y = display.contentHeight - 16
     fire_button:addEventListener("touch", useFire)
+    --Setup for rain counter
+    --raincount = display.newText("Rain Collected: "..balloon.img.rain.."/"..rainRequirement, 80, display.contentHeight-32, native.systemFont, 32)
+    rainbase = display.newImage("img/rainbar_base.png")
+    rainbase.x = display.contentWidth/2
+    rainbase.y = display.contentHeight - 24
+    raincount = display.newImage("img/rainbar.png")
+    raincount.xScale = 1
+    raincount.x = display.contentWidth/2
+    raincount.y = display.contentHeight - 24
 
 end
 
@@ -418,7 +440,7 @@ function update(event)
             table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y, aCloud.frozen))
         end
         if aCloud.mood == "angry" and math.random(1,45) == 1 then
-            table.insert(boltList, Lightning:new(aCloud.img.x, aCloud.img.y, balloon.img.x, balloon.img.y))
+            table.insert(boltList, Lightning:new(aCloud.img.x, aCloud.img.y, aCloud.img.x, aCloud.img.y + 1))
             num_frames = 0
 
         end
@@ -464,6 +486,14 @@ function update(event)
     end
     --Player
     balloon:update(event, accelSpeed)
+    --Fix rain
+    if balloon.img.rain > 0 then
+        raincount.xScale = (300*balloon.img.rain)/rainRequirement
+    end
+    --print((25*balloon.img.rain)/rainRequirement)
+    if raincount.xScale > 300 then
+        raincount.xScale = 300
+    end
     --Finished updating? Now change the previous time
     lastFrameTime = event.time
     
