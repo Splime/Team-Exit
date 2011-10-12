@@ -15,8 +15,8 @@ function new(obj, x, y)
     crapobj.img.y = y
 
     -- set scale
-    crapobj.img.xScale = 5
-    crapobj.img.yScale = 5
+    crapobj.img.xScale = 1
+    crapobj.img.yScale = 1
 
 
 
