@@ -30,11 +30,13 @@ function new(obj, x, y, frz)
         end
         x = rainobj.img.x
         y = rainobj.img.y
+        rainobj.img:removeSelf()
         rainobj.img = display.newImage("img/raindrop.png")
         rainobj.img.name = "rain"
         rainobj.img.x = x
         rainobj.img.y = y
         rainobj.img.frozen = false
+        physics.addBody(rainobj.img)
     end
     
     --Update Function
