@@ -29,12 +29,14 @@ birdSheet = sprite.newSpriteSheet("img/goose_sheet_15fps.png", 53, 35)
 birdSet = sprite.newSpriteSet(birdSheet, 1, 14)
 sprite.add(birdSet, "birdfly", 1, 14, 1000)
 cloudSheet = sprite.newSpriteSheet("img/happysad_cloud_sheet(anim_frames4-7).png", 156, 76)
-happyCloudSet = sprite.newSpriteSet(cloudSheet, 1, 4)
-sprite.add(happyCloudSet, "happy_to_sad", 1, 4, 1000, 1)--goes once
-sadCloudSet = sprite.newSpriteSet(cloudSheet, 4, 4) --second arg is length, NOT final sprite
-sprite.add(happyCloudSet, "be_sad", 4, 7, 1000)--loop infinitely
+happyCloudSet = sprite.newSpriteSet(cloudSheet, 1, 7)
+sprite.add(happyCloudSet, "happy", 1, 1, 1)
+sprite.add(happyCloudSet, "neutral", 2, 1, 1)
+sprite.add(happyCloudSet, "cry", 3, 4, 400, -1)
 angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet_15fps.png", 163, 186)
 angryCloudSet = sprite.newSpriteSet(angryCloudSheet, 1, 10)
+sprite.add(angryCloudSet, "angry", 1, 10, 400, 0)
+sprite.add(angryCloudSet, "cry", 5, 1, 1000, 0)
 
 --level loading related variables
 local maxlevel = 2--the last level in the game
