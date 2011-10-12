@@ -266,6 +266,15 @@ function gameOvar()
     titleimg.y = display.contentHeight/2
 end
 
+function youWin()
+    background = display.newImage("img/bg_day.png", true) --Background image, covers up all the black space
+    background.x = display.contentWidth/2
+    background.y = display.contentHeight/2
+    titleimg = display.newImage("img/youwin.png", true) --Background image, covers up all the black space
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
+end
+
 function endLevelFailure()
     print_d("you have lost the game")
     clearEverything()
@@ -327,6 +336,7 @@ function loadLevel()
     startlevel = startlevel + 1
     if(startlevel > maxlevel) then
         --print_d ("no more levels to load")
+        youWin()
         return
     end
     local pathval = (levelkey[1] .. startlevel .. levelkey[2])
