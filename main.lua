@@ -39,7 +39,6 @@ local levelTime = 10000--in frames
 --[[
 the following string splitting function for level reading, attributed to http://lua-users.org/wiki/SplitJoin
 ]]
-
 function Split(str, delim, maxNb)
     --print(str)
     -- Eliminate bad cases...
@@ -65,6 +64,9 @@ function Split(str, delim, maxNb)
     end
     return result
 end
+--[[
+end code that was lifted from the internet
+]]
 
 function clearEverything()
 
@@ -115,11 +117,6 @@ function clearEverything()
     end
 
 end
-
---[[
-end code that was lifted from the internet
-]]
-
 
 --startGame: Starts the game (put in a function so it won't happen pre-menu)
 function startGame(event)
