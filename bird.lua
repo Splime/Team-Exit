@@ -14,10 +14,6 @@ function new(birdizzle, anx, any, anspeed)
     birdobj.img:prepare("birdfly")
     birdobj.img:play()
 
-    
-    --TODO: Adjust image based on direction!
-
-
     --Update Function...
     function birdobj:update(birdizzle, event)
         birdobj.img.x = birdobj.img.x + birdobj.speed
