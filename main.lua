@@ -12,6 +12,7 @@ local Player = require("player")
 local Lightning = require("lightning")
 local ClickableButton = require("clickablebutton")
 local EMP = require("emp")
+local Drone = require("drone")
 
 
 linesPrinted = 0
@@ -544,7 +545,7 @@ function onCollision(event)
         return
     end
 
-    -- crap and player
+    -- lightning and player
     if event.object1.name == "lightning" and event.object2.name == "player" then
         deleteImageFromTable(boltList, event.object1)
         event.object2.stuntime = 30
