@@ -18,11 +18,13 @@ linesPrinted = 0
 line = {}
 
 function print_d(text)
-    if linesPrinted > 10 then
-        line[linesPrinted%10 + 1]:removeSelf()
+    --OOPS! I switched debug mode off!
+    --[[print(text)
+    if linesPrinted >= 100 then
+        line[linesPrinted%100 + 1]:removeSelf()
     end
-    line[linesPrinted%10 + 1] = display.newText(text, 0, 20*(linesPrinted%10), native.systemFont, 16)
-    linesPrinted = linesPrinted + 1
+    line[linesPrinted%100 + 1] = display.newText(text, 0, 20*(linesPrinted%100), native.systemFont, 16)
+    linesPrinted = linesPrinted + 1]]
 end
 
 --Some global spriteset variables
@@ -130,6 +132,10 @@ function clearEverything()
         fire_button:removeSelf()
         fire_button = nil
     end
+    if sunset ~= nil then
+        sunset:removeSelf()
+        sunset = nil
+    end
 
 end
 
@@ -206,11 +212,12 @@ function endLevelFailure()
     print_d("you have lost the game")
     clearEverything()
     gameOvar()
-    timer.performWithDelay(2000, displayMenu, 0)
+    timer.performWithDelay(2000, displayMenu, 1)
 end
 
 function endLevelSuccess()
     print_d("you have won the game")
+    print_d(balloon.img.rain)
     clearEverything()
     loadLevel()
     timer.performWithDelay(33, update, 0)
@@ -256,34 +263,41 @@ end
 --loads a level from a text file
 --note that time is in frames each of which is 33 milliseconds, 30 frames a second
 function loadLevel()
+    print_d("LOADING...")
     --start by clearing the level
     levelList={}
     num_frames = 0
     startlevel = startlevel + 1
     if(startlevel > maxlevel) then
-        print_d ("no more levels to load")
+        --print_d ("no more levels to load")
         return
     end
     local pathval = (levelkey[1] .. startlevel .. levelkey[2])
     local path = system.pathForFile(pathval)
-    io.input(path, "r")
-    
+    --Print the whole file
+    --local file = io.input(path, "r")
+    --local levelVal = file:read("*a")
+    --print_d("LEVEL"..levelVal)
+    --Carry on...
+    local file = io.input(path, "r")
     --first get our level
-    local levelVal = io.read("*l")
+    local levelVal = file:read("*l")
+    --print_d("levelVal: "..levelVal)
     local levelDescription = Split(levelVal, delimiter)
     --set the description of the level
     levelList[levelDescription[1]] = {levelDescription[2], levelDescription[3]}
     --set the variables for this level
     rainRequirement = 0 + levelDescription[3]--force number
-    print_d(rainRequirement)
+    --print_d(rainRequirement)
     levelTime = 0 + levelDescription[2]--force number, in frames
-    print_d(levelTime)
+    --print_d(levelTime)
     --establish variable to decide whether or not we are done reading
     local eof = false
     local wave = {}
     local obj = {}
     wave["time"] = 0
-    local fullLine = io.read("*l")
+    local fullLine = file:read("*l")
+    --print_d("fullLine = "..fullLine)
     while fullLine ~= nil do
         local splitLine = Split(fullLine, delimiter)
         if(fullLine == "ENDWAVE" ) then
@@ -295,6 +309,7 @@ function loadLevel()
             else
                 wave["time"] = splitLine[2]
             end--else we have a class to add to the wave
+            print_d("A wave is going to start at "..wave["time"])
         elseif (splitLine[1] == "Cloud") then--cloud, x pos, y pos, speed
             obj={}
             table.insert(obj, splitLine[1])
@@ -303,6 +318,7 @@ function loadLevel()
             table.insert(obj, splitLine[4])
             table.insert(obj, splitLine[5])
             table.insert(wave, obj)
+            print_d("Cloud at "..splitLine[2]..", "..splitLine[3])
         elseif (splitLine[1] == "Bird") then--bird, x pos, y pos, speed
             obj={}
             table.insert(obj, splitLine[1])
@@ -310,17 +326,28 @@ function loadLevel()
             table.insert(obj, splitLine[3])
             table.insert(obj, splitLine[4])
             table.insert(wave, obj)
+            print_d("Bird at "..splitLine[2]..", "..splitLine[3])
         else
             print_d("error reading file")
+            print_d("fullLine = "..fullLine)
+            table.insert(levelList, wave["time"], wave)
         end
         
-        fullLine = io.read("*l")
-        
+        fullLine = file:read("*l")
+        if fullLine ~= nil then
+            --print_d("fullLine = "..fullLine)
+        end
     end
     
     wave={}
     obj={}
     -- file:close()
+
+    sunset = display.newImage("img/temp_bg2.png", true)
+    sunset.alpha = 0
+    sunset.x = display.contentWidth/2
+    sunset.y = display.contentHeight/2
+    transition.to(sunset, {time = 60000, alpha = 1})
 
     balloon = Player:new(200,200)
 
@@ -332,7 +359,6 @@ function loadLevel()
     fire_button.x = display.contentWidth - 32
     fire_button.y = display.contentHeight - 16
     fire_button:addEventListener("touch", useFire)
-    
 
 end
 
@@ -417,11 +443,11 @@ function populate(event)
         print_d("waveFound")
         for index, value in ipairs(levelList[event.count]) do
             if (value[1] == "Cloud") then
-                print_d("inserting cloud")
+                --print_d("inserting cloud")
                 local newCloud = Cloud:new(value[2], value[3], value[4], value[5])
                 table.insert(cloudList, newCloud)
             elseif (value[1] == "Bird") then
-                print_d("inserting bird")
+                --print_d("inserting bird")
                 local newBird = Bird:new(value[2], value[3], value[4])
                 table.insert(birdList, newBird)
             else
@@ -540,6 +566,10 @@ function useEMP()
         return
     end
     print_d("EMP")
+    emp_image = display.newImage("img/flash_emp.png", true)
+    emp_image.x = display.contentWidth/2
+    emp_image.y = display.contentHeight/2
+    transition.to(emp_image, {time = 500, alpha = 0.0})
     balloon.img.cooldown = 150
     for key,aBolt in pairs(boltList) do
         aBolt.img:removeSelf()
@@ -557,6 +587,10 @@ function useFire()
         return
     end
     print_d("FIRE")
+    fire_image = display.newImage("img/flash_fire.png", true)
+    fire_image.x = display.contentWidth/2
+    fire_image.y = display.contentHeight/2
+    transition.to(fire_image, {time = 500, alpha = 0.0})
     balloon.img.cooldown = 150
     for key,aRain in pairs(rainList) do
         aRain.img.frozen = false
