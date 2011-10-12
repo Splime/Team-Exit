@@ -1,4 +1,4 @@
-level2^1819^550^
+level2^1819^400^
 BEGINWAVE^1^
 Cloud^10^40^4^happy^
 ENDWAVE^
@@ -37,10 +37,10 @@ Cloud^430^10^-1^angry^
 Cloud^400^60^-1^angry^
 ENDWAVE^
 BEGINWAVE^1213^
-Cloud^240^3^0^angry^
-Cloud^240^30^0^angry^
-Cloud^240^55^0^angry^
-Cloud^240^80^0^angry^
+Cloud^240^30^50^angry^
+Cloud^240^180^50^angry^
+Cloud^240^300^50^angry^
+Cloud^240^460^50^angry^
 ENDWAVE^
 BEGINWAVE^1455^
 Cloud^10^50^5^happy^
