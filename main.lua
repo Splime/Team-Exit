@@ -47,6 +47,12 @@ sprite.add(angryCloudSet, "cry", 12, 2, 400, -1)
 drillSheet = sprite.newSpriteSheet("img/drill_sheet.png", 17, 23)
 drillSet = sprite.newSpriteSet(drillSheet, 1, 2)
 sprite.add(drillSet, "drill", 1, 2, 133)
+--Player
+playerSheet = sprite.newSpriteSheet("img/blimp_sheet.png", 113, 72)
+playerSet = sprite.newSpriteSet(playerSheet, 1, 5)
+sprite.add(playerSet, "left", 1, 2, 133)
+sprite.add(playerSet, "idle", 3, 1, 1)
+sprite.add(playerSet, "right", 4, 2, 133)
 
 --level loading related variables
 local maxlevel = 2--the last level in the game
