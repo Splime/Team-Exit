@@ -41,7 +41,6 @@ local levelTime = 10000--in frames
 --[[
 the following string splitting function for level reading, attributed to http://lua-users.org/wiki/SplitJoin
 ]]
-
 function Split(str, delim, maxNb)
     --print(str)
     -- Eliminate bad cases...
@@ -67,6 +66,9 @@ function Split(str, delim, maxNb)
     end
     return result
 end
+--[[
+end code that was lifted from the internet
+]]
 
 function clearEverything()
 
@@ -118,11 +120,6 @@ function clearEverything()
 
 end
 
---[[
-end code that was lifted from the internet
-]]
-
-
 --startGame: Starts the game (put in a function so it won't happen pre-menu)
 function startGame(event)
     --Start physics and other initializations
@@ -131,6 +128,8 @@ function startGame(event)
     physics.setGravity(0, 0)
     background:removeSelf()
     button:removeSelf()
+    instbutton:removeSelf()
+    titleimg:removeSelf()
     system.setIdleTimer(false) --No more screen going to sleep!
     
     background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
@@ -164,18 +163,37 @@ function displayMenu()
     background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
     background.x = display.contentWidth/2
     background.y = display.contentHeight/2
-    --Make a big red button
-    button = display.newImage("img/temp_button.png")
+    titleimg = display.newImage("img/title2.png", true) --Background image, covers up all the black space
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
+    --Make a play button
+    button = display.newImage("img/play_button.png")
     button.x = display.contentWidth/2
     button.y = display.contentHeight/2
     --Make the button do something
     button:addEventListener("touch", startGame)
+    --Make an instructions button
+    instbutton = display.newImage("img/instructions_button.png")
+    instbutton.x = display.contentWidth/2
+    instbutton.y = display.contentHeight - 100
+    --Make the button do something
+    instbutton:addEventListener("touch", startGame)
+end
+
+function gameOvar()
+    background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
+    background.x = display.contentWidth/2
+    background.y = display.contentHeight/2
+    titleimg = display.newImage("img/game_over.png", true) --Background image, covers up all the black space
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
 end
 
 function endLevelFailure()
     print("you have lost the game")
     clearEverything()
-    displayMenu()
+    gameOvar()
+    timer.performWithDelay(2000, displayMenu, 0)
 end
 
 function endLevelSuccess()
