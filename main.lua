@@ -12,6 +12,8 @@ local Player = require("player")
 local Lightning = require("lightning")
 local ClickableButton = require("clickablebutton")
 local EMP = require("emp")
+local Drone = require("drone")
+
 
 linesPrinted = 0
 line = {}
@@ -302,7 +304,7 @@ function endLevelSuccess()
     clearEverything()
     nextLevel()
     timer.performWithDelay(2000, clearNextLevel, 1)
-    timer.performWithDelay(33, update, 0)
+    
     loadLevel()
 end
 
@@ -337,6 +339,7 @@ cloudList = {}
 birdList = {}
 crapList = {}
 levelList = {}
+droneList = {}
 
 num_frames = 0--number of frames
 
@@ -364,6 +367,7 @@ function loadLevel()
         youWin()
         return
     end
+    timer.performWithDelay(33, update, 0)
     local pathval = (levelkey[1] .. startlevel .. levelkey[2])
     local path = system.pathForFile(pathval)
     --Print the whole file
@@ -453,13 +457,13 @@ function loadLevel()
     fire_button:addEventListener("touch", useFire)
     --Setup for rain counter
     --raincount = display.newText("Rain Collected: "..balloon.img.rain.."/"..rainRequirement, 80, display.contentHeight-32, native.systemFont, 32)
-    rainbase = display.newImage("img/status_bar.png")
-    rainbase.x = display.contentWidth/2
-    rainbase.y = display.contentHeight - 24
     raincount = display.newImage("img/rainbar.png")
     raincount.xScale = 1
     raincount.x = display.contentWidth/2
     raincount.y = display.contentHeight - 24
+    rainbase = display.newImage("img/status_bar.png")
+    rainbase.x = display.contentWidth/2
+    rainbase.y = display.contentHeight - 24
 
 end
 
@@ -485,6 +489,7 @@ function update(event)
         if aCloud.mood == "angry" and math.random(1,45) == 1 then
             table.insert(boltList, Lightning:new(aCloud.img.x, aCloud.img.y, aCloud.img.x, aCloud.img.y + 1))
             num_frames = 0
+
         end
     end
     --Birds
@@ -608,6 +613,7 @@ function onCollision(event)
     end
     -- drill and cloud
     if event.object1.name == "drill" and event.object2.name == "cloud" then
+
         local numval = num_frames
         deleteImageFromTable(drillList, event.object1)
         local val = event.object2:takeDrillHit(numval)
@@ -660,7 +666,7 @@ function onCollision(event)
         return
     end
 
-    -- crap and player
+    -- lightning and player
     if event.object1.name == "lightning" and event.object2.name == "player" then
         deleteImageFromTable(boltList, event.object1)
         event.object2.stuntime = 30
