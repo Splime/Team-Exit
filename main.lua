@@ -219,6 +219,7 @@ function displayInst()
     end
     if instbutton ~= nil then
         instbutton:removeSelf()
+        instbutton = nil
     end
     if titleimg ~= nil then
         titleimg:removeSelf()
