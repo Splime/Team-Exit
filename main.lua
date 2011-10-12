@@ -109,6 +109,7 @@ end code that was lifted from the internet
 
 function clearEverything()
 
+    audio.stop(backgroundmusichannel)
     lastFrameTime = 0
     drillCooldown = 0
     for key,thing in pairs(boltList) do
@@ -319,11 +320,15 @@ end
 --sound effects
 sounds = {
     music1 = audio.loadSound("level1song.mp3"),
+    music2 = audio.loadSound("level2song.mp3"),
+    music3 = audio.loadSound("level3song.mp3"),
     drill_cloud = audio.loadSound("test.wav"),
     lightning = audio.loadSound("lightning.wav"),
     emp = audio.loadSound("emp.wav"),
     fire = audio.loadSound("fire.wav")
 }
+
+backgroundmusichannel = audio.findFreeChannel()
 
 
 --Some variables
@@ -464,6 +469,10 @@ function loadLevel()
     rainbase = display.newImage("img/status_bar.png")
     rainbase.x = display.contentWidth/2
     rainbase.y = display.contentHeight - 24
+    local soundCue = "music"
+    local soundCue2 = soundCue..startlevel
+    
+    backgroundmusichannel = audio.play(sounds[soundCue2], {loops=-1})
 
 end
 
@@ -765,6 +774,5 @@ function startListeners()
 end
 
 --And now the actual main code:
-audio.play(sounds.music1, {loops=-1})
 startListeners()
 displayMenu()

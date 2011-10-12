@@ -1,4 +1,4 @@
-level3^1819^300^
+level3^1819^500^
 BEGINWAVE^10^
 Cloud^240^50^0^frozen^
 ENDWAVE^
