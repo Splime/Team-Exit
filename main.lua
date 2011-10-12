@@ -541,6 +541,14 @@ function update(event)
     lastFrameTime = event.time
     
     --check whether the level is over or not
+
+    if balloon.img.cooldown > 0 or balloon.img.stuntime > 0 then
+        emp_button.alpha = .25
+        fire_button.alpha = .25
+    else
+        emp_button.alpha = 1
+        fire_button.alpha = 1
+    end
     
     checkLevel(event)
 end
