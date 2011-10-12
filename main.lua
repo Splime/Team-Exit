@@ -128,6 +128,10 @@ function clearEverything()
         fire_button:removeSelf()
         fire_button = nil
     end
+    if sunset ~= nil then
+        sunset:removeSelf()
+        sunset = nil
+    end
 
 end
 
@@ -319,6 +323,12 @@ function loadLevel()
     obj={}
     -- file:close()
 
+    sunset = display.newImage("img/temp_bg2.png", true)
+    sunset.alpha = 0
+    sunset.x = display.contentWidth/2
+    sunset.y = display.contentHeight/2
+    transition.to(sunset, {time = 60000, alpha = 1})
+
     balloon = Player:new(200,200)
 
     emp_button = display.newImage("img/emp_button.png")
@@ -329,7 +339,6 @@ function loadLevel()
     fire_button.x = display.contentWidth - 32
     fire_button.y = display.contentHeight - 16
     fire_button:addEventListener("touch", useFire)
-    
 
 end
 
