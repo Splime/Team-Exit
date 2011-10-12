@@ -39,6 +39,7 @@ function new(playa, zx, zy)
         end
 
         if balloon.direction * balloon.speed < 0 then
+            balloon.direction = balloon.direction * -1
             if balloon.state == "left" then
                 balloon.state = "right"
             else
