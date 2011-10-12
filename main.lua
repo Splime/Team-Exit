@@ -210,6 +210,7 @@ end
 
 function endLevelSuccess()
     print_d("you have won the game")
+    print_d(balloon.img.rain)
     clearEverything()
     loadLevel()
     timer.performWithDelay(33, update, 0)
