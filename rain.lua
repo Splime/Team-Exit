@@ -9,6 +9,10 @@ module(..., package.seeall)
 function new(obj, x, y, frz)
 
     local rainobj = { img = display.newImage("img/raindrop.png"), speed = 4}
+    if frz then
+        rainobj.img = display.newImage("img/snowflake.png")
+        rainobj.speed = 2
+    end
     rainobj.img.name = "rain"
     rainobj.img.frozen = frz
     -- set location
@@ -20,12 +24,25 @@ function new(obj, x, y, frz)
     rainobj.img.yScale = 1
 
 
-
+    function rainobj:thaw(self)
+        if not rainobj.img.frozen then
+            return
+        end
+        x = rainobj.img.x
+        y = rainobj.img.y
+        rainobj.img = display.newImage("img/raindrop.png")
+        rainobj.img.name = "rain"
+        rainobj.img.x = x
+        rainobj.img.y = y
+        rainobj.img.frozen = false
+    end
     
     --Update Function
     function rainobj:update(self, event)
         -- update speed based on gravity
-        rainobj.speed = rainobj.speed + .1
+        if not rainobj.img.frozen then
+            rainobj.speed = rainobj.speed + .1
+        end
 
         -- update location
         rainobj.img.y = rainobj.img.y + rainobj.speed
