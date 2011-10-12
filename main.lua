@@ -37,10 +37,10 @@ happyCloudSet = sprite.newSpriteSet(cloudSheet, 1, 7)
 sprite.add(happyCloudSet, "happy", 1, 1, 1)
 sprite.add(happyCloudSet, "neutral", 2, 1, 1)
 sprite.add(happyCloudSet, "cry", 3, 4, 400, -1)
-angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet_15fps.png", 163, 186)
-angryCloudSet = sprite.newSpriteSet(angryCloudSheet, 1, 10)
+angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet2.png", 163, 126)
+angryCloudSet = sprite.newSpriteSet(angryCloudSheet, 1, 13)
 sprite.add(angryCloudSet, "angry", 1, 10, 66, 0)
-sprite.add(angryCloudSet, "cry", 5, 1, 1000, 0)
+sprite.add(angryCloudSet, "cry", 12, 2, 400, -1)
 --Drills
 drillSheet = sprite.newSpriteSheet("img/drill_sheet.png", 17, 23)
 drillSet = sprite.newSpriteSet(drillSheet, 1, 2)
@@ -426,7 +426,7 @@ function update(event)
             table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y, aCloud.frozen))
         end
         if aCloud.mood == "angry" and math.random(1,45) == 1 then
-            table.insert(boltList, Lightning:new(aCloud.img.x, aCloud.img.y, balloon.img.x, balloon.img.y))
+            table.insert(boltList, Lightning:new(aCloud.img.x, aCloud.img.y, aCloud.img.x, aCloud.img.y + 1))
             num_frames = 0
         end
     end
