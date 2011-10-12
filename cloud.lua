@@ -11,7 +11,7 @@ function new(cloudizzle, anx, any, anspeed, mood)
         cloudobj.frozen = false
         cloudobj.img:prepare("angry")
     elseif mood == "frozen" then
-        cloudobj.img = sprite.newSprite(happyCloudSet)
+        cloudobj.img = sprite.newSprite(frozenCloudSet)
         cloudobj.mood = "happy"
         cloudobj.health = 9
         cloudobj.frozen = true

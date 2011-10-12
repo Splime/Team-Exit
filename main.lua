@@ -44,6 +44,11 @@ sprite.add(happyCloudSet, "neutral", 2, 1, 1)
 sprite.add(happyCloudSet2, "neutral2", 2, 1, 1)
 sprite.add(happyCloudSet, "cry", 3, 4, 400, -1)
 sprite.add(happyCloudSet2, "cry2", 4, 1, 400, -1)
+frozenCloudSheet = sprite.newSpriteSheet("img/frozen_sheet.png", 153, 73)
+frozenCloudSet = sprite.newSpriteSet(frozenCloudSheet, 1, 4)
+sprite.add(frozenCloudSet, "happy", 1, 1, 1)
+sprite.add(frozenCloudSet, "neutral", 2, 1, 1)
+sprite.add(frozenCloudSet, "cry", 3, 2, 400, -1)
 angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet2.png", 163, 186)
 angryCloudSet = sprite.newSpriteSet(angryCloudSheet, 1, 13)
 sprite.add(angryCloudSet, "angry", 1, 10, 1000, 0)
@@ -268,6 +273,24 @@ function gameOvar()
     titleimg.y = display.contentHeight/2
 end
 
+function youWin()
+    background = display.newImage("img/bg_day.png", true) --Background image, covers up all the black space
+    background.x = display.contentWidth/2
+    background.y = display.contentHeight/2
+    titleimg = display.newImage("img/youwin.png", true) --Background image, covers up all the black space
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
+end
+
+function nextLevel()
+    --[[background = display.newImage("img/bg_day.png", true) --Background image, covers up all the black space
+    background.x = display.contentWidth/2
+    background.y = display.contentHeight/2]]
+    titleimg = display.newImage("img/nextlevel.png", true) --Background image, covers up all the black space
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
+end
+
 function endLevelFailure()
     print_d("you have lost the game")
     clearEverything()
@@ -279,10 +302,18 @@ function endLevelSuccess()
     print_d("you have won the game")
     print_d(balloon.img.rain)
     clearEverything()
-    loadLevel()
+    nextLevel()
+    timer.performWithDelay(2000, clearNextLevel, 1)
     timer.performWithDelay(33, update, 0)
+    loadLevel()
 end
 
+function clearNextLevel()
+    if titleimg ~= nil then
+        titleimg:removeSelf()
+        titleimg = nil
+    end
+end
 
 
 --sound effects
@@ -330,6 +361,7 @@ function loadLevel()
     startlevel = startlevel + 1
     if(startlevel > maxlevel) then
         --print_d ("no more levels to load")
+        youWin()
         return
     end
     local pathval = (levelkey[1] .. startlevel .. levelkey[2])
@@ -409,7 +441,7 @@ function loadLevel()
     sunset.y = display.contentHeight/2
     transition.to(sunset, {time = 60000, alpha = 1})
 
-    balloon = Player:new(200,200)
+    balloon = Player:new(200,240)
 
     emp_button = display.newImage("img/emp_button.png")
     emp_button.x = 32
@@ -421,7 +453,7 @@ function loadLevel()
     fire_button:addEventListener("touch", useFire)
     --Setup for rain counter
     --raincount = display.newText("Rain Collected: "..balloon.img.rain.."/"..rainRequirement, 80, display.contentHeight-32, native.systemFont, 32)
-    rainbase = display.newImage("img/rainbar_base.png")
+    rainbase = display.newImage("img/status_bar.png")
     rainbase.x = display.contentWidth/2
     rainbase.y = display.contentHeight - 24
     raincount = display.newImage("img/rainbar.png")
@@ -447,7 +479,7 @@ function update(event)
             table.remove(cloudList, key)
         end
         --Make it rain!
-        if aCloud.mood == "sad" and ( (num_frames - aCloud.hitFrame) < aCloud.hitDiff ) then
+        if (aCloud.mood == "sad" and ( (num_frames - aCloud.hitFrame) < aCloud.hitDiff )) or aCloud.frozen then
             table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y, aCloud.frozen))
         end
         if aCloud.mood == "angry" and math.random(1,45) == 1 then
@@ -674,7 +706,7 @@ function useFire()
     transition.to(fire_image, {time = 500, xScale = 2, yScale = 2, alpha = 0.0})
     balloon.img.cooldown = 150
     for key,aRain in pairs(rainList) do
-        aRain.img.frozen = false
+        aRain:thaw()
     end
     for key,aCloud in pairs(cloudList) do
         aCloud.frozen = false
