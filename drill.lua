@@ -4,13 +4,14 @@ module(..., package.seeall)
 
 
 function new(drizzil, ax, ay, tx, ty)--x and y are the location of the center, degrees is the 
-    local drillobj = { img = display.newImage("img/drill_proxy.png"), x = ax, y = ay}
+    local drillobj = { x = ax, y = ay}
+    drillobj.img = sprite.newSprite(drillSet)
+    drillobj.img:prepare("drill")
+    drillobj.img:play()
     drillobj.speed = 500
     drillobj.img.name = "drill"
     drillobj.img.x = ax
     drillobj.img.y = ay
-    drillobj.img.xScale = 1
-    drillobj.img.yScale = 1
     
     --Update Function...
     function drillobj:update(drizzil, event)
@@ -33,8 +34,10 @@ function new(drizzil, ax, ay, tx, ty)--x and y are the location of the center, d
     local theta = math.asin((ty-ay)/math.sqrt((tx-ax)^2+(ty-ay)^2))
     if tx-ax < 0 then
         theta = -theta
+        drillobj.img:rotate(math.deg(theta)-90)
+    else
+        drillobj.img:rotate(math.deg(theta)+90)
     end
-    drillobj.img:rotate(math.deg(theta))
     --print("rotated to "..(math.deg(theta)))
     
     return drillobj

@@ -29,9 +29,11 @@ function print_d(text)
 end
 
 --Some global spriteset variables
+--Birds
 birdSheet = sprite.newSpriteSheet("img/goose_sheet_15fps.png", 53, 35)
 birdSet = sprite.newSpriteSet(birdSheet, 1, 14)
 sprite.add(birdSet, "birdfly", 1, 14, 1000)
+--Clouds
 cloudSheet = sprite.newSpriteSheet("img/happysad_cloud_sheet(anim_frames4-7).png", 156, 76)
 happyCloudSet = sprite.newSpriteSet(cloudSheet, 1, 7)
 sprite.add(happyCloudSet, "happy", 1, 1, 1)
@@ -39,8 +41,12 @@ sprite.add(happyCloudSet, "neutral", 2, 1, 1)
 sprite.add(happyCloudSet, "cry", 3, 4, 400, -1)
 angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet_15fps.png", 163, 186)
 angryCloudSet = sprite.newSpriteSet(angryCloudSheet, 1, 10)
-sprite.add(angryCloudSet, "angry", 1, 10, 400, 0)
+sprite.add(angryCloudSet, "angry", 1, 10, 66, 0)
 sprite.add(angryCloudSet, "cry", 5, 1, 1000, 0)
+--Drills
+drillSheet = sprite.newSpriteSheet("img/drill_sheet.png", 17, 23)
+drillSet = sprite.newSpriteSet(drillSheet, 1, 2)
+sprite.add(drillSet, "drill", 1, 2, 133)
 
 --level loading related variables
 local maxlevel = 2--the last level in the game
@@ -145,10 +151,15 @@ function startGame(event)
     physics.start()
     --physics.setDrawMode("hybrid")
     physics.setGravity(0, 0)
-    background:removeSelf()
-    button:removeSelf()
-    instbutton:removeSelf()
-    titleimg:removeSelf()
+    if background ~= nil then
+        background:removeSelf()
+    end
+    if button ~= nil then
+        button:removeSelf()
+    end
+    if titleimg ~= nil then
+        titleimg:removeSelf()
+    end
     system.setIdleTimer(false) --No more screen going to sleep!
     
     background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
@@ -172,9 +183,7 @@ function startGame(event)
 
     --start the actual game
     loadLevel()
-    audio.play(sounds.music1, {loops=-1})
     timer.performWithDelay(33, update, 0)
-
 end
 
 --Menu function! Right now, only works as a starting menu, not a pause menu
@@ -196,7 +205,34 @@ function displayMenu()
     instbutton.x = display.contentWidth/2
     instbutton.y = display.contentHeight - 100
     --Make the button do something
-    instbutton:addEventListener("touch", startGame)
+    instbutton:addEventListener("touch", displayInst)
+end
+
+function displayInst()
+    if background ~= nil then
+        background:removeSelf()
+    end
+    if button ~= nil then
+        button:removeSelf()
+    end
+    if instbutton ~= nil then
+        instbutton:removeSelf()
+    end
+    if titleimg ~= nil then
+        titleimg:removeSelf()
+    end
+    background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
+    background.x = display.contentWidth/2
+    background.y = display.contentHeight/2
+    titleimg = display.newImage("img/instructions_screen.png", true) --Background image, covers up all the black space
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
+    --Make a play button
+    button = display.newImage("img/play_button.png")
+    button.x = display.contentWidth/2
+    button.y = display.contentHeight - 40
+    --Make the button do something
+    button:addEventListener("touch", startGame)
 end
 
 function gameOvar()
@@ -576,8 +612,8 @@ function useEMP()
         table.remove(boltList, key)
     end
     for key,aCloud in pairs(cloudList) do
-        if aCloud.mood == "angry" then
-            aCloud.mood = "happy"
+        while aCloud.mood == "angry" do
+            aCloud.img:takeDrillHit(num_frames)
         end
     end
 end
@@ -636,5 +672,6 @@ function startListeners()
 end
 
 --And now the actual main code:
+audio.play(sounds.music1, {loops=-1})
 startListeners()
 displayMenu()
