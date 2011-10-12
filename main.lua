@@ -39,9 +39,9 @@ happyCloudSet = sprite.newSpriteSet(cloudSheet, 1, 7)
 sprite.add(happyCloudSet, "happy", 1, 1, 1)
 sprite.add(happyCloudSet, "neutral", 2, 1, 1)
 sprite.add(happyCloudSet, "cry", 3, 4, 400, -1)
-angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet2.png", 163, 126)
+angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet2.png", 163, 186)
 angryCloudSet = sprite.newSpriteSet(angryCloudSheet, 1, 13)
-sprite.add(angryCloudSet, "angry", 1, 10, 66, 0)
+sprite.add(angryCloudSet, "angry", 1, 10, 1000, 0)
 sprite.add(angryCloudSet, "cry", 12, 2, 400, -1)
 --Drills
 drillSheet = sprite.newSpriteSheet("img/drill_sheet.png", 17, 23)
@@ -638,10 +638,12 @@ function useEMP()
         return
     end
     print_d("EMP")
-    emp_image = display.newImage("img/flash_emp.png", true)
-    emp_image.x = display.contentWidth/2
-    emp_image.y = display.contentHeight/2
-    transition.to(emp_image, {time = 500, alpha = 0.0})
+    emp_image = display.newImage("img/empring.png", true)
+    emp_image.x = balloon.img.x
+    emp_image.y = balloon.img.y
+    emp_image.xScale = .1
+    emp_image.yScale = .1
+    transition.to(emp_image, {time = 500, xScale = 2, yScale = 2, alpha = 0.0})
     balloon.img.cooldown = 150
     for key,aBolt in pairs(boltList) do
         aBolt.img:removeSelf()
@@ -659,10 +661,12 @@ function useFire()
         return
     end
     print_d("FIRE")
-    fire_image = display.newImage("img/flash_fire.png", true)
-    fire_image.x = display.contentWidth/2
-    fire_image.y = display.contentHeight/2
-    transition.to(fire_image, {time = 500, alpha = 0.0})
+    fire_image = display.newImage("img/firering.png")
+    fire_image.x = balloon.img.x
+    fire_image.y = balloon.img.y
+    fire_image.xScale = .1
+    fire_image.yScale = .1
+    transition.to(fire_image, {time = 500, xScale = 2, yScale = 2, alpha = 0.0})
     balloon.img.cooldown = 150
     for key,aRain in pairs(rainList) do
         aRain.img.frozen = false

@@ -8,7 +8,7 @@ module(..., package.seeall)
 
 function new(obj, x, y)
 
-    local crapobj = { img = display.newImage("img/crap.png"), speed = 4}
+    local crapobj = { img = display.newImage("img/poop.png"), speed = 4}
     crapobj.img.name = "crap"
     -- set location
     crapobj.img.x = x
