@@ -1,7 +1,10 @@
 module(..., package.seeall)
 
 function new(playa, zx, zy)
-    local balloon = { img = display.newImage("img/player_sub.png"), speed = 0}
+    local balloon = { speed = 0}
+    balloon.img = sprite.newSprite(playerSet)
+    balloon.img:prepare("idle")
+    balloon.img:play()
     balloon.img.name = "player"
     balloon.img.rain = 0
     balloon.img.stuntime = 0
@@ -9,6 +12,9 @@ function new(playa, zx, zy)
 
     balloon.img.x = zx
     balloon.img.y = zy
+
+    balloon.direction = 1
+    balloon.state = "left"
     
     function balloon:newlevel()
         balloon.img.rain = 0
@@ -31,6 +37,17 @@ function new(playa, zx, zy)
         if balloon.img.x >= display.contentWidth then
             balloon.img.x = display.contentWidth
         end
+
+        if balloon.direction * balloon.speed < 0 then
+            if balloon.state == "left" then
+                balloon.state = "right"
+            else
+                balloon.state = "left"
+            end
+            balloon.img:prepare(balloon.state)
+            balloon.img:play()
+        end
+
     end
 
     function balloon:movement(event, accel)
