@@ -170,10 +170,20 @@ function displayMenu()
     button:addEventListener("touch", startGame)
 end
 
+function gameOvar()
+    background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
+    background.x = display.contentWidth/2
+    background.y = display.contentHeight/2
+    titleimg = display.newImage("img/game_over.png", true) --Background image, covers up all the black space
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
+end
+
 function endLevelFailure()
     print("you have lost the game")
     clearEverything()
-    displayMenu()
+    gameOvar()
+    timer.performWithDelay(2000, displayMenu, 0)
 end
 
 function endLevelSuccess()
