@@ -12,7 +12,7 @@ local Player = require("player")
 local Lightning = require("lightning")
 local ClickableButton = require("clickablebutton")
 local EMP = require("emp")
---local Drone = require("drone")
+local Drone = require("drone")
 
 --Some global spriteset variables
 birdSheet = sprite.newSpriteSheet("img/goose_sheet_15fps.png", 53, 35)
