@@ -4,7 +4,7 @@ Cloud^240^50^0^frozen^
 ENDWAVE^
 BEGINWAVE^243^
 Cloud^450^30^-2^angry^
-Cloud^430^90^-2^frozen
+Cloud^430^90^-2^frozen^
 ENDWAVE^
 BEGINWAVE^486^
 Cloud^20^70^3^happy^
@@ -18,7 +18,7 @@ Cloud^100^125^0^frozen^
 Cloud^170^125^0^frozen^
 Cloud^310^125^0^frozen^
 Cloud^5^30^2^angry^
-Cloud^475^30^angry^
+Cloud^475^30^-2^angry^
 ENDWAVE^
 BEGINWAVE^973^
 Cloud^150^20^4^happy^

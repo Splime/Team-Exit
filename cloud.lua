@@ -4,12 +4,6 @@ module(..., package.seeall)
 
 function new(cloudizzle, anx, any, anspeed, mood)
     local cloudobj = { speed = anspeed, mood = mood, health = 1, angryThreshold = 7, happyThreshold = 7, frozen = false, hitFrame=0, hitDiff = 15}
-    -- cloudType = math.random(1, 2)
-    -- if cloudType == 1 then
-        -- cloudobj.img = display.newImage("img/smallcloud1.png")
-    -- else
-        -- cloudobj.img = display.newImage("img/smallcloud2.png")
-    -- end
     
     if mood == "angry" then
         cloudobj.img = sprite.newSprite(angryCloudSet)
@@ -19,14 +13,20 @@ function new(cloudizzle, anx, any, anspeed, mood)
     elseif mood == "frozen" then
         cloudobj.img = sprite.newSprite(happyCloudSet)
         cloudobj.mood = "happy"
-        cloubobj.health = 9
+        cloudobj.health = 9
         cloudobj.frozen = true
         cloudobj.img:prepare("happy")
     else--if the cloud is happy
-        cloudobj.img = sprite.newSprite(happyCloudSet)
+        cloudobj.cloudType = math.random(1, 2)
+        if cloudobj.cloudType == 1 then
+            cloudobj.img = sprite.newSprite(happyCloudSet)
+            cloudobj.img:prepare("happy")
+        else
+            cloudobj.img = sprite.newSprite(happyCloudSet2)
+            cloudobj.img:prepare("happy2")
+        end
         cloudobj.health = 9
         cloudobj.frozen = false
-        cloudobj.img:prepare("happy")
     end
 
     cloudobj.img.name = "cloud"
@@ -59,7 +59,11 @@ function new(cloudizzle, anx, any, anspeed, mood)
             if (cloudobj.health < 1) then
                 return false
             end
-            cloudobj.img:prepare("cry")
+            if cloudobj.cloudType ~= nil and cloudobj.cloudType == 2 then
+                    cloudobj.img:prepare("cry2")
+                else
+                    cloudobj.img:prepare("cry")
+                end
             cloudobj.img:play()
             return true
         elseif (cloudobj.mood == "angry") then--then that means they are not in danger of dying
@@ -78,11 +82,19 @@ function new(cloudizzle, anx, any, anspeed, mood)
                 cloudobj.img:play()
             elseif cloudobj.health > cloudobj.happyThreshold then
                 cloudobj.mood = "neutral"
-                cloudobj.img:prepare("neutral")
+                if cloudobj.cloudType ~= nil and cloudobj.cloudType == 2 then
+                    cloudobj.img:prepare("neutral2")
+                else
+                    cloudobj.img:prepare("neutral")
+                end
                 cloudobj.img:play()
             else
                 cloudobj.mood = "sad"
-                cloudobj.img:prepare("cry")
+                if cloudobj.cloudType ~= nil and cloudobj.cloudType == 2 then
+                    cloudobj.img:prepare("cry2")
+                else
+                    cloudobj.img:prepare("cry")
+                end
                 cloudobj.img:play()
             end
             return true
