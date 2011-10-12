@@ -302,7 +302,7 @@ function endLevelSuccess()
     clearEverything()
     nextLevel()
     timer.performWithDelay(2000, clearNextLevel, 1)
-    timer.performWithDelay(33, update, 0)
+    
     loadLevel()
 end
 
@@ -361,6 +361,7 @@ function loadLevel()
         youWin()
         return
     end
+    timer.performWithDelay(33, update, 0)
     local pathval = (levelkey[1] .. startlevel .. levelkey[2])
     local path = system.pathForFile(pathval)
     --Print the whole file
@@ -450,13 +451,13 @@ function loadLevel()
     fire_button:addEventListener("touch", useFire)
     --Setup for rain counter
     --raincount = display.newText("Rain Collected: "..balloon.img.rain.."/"..rainRequirement, 80, display.contentHeight-32, native.systemFont, 32)
-    rainbase = display.newImage("img/status_bar.png")
-    rainbase.x = display.contentWidth/2
-    rainbase.y = display.contentHeight - 24
     raincount = display.newImage("img/rainbar.png")
     raincount.xScale = 1
     raincount.x = display.contentWidth/2
     raincount.y = display.contentHeight - 24
+    rainbase = display.newImage("img/status_bar.png")
+    rainbase.x = display.contentWidth/2
+    rainbase.y = display.contentHeight - 24
 
 end
 
