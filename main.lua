@@ -14,17 +14,30 @@ local ClickableButton = require("clickablebutton")
 local EMP = require("emp")
 local Drone = require("drone")
 
+linesPrinted = 0
+line = {}
+
+function print_d(text)
+    if linesPrinted > 10 then
+        line[linesPrinted%10 + 1]:removeSelf()
+    end
+    line[linesPrinted%10 + 1] = display.newText(text, 0, 20*(linesPrinted%10), native.systemFont, 16)
+    linesPrinted = linesPrinted + 1
+end
+
 --Some global spriteset variables
 birdSheet = sprite.newSpriteSheet("img/goose_sheet_15fps.png", 53, 35)
 birdSet = sprite.newSpriteSet(birdSheet, 1, 14)
 sprite.add(birdSet, "birdfly", 1, 14, 1000)
 cloudSheet = sprite.newSpriteSheet("img/happysad_cloud_sheet(anim_frames4-7).png", 156, 76)
-happyCloudSet = sprite.newSpriteSet(cloudSheet, 1, 4)
-sprite.add(happyCloudSet, "happy_to_sad", 1, 4, 1000, 1)--goes once
-sadCloudSet = sprite.newSpriteSet(cloudSheet, 4, 4) --second arg is length, NOT final sprite
-sprite.add(happyCloudSet, "be_sad", 4, 7, 1000)--loop infinitely
+happyCloudSet = sprite.newSpriteSet(cloudSheet, 1, 7)
+sprite.add(happyCloudSet, "happy", 1, 1, 1)
+sprite.add(happyCloudSet, "neutral", 2, 1, 1)
+sprite.add(happyCloudSet, "cry", 3, 4, 400, -1)
 angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet_15fps.png", 163, 186)
 angryCloudSet = sprite.newSpriteSet(angryCloudSheet, 1, 10)
+sprite.add(angryCloudSet, "angry", 1, 10, 400, 0)
+sprite.add(angryCloudSet, "cry", 5, 1, 1000, 0)
 
 --level loading related variables
 local maxlevel = 2--the last level in the game
@@ -103,6 +116,7 @@ function clearEverything()
     cloudList = {}
     birdList = {}
     crapList = {}
+    droneList = {}
     num_frames = 0
     if balloon ~= nil then
         balloon.img:removeSelf()
@@ -127,6 +141,8 @@ function startGame(event)
     physics.setGravity(0, 0)
     background:removeSelf()
     button:removeSelf()
+    instbutton:removeSelf()
+    titleimg:removeSelf()
     system.setIdleTimer(false) --No more screen going to sleep!
     
     background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
@@ -169,6 +185,12 @@ function displayMenu()
     button.y = display.contentHeight/2
     --Make the button do something
     button:addEventListener("touch", startGame)
+    --Make an instructions button
+    instbutton = display.newImage("img/instructions_button.png")
+    instbutton.x = display.contentWidth/2
+    instbutton.y = display.contentHeight - 100
+    --Make the button do something
+    instbutton:addEventListener("touch", startGame)
 end
 
 function gameOvar()
@@ -181,14 +203,14 @@ function gameOvar()
 end
 
 function endLevelFailure()
-    print("you have lost the game")
+    print_d("you have lost the game")
     clearEverything()
     gameOvar()
     timer.performWithDelay(2000, displayMenu, 0)
 end
 
 function endLevelSuccess()
-    print("you have won the game")
+    print_d("you have won the game")
     clearEverything()
     loadLevel()
     timer.performWithDelay(33, update, 0)
@@ -216,6 +238,7 @@ cloudList = {}
 birdList = {}
 crapList = {}
 levelList = {}
+droneList = {}
 
 num_frames = 0--number of frames
 
@@ -238,7 +261,7 @@ function loadLevel()
     num_frames = 0
     startlevel = startlevel + 1
     if(startlevel > maxlevel) then
-        print ("no more levels to load")
+        print_d ("no more levels to load")
         return
     end
     local pathval = (levelkey[1] .. startlevel .. levelkey[2])
@@ -252,9 +275,9 @@ function loadLevel()
     levelList[levelDescription[1]] = {levelDescription[2], levelDescription[3]}
     --set the variables for this level
     rainRequirement = 0 + levelDescription[3]--force number
-    print(rainRequirement)
+    print_d(rainRequirement)
     levelTime = 0 + levelDescription[2]--force number, in frames
-    print(levelTime)
+    print_d(levelTime)
     --establish variable to decide whether or not we are done reading
     local eof = false
     local wave = {}
@@ -288,7 +311,7 @@ function loadLevel()
             table.insert(obj, splitLine[4])
             table.insert(wave, obj)
         else
-            print("error reading file")
+            print_d("error reading file")
         end
         
         fullLine = io.read("*l")
@@ -391,14 +414,14 @@ function populate(event)
     if (levelList[event.count] == nil) then
         return--then there is no wave at this time
     else
-        print("waveFound")
+        print_d("waveFound")
         for index, value in ipairs(levelList[event.count]) do
             if (value[1] == "Cloud") then
-                print("inserting cloud")
+                print_d("inserting cloud")
                 local newCloud = Cloud:new(value[2], value[3], value[4], value[5])
                 table.insert(cloudList, newCloud)
             elseif (value[1] == "Bird") then
-                print("inserting bird")
+                print_d("inserting bird")
                 local newBird = Bird:new(value[2], value[3], value[4])
                 table.insert(birdList, newBird)
             else
@@ -516,7 +539,7 @@ function useEMP()
     if balloon.img.stuntime > 0 or balloon.img.cooldown > 0 then
         return
     end
-    print("EMP")
+    print_d("EMP")
     balloon.img.cooldown = 150
     for key,aBolt in pairs(boltList) do
         aBolt.img:removeSelf()
@@ -533,7 +556,7 @@ function useFire()
     if balloon.img.stuntime > 0 or balloon.img.cooldown > 0 then
         return
     end
-    print("FIRE")
+    print_d("FIRE")
     balloon.img.cooldown = 150
     for key,aRain in pairs(rainList) do
         aRain.img.frozen = false
