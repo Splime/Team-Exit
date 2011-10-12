@@ -1,11 +1,8 @@
 level
-	need levels: frozen, birds
-	show how much rain is necessary to collect and progress
+	test levels: frozen, birds
 
 
 feedback for lightning/crap hitting player
-	what happens to the player specifically
-	
 
 
 pre/post level stuff
@@ -15,7 +12,6 @@ pre/post level stuff
 
 emp and fire
 	buttons on-screen to activate these
-	visual effects
 	visible cooldown
 
 
