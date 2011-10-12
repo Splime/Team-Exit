@@ -20,7 +20,7 @@ sprite.add(birdSet, "birdfly", 1, 14, 1000)
 cloudSheet = sprite.newSpriteSheet("img/happysad_cloud_sheet(anim_frames4-7).png", 156, 76)
 happyCloudSet = sprite.newSpriteSet(cloudSheet, 1, 4)
 sprite.add(happyCloudSet, "happy_to_sad", 1, 4, 1000, 1)--goes once
-sadCloudSet = sprite.newSpriteSet(cloudSheet, 4, 7)
+sadCloudSet = sprite.newSpriteSet(cloudSheet, 4, 4) --second arg is length, NOT final sprite
 sprite.add(happyCloudSet, "be_sad", 4, 7, 1000)--loop infinitely
 angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet_15fps.png", 163, 186)
 angryCloudSet = sprite.newSpriteSet(angryCloudSheet, 1, 10)
