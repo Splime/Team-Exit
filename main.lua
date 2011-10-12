@@ -19,8 +19,10 @@ birdSheet = sprite.newSpriteSheet("img/goose_sheet_15fps.png", 53, 35)
 birdSet = sprite.newSpriteSet(birdSheet, 1, 14)
 sprite.add(birdSet, "birdfly", 1, 14, 1000)
 cloudSheet = sprite.newSpriteSheet("img/happysad_cloud_sheet(anim_frames4-7).png", 156, 76)
-happyCloudSet = sprite.newSpriteSet(cloudSheet, 1, 1)
-sadCloudSet = sprite.newSpriteSet(cloudSheet, 4, 4)
+happyCloudSet = sprite.newSpriteSet(cloudSheet, 1, 4)
+sprite.add(happyCloudSet, "happy_to_sad", 1, 4, 1000, 1)--goes once
+sadCloudSet = sprite.newSpriteSet(cloudSheet, 4, 4) --second arg is length, NOT final sprite
+sprite.add(happyCloudSet, "be_sad", 4, 7, 1000)--loop infinitely
 angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet_15fps.png", 163, 186)
 angryCloudSet = sprite.newSpriteSet(angryCloudSheet, 1, 10)
 
@@ -35,8 +37,9 @@ local delimiter = "^"
 local rainRequirement = 0
 local levelTime = 10000--in frames
 
---string splitting function for level reading, attributed to http://lua-users.org/wiki/SplitJoin
-
+--[[
+the following string splitting function for level reading, attributed to http://lua-users.org/wiki/SplitJoin
+]]
 function Split(str, delim, maxNb)
     --print(str)
     -- Eliminate bad cases...
@@ -62,6 +65,9 @@ function Split(str, delim, maxNb)
     end
     return result
 end
+--[[
+end code that was lifted from the internet
+]]
 
 function clearEverything()
 
@@ -113,7 +119,6 @@ function clearEverything()
 
 end
 
-
 --startGame: Starts the game (put in a function so it won't happen pre-menu)
 function startGame(event)
     --Start physics and other initializations
@@ -155,18 +160,31 @@ function displayMenu()
     background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
     background.x = display.contentWidth/2
     background.y = display.contentHeight/2
-    --Make a big red button
-    button = display.newImage("img/temp_button.png")
+    titleimg = display.newImage("img/title2.png", true) --Background image, covers up all the black space
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
+    --Make a play button
+    button = display.newImage("img/play_button.png")
     button.x = display.contentWidth/2
     button.y = display.contentHeight/2
     --Make the button do something
     button:addEventListener("touch", startGame)
 end
 
+function gameOvar()
+    background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
+    background.x = display.contentWidth/2
+    background.y = display.contentHeight/2
+    titleimg = display.newImage("img/game_over.png", true) --Background image, covers up all the black space
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
+end
+
 function endLevelFailure()
     print("you have lost the game")
     clearEverything()
-    displayMenu()
+    gameOvar()
+    timer.performWithDelay(2000, displayMenu, 0)
 end
 
 function endLevelSuccess()
@@ -218,31 +236,17 @@ function loadLevel()
     --start by clearing the level
     levelList={}
     num_frames = 0
-    -- print ("loading a level")
     startlevel = startlevel + 1
     if(startlevel > maxlevel) then
         print ("no more levels to load")
         return
     end
     local pathval = (levelkey[1] .. startlevel .. levelkey[2])
-    -- print (pathval)
-    local path = system.pathForFile(pathval)--system.ResourceDirectory
-    -- local file = io.open(path, "r")
-    -- if not file then
-        -- print("error loading level, game aborted")
-        -- os.exit()
-    -- else
-        -- print("file exists")
-        -- print(file.path)
-    -- end
+    local path = system.pathForFile(pathval)
     io.input(path, "r")
     
     --first get our level
-    -- local levelVal = assert (io.read("*l"), "error reading the file")
     local levelVal = io.read("*l")
-    --string stripping operation from http://lua-users.org/wiki/StringTrim
-    --levelVal = levelVal:match'^%s*(.*%S)'
-    -- print(levelVal)
     local levelDescription = Split(levelVal, delimiter)
     --set the description of the level
     levelList[levelDescription[1]] = {levelDescription[2], levelDescription[3]}
