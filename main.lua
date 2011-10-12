@@ -258,10 +258,51 @@ function displayInst()
     titleimg.y = display.contentHeight/2
     --Make a play button
     button = display.newImage("img/play_button.png")
-    button.x = display.contentWidth/2
-    button.y = display.contentHeight - 40
+    button.x = display.contentWidth - 128
+    button.y = display.contentHeight - 32
     --Make the button do something
     button:addEventListener("touch", startGame)
+    --Make buttons for page 1, 2, and 3 (hehehehe)
+    button1 = display.newImage("img/1.png")
+    button1.x = 64
+    button1.y = display.contentHeight - 32
+    button2 = display.newImage("img/2.png")
+    button2.x = 128
+    button2.y = display.contentHeight - 32
+    button3 = display.newImage("img/3.png")
+    button3.x = 192
+    button3.y = display.contentHeight - 32
+    --Make the buttons do something
+    button1:addEventListener("touch", button1act)
+    button2:addEventListener("touch", button2act)
+    button3:addEventListener("touch", button3act)
+end
+
+function button1act()
+    titleimg:removeSelf()
+    titleimg = display.newImage("img/instructions_screen.png", true)
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
+    titleimg:toBack()
+    background:toBack()
+end
+
+function button2act()
+    titleimg:removeSelf()
+    titleimg = display.newImage("img/instructions_screen2.png", true)
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
+    titleimg:toBack()
+    background:toBack()
+end
+
+function button3act()
+    titleimg:removeSelf()
+    titleimg = display.newImage("img/instructions_screen3.png", true)
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
+    titleimg:toBack()
+    background:toBack()
 end
 
 function gameOvar()
