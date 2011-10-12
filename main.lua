@@ -280,6 +280,15 @@ function youWin()
     titleimg.y = display.contentHeight/2
 end
 
+function nextLevel()
+    --[[background = display.newImage("img/bg_day.png", true) --Background image, covers up all the black space
+    background.x = display.contentWidth/2
+    background.y = display.contentHeight/2]]
+    titleimg = display.newImage("img/nextlevel.png", true) --Background image, covers up all the black space
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
+end
+
 function endLevelFailure()
     print_d("you have lost the game")
     clearEverything()
@@ -291,10 +300,18 @@ function endLevelSuccess()
     print_d("you have won the game")
     print_d(balloon.img.rain)
     clearEverything()
-    loadLevel()
+    nextLevel()
+    timer.performWithDelay(2000, clearNextLevel, 1)
     timer.performWithDelay(33, update, 0)
+    loadLevel()
 end
 
+function clearNextLevel()
+    if titleimg ~= nil then
+        titleimg:removeSelf()
+        titleimg = nil
+    end
+end
 
 
 --sound effects
@@ -433,7 +450,7 @@ function loadLevel()
     fire_button:addEventListener("touch", useFire)
     --Setup for rain counter
     --raincount = display.newText("Rain Collected: "..balloon.img.rain.."/"..rainRequirement, 80, display.contentHeight-32, native.systemFont, 32)
-    rainbase = display.newImage("img/rainbar_base.png")
+    rainbase = display.newImage("img/status_bar.png")
     rainbase.x = display.contentWidth/2
     rainbase.y = display.contentHeight - 24
     raincount = display.newImage("img/rainbar.png")
