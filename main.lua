@@ -588,9 +588,14 @@ function update(event)
     if balloon.img.rain > 0 then
         raincount.xScale = (300*balloon.img.rain)/rainRequirement
     end
-    --print((25*balloon.img.rain)/rainRequirement)
-    if raincount.xScale > 300 then
+    if raincount.xScale >= 300 then
+        raincount:removeSelf()
+        raincount = display.newImage("img/rainbarfull.png")
+        raincount.x = display.contentWidth/2
+        raincount.y = display.contentHeight - 24
         raincount.xScale = 300
+        rainbase:toFront()
+        
     end
     --Finished updating? Now change the previous time
     lastFrameTime = event.time
