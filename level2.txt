@@ -1,4 +1,4 @@
-level2^1819^400^
+level2^1819^300^
 BEGINWAVE^1^
 Cloud^10^40^4^happy^
 ENDWAVE^

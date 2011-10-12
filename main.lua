@@ -259,10 +259,51 @@ function displayInst()
     titleimg.y = display.contentHeight/2
     --Make a play button
     button = display.newImage("img/play_button.png")
-    button.x = display.contentWidth/2
-    button.y = display.contentHeight - 40
+    button.x = display.contentWidth - 128
+    button.y = display.contentHeight - 32
     --Make the button do something
     button:addEventListener("touch", startGame)
+    --Make buttons for page 1, 2, and 3 (hehehehe)
+    button1 = display.newImage("img/1.png")
+    button1.x = 64
+    button1.y = display.contentHeight - 32
+    button2 = display.newImage("img/2.png")
+    button2.x = 128
+    button2.y = display.contentHeight - 32
+    button3 = display.newImage("img/3.png")
+    button3.x = 192
+    button3.y = display.contentHeight - 32
+    --Make the buttons do something
+    button1:addEventListener("touch", button1act)
+    button2:addEventListener("touch", button2act)
+    button3:addEventListener("touch", button3act)
+end
+
+function button1act()
+    titleimg:removeSelf()
+    titleimg = display.newImage("img/instructions_screen.png", true)
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
+    titleimg:toBack()
+    background:toBack()
+end
+
+function button2act()
+    titleimg:removeSelf()
+    titleimg = display.newImage("img/instructions_screen2.png", true)
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
+    titleimg:toBack()
+    background:toBack()
+end
+
+function button3act()
+    titleimg:removeSelf()
+    titleimg = display.newImage("img/instructions_screen3.png", true)
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
+    titleimg:toBack()
+    background:toBack()
 end
 
 function gameOvar()
@@ -275,12 +316,15 @@ function gameOvar()
 end
 
 function youWin()
+    clearEverything()
     background = display.newImage("img/bg_day.png", true) --Background image, covers up all the black space
     background.x = display.contentWidth/2
     background.y = display.contentHeight/2
     titleimg = display.newImage("img/youwin.png", true) --Background image, covers up all the black space
     titleimg.x = display.contentWidth/2
     titleimg.y = display.contentHeight/2
+    
+    timer.performWithDelay(3000, displayMenu, 1)
 end
 
 function nextLevel()
@@ -293,7 +337,7 @@ function nextLevel()
 end
 
 function endLevelFailure()
-    print_d("you have lost the game")
+    print("you have lost the game")
     clearEverything()
     gameOvar()
     timer.performWithDelay(2000, displayMenu, 1)
@@ -305,8 +349,15 @@ function endLevelSuccess()
     clearEverything()
     nextLevel()
     timer.performWithDelay(2000, clearNextLevel, 1)
-    
     loadLevel()
+    timer.performWithDelay(2000, startupagain, 1)
+    
+end
+
+function startupagain()
+    if startlevel <= maxlevel then
+        timer.performWithDelay(33, update, 0)
+    end
 end
 
 function clearNextLevel()
@@ -325,7 +376,8 @@ sounds = {
     drill_cloud = audio.loadSound("test.wav"),
     lightning = audio.loadSound("lightning.wav"),
     emp = audio.loadSound("emp.wav"),
-    fire = audio.loadSound("fire.wav")
+    fire = audio.loadSound("fire.wav"),
+    rain = {audio.loadSound("rain1.wav"), audio.loadSound("rain2.wav"), audio.loadSound("rain3.wav"), audio.loadSound("rain4.wav")}
 }
 
 backgroundmusichannel = audio.findFreeChannel()
@@ -372,7 +424,6 @@ function loadLevel()
         youWin()
         return
     end
-    timer.performWithDelay(33, update, 0)
     local pathval = (levelkey[1] .. startlevel .. levelkey[2])
     local path = system.pathForFile(pathval)
     --Print the whole file
@@ -546,9 +597,14 @@ function update(event)
     if balloon.img.rain > 0 then
         raincount.xScale = (300*balloon.img.rain)/rainRequirement
     end
-    --print((25*balloon.img.rain)/rainRequirement)
-    if raincount.xScale > 300 then
+    if raincount.xScale >= 300 then
+        raincount:removeSelf()
+        raincount = display.newImage("img/rainbarfull.png")
+        raincount.x = display.contentWidth/2
+        raincount.y = display.contentHeight - 24
         raincount.xScale = 300
+        rainbase:toFront()
+        
     end
     --Finished updating? Now change the previous time
     lastFrameTime = event.time
@@ -596,6 +652,7 @@ function checkLevel(event)
         if (balloon.img.rain >= rainRequirement) then
             endLevelSuccess()
         else
+            --print("rain is "..balloon.img.rain.."and reqd is "..rainRequirement)
             endLevelFailure()
         end
     end
@@ -655,12 +712,14 @@ function onCollision(event)
             event.object2.rain = event.object2.rain + 1
         end
         deleteImageFromTable(rainList, event.object1)
+        audio.play(sounds.rain[math.random(1,4)])
         return
     elseif event.object2.name == "rain" and event.object1.name == "player" then
         if not event.object2.frozen then
             event.object1.rain = event.object1.rain + 1
         end
         deleteImageFromTable(rainList, event.object2)
+        audio.play(sounds.rain[math.random(1,4)])
         return
     end
 
