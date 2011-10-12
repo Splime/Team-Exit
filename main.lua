@@ -39,7 +39,7 @@ sprite.add(happyCloudSet, "neutral", 2, 1, 1)
 sprite.add(happyCloudSet, "cry", 3, 4, 400, -1)
 angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet_15fps.png", 163, 186)
 angryCloudSet = sprite.newSpriteSet(angryCloudSheet, 1, 10)
-sprite.add(angryCloudSet, "angry", 1, 10, 400, 0)
+sprite.add(angryCloudSet, "angry", 1, 10, 66, 0)
 sprite.add(angryCloudSet, "cry", 5, 1, 1000, 0)
 --Drills
 drillSheet = sprite.newSpriteSheet("img/drill_sheet.png", 17, 23)
@@ -607,8 +607,8 @@ function useEMP()
         table.remove(boltList, key)
     end
     for key,aCloud in pairs(cloudList) do
-        if aCloud.mood == "angry" then
-            aCloud.mood = "happy"
+        while aCloud.mood == "angry" do
+            aCloud.img:takeDrillHit(num_frames)
         end
     end
 end
