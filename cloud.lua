@@ -53,13 +53,13 @@ function new(cloudizzle, anx, any, anspeed, mood)
             return true
         elseif (cloudobj.mood == "angry") then--then that means they are not in danger of dying
             if(cloudobj.health < cloudobj.angryThreshold) then
-                print("change to sad")
+                print_d("change to sad")
                 cloudobj.mood = "sad"
             end
             return true
         elseif (cloudobj.mood == "happy") then
             if(cloudobj.health < cloudobj.happyThreshold) then
-                print("change to sad")
+                print_d("change to sad")
                 cloudobj.mood = "sad"
             end
             return true
