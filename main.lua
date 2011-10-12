@@ -17,7 +17,8 @@ linesPrinted = 0
 line = {}
 
 function print_d(text)
-    if linesPrinted > 10 then
+    print(text)
+    if linesPrinted >= 10 then
         line[linesPrinted%10 + 1]:removeSelf()
     end
     line[linesPrinted%10 + 1] = display.newText(text, 0, 20*(linesPrinted%10), native.systemFont, 16)
@@ -257,6 +258,7 @@ end
 --loads a level from a text file
 --note that time is in frames each of which is 33 milliseconds, 30 frames a second
 function loadLevel()
+    print_d("LOADING...")
     --start by clearing the level
     levelList={}
     num_frames = 0
@@ -268,9 +270,10 @@ function loadLevel()
     local pathval = (levelkey[1] .. startlevel .. levelkey[2])
     local path = system.pathForFile(pathval)
     io.input(path, "r")
-    
+    print_d("path now points to our file")
     --first get our level
     local levelVal = io.read("*l")
+    print_d("levelVal: "..levelVal)
     local levelDescription = Split(levelVal, delimiter)
     --set the description of the level
     levelList[levelDescription[1]] = {levelDescription[2], levelDescription[3]}
@@ -296,6 +299,7 @@ function loadLevel()
             else
                 wave["time"] = splitLine[2]
             end--else we have a class to add to the wave
+            print_d("A wave is going to start at "..wave["time"])
         elseif (splitLine[1] == "Cloud") then--cloud, x pos, y pos, speed
             obj={}
             table.insert(obj, splitLine[1])
@@ -304,6 +308,7 @@ function loadLevel()
             table.insert(obj, splitLine[4])
             table.insert(obj, splitLine[5])
             table.insert(wave, obj)
+            print_d("Cloud at "..splitLine[2]..", "..splitLine[3])
         elseif (splitLine[1] == "Bird") then--bird, x pos, y pos, speed
             obj={}
             table.insert(obj, splitLine[1])
@@ -311,6 +316,7 @@ function loadLevel()
             table.insert(obj, splitLine[3])
             table.insert(obj, splitLine[4])
             table.insert(wave, obj)
+            print_d("Bird at "..splitLine[2]..", "..splitLine[3])
         else
             print_d("error reading file")
         end
