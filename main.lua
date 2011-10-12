@@ -12,6 +12,8 @@ local Player = require("player")
 local Lightning = require("lightning")
 local ClickableButton = require("clickablebutton")
 local EMP = require("emp")
+local Drone = require("drone")
+
 
 linesPrinted = 0
 line = {}
@@ -334,6 +336,7 @@ cloudList = {}
 birdList = {}
 crapList = {}
 levelList = {}
+droneList = {}
 
 num_frames = 0--number of frames
 
@@ -483,6 +486,7 @@ function update(event)
         if aCloud.mood == "angry" and math.random(1,45) == 1 then
             table.insert(boltList, Lightning:new(aCloud.img.x, aCloud.img.y, aCloud.img.x, aCloud.img.y + 1))
             num_frames = 0
+
         end
     end
     --Birds
@@ -538,6 +542,14 @@ function update(event)
     lastFrameTime = event.time
     
     --check whether the level is over or not
+
+    if balloon.img.cooldown > 0 or balloon.img.stuntime > 0 then
+        emp_button.alpha = .25
+        fire_button.alpha = .25
+    else
+        emp_button.alpha = 1
+        fire_button.alpha = 1
+    end
     
     checkLevel(event)
 end
@@ -598,6 +610,7 @@ function onCollision(event)
     end
     -- drill and cloud
     if event.object1.name == "drill" and event.object2.name == "cloud" then
+
         local numval = num_frames
         deleteImageFromTable(drillList, event.object1)
         local val = event.object2:takeDrillHit(numval)
@@ -650,7 +663,7 @@ function onCollision(event)
         return
     end
 
-    -- crap and player
+    -- lightning and player
     if event.object1.name == "lightning" and event.object2.name == "player" then
         deleteImageFromTable(boltList, event.object1)
         event.object2.stuntime = 30

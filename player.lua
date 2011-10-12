@@ -7,6 +7,7 @@ function new(playa, zx, zy)
     balloon.img:play()
     balloon.img.name = "player"
     balloon.img.rain = 0
+    balloon.img.health = 100
     balloon.img.stuntime = 0
     balloon.img.cooldown = 0
 
@@ -18,6 +19,7 @@ function new(playa, zx, zy)
     
     function balloon:newlevel()
         balloon.img.rain = 0
+        balloon.img.health = 100
         balloon.img.stuntime = 0
     end
 
@@ -72,4 +74,3 @@ function new(playa, zx, zy)
     return balloon
 
 end
-
