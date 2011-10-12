@@ -12,7 +12,7 @@ local Player = require("player")
 local Lightning = require("lightning")
 local ClickableButton = require("clickablebutton")
 local EMP = require("emp")
-local Drone = require("drone")
+
 
 linesPrinted = 0
 line = {}
@@ -118,7 +118,6 @@ function clearEverything()
     cloudList = {}
     birdList = {}
     crapList = {}
-    droneList = {}
     num_frames = 0
     if balloon ~= nil then
         balloon.img:removeSelf()
