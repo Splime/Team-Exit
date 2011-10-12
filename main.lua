@@ -154,8 +154,11 @@ function displayMenu()
     background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
     background.x = display.contentWidth/2
     background.y = display.contentHeight/2
-    --Make a big red button
-    button = display.newImage("img/temp_button.png")
+    titleimg = display.newImage("img/title2.png", true) --Background image, covers up all the black space
+    titleimg.x = display.contentWidth/2
+    titleimg.y = display.contentHeight/2
+    --Make a play button
+    button = display.newImage("img/play_button.png")
     button.x = display.contentWidth/2
     button.y = display.contentHeight/2
     --Make the button do something
