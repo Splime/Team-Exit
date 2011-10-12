@@ -1,0 +1,359 @@
+Tom Anesta
+Michael Gruar
+Eric Collins
+Adam LeClare
+Allie Johnson
+
+
+
+method of control will be interesting
+
+1 idea is that instead of drilling through asteroids you shoot 
+
+you're on a jetski and you have a drill and you are drilling through ships.  only way he can think of it is 3rd person 3d.  you can do it in 2dimensional ish I think.  
+
+the other floating drill idea was giant oil well
+
+another idea is drilling to the center of the earth and you find aliens that are going to kill all the people
+
+BUTTONS CAN BE PUT ON THE CORNERS
+
+back to space ideas
+space radio show, people like that
+combine drilling to the center of the earth and drilling through the asteroids, drill to the center of the asteroids
+
+
+floating on some water and tilting the phone tilts the water and you move with it.  and drills fall down and you avoid the drills
+
+that makes controls easy.
+
+eric doubts that they put mutch effort into making the beer pour well
+
+the player and the water would be in one 
+
+when you tilt the water there is delay and acceleration
+
+
+ANOTHER IDEA
+
+diy weatherman, float through clouds in say a hot air balloon
+droppin them drills offa da side
+makin it rain
+we can haz particle effects
+
+
+
+ANOTHER IDEA
+
+blocks floating that you drill holes through and make them sink
+tilting scrolls the water
+crush fish ???
+a puzzle game
+maybe boats on the top that you drill through
+bonus points for Titanic
+
+
+
+ANOTHER IDEA
+
+drill + float oil rig: 
+
+kind of like lunar lander
+
+story line: environmentally irresponsible mission to drill all the wells at the bottom of the ocean
+
+float or thrust or sink
+
+it's kind of like lunar lander in that you need to land in specific spots
+
+shall we have creatures for you to avoid?
+
+similar fuel and time constraints to the one above, but no way to replenish fuel.
+
+you can have two devices one on each side that make you float.  inflating one of them tilts you
+and you can have a propellor on the bottom
+
+shaking the phone spins both your propellor and your drill when you are on a drilling spot.  tapping one of the floatation devices turns floating on and off
+
+yes I think we do need to add creatures for you to avoid if we want there to be any challenge.  otherwise you mostly just have to get over places.  this is if we are travelling up from the bottom.  if we are dropping down from the top then it would be a lot like lunar lander.  
+
+
+
+
+
+options-
+float in space drill through asteroids/to center of asteroids
+float in space shoot drills at asteroids
+float on water drill through boats ON A JETSKI
+float on water dodge drills
+diy weatherman floating through clouds drilling holes in them
+puzzle game with floating blocks
+float in water drill oil wells
+
+
+
+I like
+diy weatherman
+float in space drill thrugh asteroids
+float on water drill through boats ON A JETSKI
+float in water drill oil wells
+
+
+eric likes
+float on water dodge drills
+diy weatherman
+
+
+adam likes
+float on water dodge drills
+diy weatherman
+
+
+
+michael
+float on water dodge drills
+diy weatherman
+
+
+if i had to choose between the two i'd choose diy weatherman because i think it would be more interesting
+
+
+
+
+
+if the water is just a flat plane it's not bad with the physics engine because things slide
+
+how many objects could we get away with on screen at the same time
+
+
+
+
+what issues can we think of that could come up
+
+maybe the clouds would be sad when you drilled holes in them and then the angry lightning clouds come after you
+what if the clouds were cotton candy and it was raining cats and dogs.  nahhhh
+
+
+how would progression work in each game?
+
+I guess it would just get harder in each game
+
+more drills or more lightning bolts
+there could be a boss fight but that would be like an ending which is not an endless game
+Zeus is the boss in weatherman maybe
+
+diy weatherman has more things we could do with it.  interesting things like sad clouds
+
+or maybe random events like different weather
+
+
+we kind of choose the weatherman.
+
+control method is either control the wind or control these little fans.
+
+hold finger on the flame makes you go up releasing it makes you stop going up?  or go up less
+
+going up veeeeeeeeeeeery slowly
+
+if you are going up and you are dropping drills on clouds below maybe you would hit one randomly.  but since we never go down we could just destroy the cloud
+
+we think maybe the drill should be on the side
+
+maybe we can shoot drill drones where we tap on the screen?
+
+i think we are greatly overestimating the funds at the disposal of this 
+
+what can stop the drills.  stick the moon in the way.  can't drill through the moon, bitch
+
+competitor weathermen?
+
+how dows lighting work?  why not just a projectile?
+
+next meeting is michael, eric and tom here in mcneil room at 12 on sunday, other people are welcome if they can make it.
+
+
+brainstorming 2
+
+you can shoot drills at clouds
+
+fun, how do we make it fun
+
+i liked the angry storm clouds.  that would add some challenge
+
+what is the goal?
+
+what if we are collecting objects floating in the air?
+
+like mario coins.  we could include things like that but they would have to have a purpose.  
+
+
+maybe you collect rain that falls out of clouds.  fill a bucket.  
+
+how many inches of rain do you need per day?
+
+we can have a time limit
+
+shoot the cloud and at that spot you'd have to catch it
+maybe we do have a specific goal of the amount of rain.
+we can change the plot: you are a mad scientist trying to steal the world's rain.  
+
+talking about the levels
+
+we are going for semi-continuous
+
+if you go far enough up and you don't have enough rain you lose
+
+we start on the ground and we are told to collect x amount of rain.  
+
+we need a smart way to generate content.
+
+what other obstacles and collectibles
+
+j'accuse de terrorism.  predator drones.  
+seagulls?  yeah some sort of bird.  
+avoid the geese because they'll s*** on you.  
+angry clouds that shoot lightning
+
+when you drill a cloud it should get sad.
+animate the clouds to cry and make frowny face.  
+
+
+other collectibles?  
+
+graph paper for screen is 
+wide: 11
+tall: 18
+
+around 44 pixels per square
+
+800 by 480 pixels
+
+a slow paced game maybe we should make it landscape.  you get a bigger 
+
+do we want more space or more space to move
+can't we shift the screen
+
+PARTICLE EFFECTS
+
+what else interesting can we do
+power ups
+who doesn't like those
+limited use?
+
+i have the idea of radar
+
+radar is top down, though
+people like pressurizing the clouds so they yield more rain.
+what does the pressure gun do.  
+how would we switch between things probably tapping on the balloon
+
+EMP-stop the predator drones and turn angry clouds into normal clouds (destroy the charge of the lightning)
+people like that
+
+or to do things tap a button as part of hud
+*little hud*
+
+if we just have three shooting modes
+
+or two because the emp would be area of effect from the balloon.
+make sure we keep the drill
+
+still question what does pressurizer do?
+
+if we wanted snowy clouds we could have icicles hanging from them.  
+maybe you have to shoot the snowy clouds with a laser.
+lasers are cool.
+
+do we want pre-determined level or dynamically generated
+pre-determined easier
+
+pre-determined is level, michael 
+
+
+oooooh new tactic
+remember my 
+
+
+balloon is hot air balloon what if you could use the heat from the balloon and you couldn't use that heat too much or you'd fall off the screen and die
+keep a little distance between player and bottom of screen
+
+ABILITIES DECISION, RIGHT THE F*** NOW
+
+drill, 
+emp
+either pressurizer or heat ray.  heat ray is now fire generateing thing on hot air balloons ummmm yeah.  anyway heat shot. final answer
+
+
+we can do night.
+
+if we wanted a scrolling image as a background which shows that time is progressing.  go from light blue to orange to black and back again.
+
+if we had the sun and the moon we could have them fly over the horizon
+
+or we could be traveling around the world which is why 
+
+more water more score
+
+during the daytime he collects the rain during the night he does his secret project
+
+we can have static image cut scenes with text
+maybe night is when the drones come out?
+or maybe night is when we drop off the water
+
+i think we gotta stay up we gotta be in a balloon for months on end
+
+post level screens are fine
+we need some sort of pause I think if we are going to have some sort of story background
+explain it as it goes along?  we can do both.
+
+goal of the game if no in game story could just be high score
+
+distinct ending: exposition better
+
+what happens with the whole day and night cycle
+we have decided that we only collect during the day and nothing in particular happens during the night
+
+collect a certain amount of rain over the course of the day.  
+
+post level screen, you tap it then the next level starts.
+
+total score for the end of the game is fine.
+
+what's the name of our scientist?  
+take the happiness of the clouds make the thirsty children in africa happy: from each according to ability to each according to need
+like robin hood for africa.  
+
+predator drones are controlled by environmentalists trying to protect the climate.
+
+that's just fine
+tie in global warming.  end game: oops, global warming, your fault (scientist shrugs sheepishly)
+
+
+
+
+
+gamedev1
+project2
+
+final brainstorm
+
+we have decided that the name of our game is going to be "make it rain" which is a good title
+we have decided that our levels will be 1 minute long
+we can introduce something new with each level
+level1(clouds)
+level2(angryclouds)
+level3(frozenclouds)
+level4(birds)
+level5(predator drones)
+level6(everything more so)
+
+
+for fire and emp we were thinking instantaneous affect anything on the screen
+
+so they are kind of like now the same thing
+
+they each have a button and we were thinking of having them recharge
+
+
+final decision is no predator drones
+

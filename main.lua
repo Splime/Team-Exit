@@ -65,7 +65,7 @@ sprite.add(playerSet, "idle", 3, 1, 1)
 sprite.add(playerSet, "right", 4, 2, 133)
 
 --level loading related variables
-local maxlevel = 3--the last level in the game
+local maxlevel = 4--the last level in the game
 local startlevel = 0
 local levelkey = {"level", ".txt"}
 local delimiter = "^"
@@ -373,6 +373,7 @@ sounds = {
     music1 = audio.loadSound("level1song.mp3"),
     music2 = audio.loadSound("level2song.mp3"),
     music3 = audio.loadSound("level3song.mp3"),
+    music4 = audio.loadSound("level4song.mp3"),
     drill_cloud = audio.loadSound("test.wav"),
     lightning = audio.loadSound("lightning.wav"),
     emp = audio.loadSound("emp.wav"),
