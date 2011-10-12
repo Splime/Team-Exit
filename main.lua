@@ -126,6 +126,8 @@ function startGame(event)
     physics.setGravity(0, 0)
     background:removeSelf()
     button:removeSelf()
+    instbutton:removeSelf()
+    titleimg:removeSelf()
     system.setIdleTimer(false) --No more screen going to sleep!
     
     background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
@@ -168,6 +170,12 @@ function displayMenu()
     button.y = display.contentHeight/2
     --Make the button do something
     button:addEventListener("touch", startGame)
+    --Make an instructions button
+    instbutton = display.newImage("img/instructions_button.png")
+    instbutton.x = display.contentWidth/2
+    instbutton.y = display.contentHeight - 100
+    --Make the button do something
+    instbutton:addEventListener("touch", startGame)
 end
 
 function gameOvar()
