@@ -209,7 +209,7 @@ function endLevelFailure()
     print_d("you have lost the game")
     clearEverything()
     gameOvar()
-    timer.performWithDelay(2000, displayMenu, 0)
+    timer.performWithDelay(2000, displayMenu, 1)
 end
 
 function endLevelSuccess()
