@@ -42,6 +42,11 @@ sprite.add(happyCloudSet, "neutral", 2, 1, 1)
 sprite.add(happyCloudSet2, "neutral2", 2, 1, 1)
 sprite.add(happyCloudSet, "cry", 3, 4, 400, -1)
 sprite.add(happyCloudSet2, "cry2", 4, 1, 400, -1)
+frozenCloudSheet = sprite.newSpriteSheet("img/frozen_sheet.png", 153, 73)
+frozenCloudSet = sprite.newSpriteSet(frozenCloudSheet, 1, 4)
+sprite.add(frozenCloudSet, "happy", 1, 1, 1)
+sprite.add(frozenCloudSet, "neutral", 2, 1, 1)
+sprite.add(frozenCloudSet, "cry", 3, 2, 400, -1)
 angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet2.png", 163, 186)
 angryCloudSet = sprite.newSpriteSet(angryCloudSheet, 1, 13)
 sprite.add(angryCloudSet, "angry", 1, 10, 1000, 0)
@@ -433,7 +438,7 @@ function loadLevel()
     sunset.y = display.contentHeight/2
     transition.to(sunset, {time = 60000, alpha = 1})
 
-    balloon = Player:new(200,200)
+    balloon = Player:new(200,240)
 
     emp_button = display.newImage("img/emp_button.png")
     emp_button.x = 32
@@ -471,7 +476,7 @@ function update(event)
             table.remove(cloudList, key)
         end
         --Make it rain!
-        if aCloud.mood == "sad" and ( (num_frames - aCloud.hitFrame) < aCloud.hitDiff ) then
+        if (aCloud.mood == "sad" and ( (num_frames - aCloud.hitFrame) < aCloud.hitDiff )) or aCloud.frozen then
             table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y, aCloud.frozen))
         end
         if aCloud.mood == "angry" and math.random(1,45) == 1 then
@@ -696,7 +701,7 @@ function useFire()
     transition.to(fire_image, {time = 500, xScale = 2, yScale = 2, alpha = 0.0})
     balloon.img.cooldown = 150
     for key,aRain in pairs(rainList) do
-        aRain.img.frozen = false
+        aRain:thaw()
     end
     for key,aCloud in pairs(cloudList) do
         aCloud.frozen = false
