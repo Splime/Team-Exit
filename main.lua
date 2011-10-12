@@ -315,12 +315,15 @@ function gameOvar()
 end
 
 function youWin()
+    clearEverything()
     background = display.newImage("img/bg_day.png", true) --Background image, covers up all the black space
     background.x = display.contentWidth/2
     background.y = display.contentHeight/2
     titleimg = display.newImage("img/youwin.png", true) --Background image, covers up all the black space
     titleimg.x = display.contentWidth/2
     titleimg.y = display.contentHeight/2
+    
+    timer.performWithDelay(3000, displayMenu, 1)
 end
 
 function nextLevel()
@@ -333,7 +336,7 @@ function nextLevel()
 end
 
 function endLevelFailure()
-    print_d("you have lost the game")
+    print("you have lost the game")
     clearEverything()
     gameOvar()
     timer.performWithDelay(2000, displayMenu, 1)
@@ -345,8 +348,15 @@ function endLevelSuccess()
     clearEverything()
     nextLevel()
     timer.performWithDelay(2000, clearNextLevel, 1)
-    
     loadLevel()
+    timer.performWithDelay(2000, startupagain, 1)
+    
+end
+
+function startupagain()
+    if startlevel <= maxlevel then
+        timer.performWithDelay(33, update, 0)
+    end
 end
 
 function clearNextLevel()
@@ -409,7 +419,6 @@ function loadLevel()
         youWin()
         return
     end
-    timer.performWithDelay(33, update, 0)
     local pathval = (levelkey[1] .. startlevel .. levelkey[2])
     local path = system.pathForFile(pathval)
     --Print the whole file
@@ -629,6 +638,7 @@ function checkLevel(event)
         if (balloon.img.rain >= rainRequirement) then
             endLevelSuccess()
         else
+            --print("rain is "..balloon.img.rain.."and reqd is "..rainRequirement)
             endLevelFailure()
         end
     end
