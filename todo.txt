@@ -4,25 +4,20 @@ level
 	teaching mechanics
 	show how close the player is to the end of the level (time limit, background sun, visual cues)
 
-
-cloud types + related collisions/rain
-	something about what Eric is currently doing
-	fix collisions again
-
-
 drones
 	just another object
 
 
-lightning/crap hurting player
+feedback for lightning/crap hitting player
 	what happens to the player specifically
 
 
 pre/post level stuff
+	currently immediate with no screen in the middle
+
 	take care of end of level and go to next level
 	touch to start/continue
 	pause
-	main menu
 
 
 emp and fire
@@ -30,7 +25,7 @@ emp and fire
 
 	implementation
 	buttons on-screen to activate these
-	usage, cooldown/limits/other
+	usage, visible cooldown/limits/other
 
 
 art implementation
