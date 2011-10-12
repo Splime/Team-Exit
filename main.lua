@@ -17,7 +17,7 @@ linesPrinted = 0
 line = {}
 
 function print_d(text)
-    --OOPS! I switched debug mode off!
+    --OOPS! I switched debug mode off! :D
     --[[print(text)
     if linesPrinted >= 100 then
         line[linesPrinted%100 + 1]:removeSelf()
@@ -140,6 +140,10 @@ function clearEverything()
         sunset:removeSelf()
         sunset = nil
     end
+    if raincount ~= nil then
+        raincount:removeSelf()
+        raincount = nil
+    end
 
 end
 
@@ -238,7 +242,7 @@ function displayInst()
 end
 
 function gameOvar()
-    background = display.newImage("img/bg_day.png", true) --Background image, covers up all the black space
+    background = display.newImage("img/bg_night.png", true) --Background image, covers up all the black space
     background.x = display.contentWidth/2
     background.y = display.contentHeight/2
     titleimg = display.newImage("img/game_over.png", true) --Background image, covers up all the black space
@@ -396,6 +400,8 @@ function loadLevel()
     fire_button.x = display.contentWidth - 32
     fire_button.y = display.contentHeight - 16
     fire_button:addEventListener("touch", useFire)
+    --Setup for rain counter
+    raincount = display.newText("Rain Collected: "..balloon.img.rain.."/"..rainRequirement, 80, display.contentHeight-32, native.systemFont, 32)
 
 end
 
@@ -464,6 +470,8 @@ function update(event)
     end
     --Player
     balloon:update(event, accelSpeed)
+    --Fix rain
+    raincount.text = "Rain Collected: "..balloon.img.rain.."/"..rainRequirement
     --Finished updating? Now change the previous time
     lastFrameTime = event.time
     
