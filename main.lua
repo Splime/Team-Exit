@@ -53,7 +53,7 @@ sprite.add(playerSet, "idle", 3, 1, 1)
 sprite.add(playerSet, "right", 4, 2, 133)
 
 --level loading related variables
-local maxlevel = 2--the last level in the game
+local maxlevel = 3--the last level in the game
 local startlevel = 0
 local levelkey = {"level", ".txt"}
 local delimiter = "^"
