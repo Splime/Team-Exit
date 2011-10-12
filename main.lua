@@ -304,7 +304,7 @@ function endLevelSuccess()
     clearEverything()
     nextLevel()
     timer.performWithDelay(2000, clearNextLevel, 1)
-    timer.performWithDelay(33, update, 0)
+    
     loadLevel()
 end
 
@@ -319,7 +319,10 @@ end
 --sound effects
 sounds = {
     music1 = audio.loadSound("level1song.mp3"),
-    drill_cloud = audio.loadSound("test.wav")
+    drill_cloud = audio.loadSound("test.wav"),
+    lightning = audio.loadSound("lightning.wav"),
+    emp = audio.loadSound("emp.wav"),
+    fire = audio.loadSound("fire.wav")
 }
 
 
@@ -364,6 +367,7 @@ function loadLevel()
         youWin()
         return
     end
+    timer.performWithDelay(33, update, 0)
     local pathval = (levelkey[1] .. startlevel .. levelkey[2])
     local path = system.pathForFile(pathval)
     --Print the whole file
@@ -453,13 +457,13 @@ function loadLevel()
     fire_button:addEventListener("touch", useFire)
     --Setup for rain counter
     --raincount = display.newText("Rain Collected: "..balloon.img.rain.."/"..rainRequirement, 80, display.contentHeight-32, native.systemFont, 32)
-    rainbase = display.newImage("img/status_bar.png")
-    rainbase.x = display.contentWidth/2
-    rainbase.y = display.contentHeight - 24
     raincount = display.newImage("img/rainbar.png")
     raincount.xScale = 1
     raincount.x = display.contentWidth/2
     raincount.y = display.contentHeight - 24
+    rainbase = display.newImage("img/status_bar.png")
+    rainbase.x = display.contentWidth/2
+    rainbase.y = display.contentHeight - 24
 
 end
 
@@ -666,10 +670,12 @@ function onCollision(event)
     if event.object1.name == "lightning" and event.object2.name == "player" then
         deleteImageFromTable(boltList, event.object1)
         event.object2.stuntime = 30
+        audio.play(sounds.lightning)
         return
     elseif event.object2.name == "lightning" and event.object1.name == "player" then
         deleteImageFromTable(boltList, event.object2)
         event.object1.stuntime = 30
+        audio.play(sounds.lightning)
         return
     end
 
@@ -683,6 +689,7 @@ function useEMP()
         return
     end
     print_d("EMP")
+    audio.play(sounds.emp)
     emp_image = display.newImage("img/empring.png", true)
     emp_image.x = balloon.img.x
     emp_image.y = balloon.img.y
@@ -706,6 +713,7 @@ function useFire()
         return
     end
     print_d("FIRE")
+    audio.play(sounds.fire)
     fire_image = display.newImage("img/firering.png")
     fire_image.x = balloon.img.x
     fire_image.y = balloon.img.y
