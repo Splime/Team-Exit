@@ -164,7 +164,7 @@ function startGame(event)
     end
     system.setIdleTimer(false) --No more screen going to sleep!
     
-    background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
+    background = display.newImage("img/bg_day.png", true) --Background image, covers up all the black space
     background.x = display.contentWidth/2
     background.y = display.contentHeight/2
     --Now some quick shortcut variables for figuring out the min/max coords for objects to be at before removal
@@ -190,7 +190,7 @@ end
 
 --Menu function! Right now, only works as a starting menu, not a pause menu
 function displayMenu()
-    background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
+    background = display.newImage("img/bg_day.png", true) --Background image, covers up all the black space
     background.x = display.contentWidth/2
     background.y = display.contentHeight/2
     titleimg = display.newImage("img/title2.png", true) --Background image, covers up all the black space
@@ -223,7 +223,7 @@ function displayInst()
     if titleimg ~= nil then
         titleimg:removeSelf()
     end
-    background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
+    background = display.newImage("img/bg_day.png", true) --Background image, covers up all the black space
     background.x = display.contentWidth/2
     background.y = display.contentHeight/2
     titleimg = display.newImage("img/instructions_screen.png", true) --Background image, covers up all the black space
@@ -238,7 +238,7 @@ function displayInst()
 end
 
 function gameOvar()
-    background = display.newImage("img/temp_bg.png", true) --Background image, covers up all the black space
+    background = display.newImage("img/bg_day.png", true) --Background image, covers up all the black space
     background.x = display.contentWidth/2
     background.y = display.contentHeight/2
     titleimg = display.newImage("img/game_over.png", true) --Background image, covers up all the black space
@@ -380,7 +380,7 @@ function loadLevel()
     obj={}
     -- file:close()
 
-    sunset = display.newImage("img/temp_bg2.png", true)
+    sunset = display.newImage("img/bg_night.png", true)
     sunset.alpha = 0
     sunset.x = display.contentWidth/2
     sunset.y = display.contentHeight/2
