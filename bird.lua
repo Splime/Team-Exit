@@ -27,7 +27,7 @@ function new(birdizzle, anx, any, anspeed)
     end
     
     
-
+    physics.add(birdobj.img)
     
     return birdobj
 

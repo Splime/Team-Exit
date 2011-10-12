@@ -363,7 +363,8 @@ sounds = {
     drill_cloud = audio.loadSound("test.wav"),
     lightning = audio.loadSound("lightning.wav"),
     emp = audio.loadSound("emp.wav"),
-    fire = audio.loadSound("fire.wav")
+    fire = audio.loadSound("fire.wav"),
+    rain = {audio.loadSound("rain1.wav"), audio.loadSound("rain2.wav"), audio.loadSound("rain3.wav"), audio.loadSound("rain4.wav")}
 }
 
 
@@ -687,12 +688,14 @@ function onCollision(event)
             event.object2.rain = event.object2.rain + 1
         end
         deleteImageFromTable(rainList, event.object1)
+        audio.play(sounds.rain[math.random(1,4)])
         return
     elseif event.object2.name == "rain" and event.object1.name == "player" then
         if not event.object2.frozen then
             event.object1.rain = event.object1.rain + 1
         end
         deleteImageFromTable(rainList, event.object2)
+        audio.play(sounds.rain[math.random(1,4)])
         return
     end
 
