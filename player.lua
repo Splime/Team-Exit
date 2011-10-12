@@ -14,7 +14,7 @@ function new(playa, zx, zy)
     balloon.img.y = zy
 
     balloon.direction = 1
-    balloon.state = "left"
+    balloon.state = "right"
     
     function balloon:newlevel()
         balloon.img.rain = 0
