@@ -37,10 +37,10 @@ happyCloudSet = sprite.newSpriteSet(cloudSheet, 1, 7)
 sprite.add(happyCloudSet, "happy", 1, 1, 1)
 sprite.add(happyCloudSet, "neutral", 2, 1, 1)
 sprite.add(happyCloudSet, "cry", 3, 4, 400, -1)
-angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet_15fps.png", 163, 186)
-angryCloudSet = sprite.newSpriteSet(angryCloudSheet, 1, 10)
+angryCloudSheet = sprite.newSpriteSheet("img/angry_cloud_sheet2.png", 163, 126)
+angryCloudSet = sprite.newSpriteSet(angryCloudSheet, 1, 13)
 sprite.add(angryCloudSet, "angry", 1, 10, 66, 0)
-sprite.add(angryCloudSet, "cry", 5, 1, 1000, 0)
+sprite.add(angryCloudSet, "cry", 12, 2, 400, -1)
 --Drills
 drillSheet = sprite.newSpriteSheet("img/drill_sheet.png", 17, 23)
 drillSet = sprite.newSpriteSet(drillSheet, 1, 2)
@@ -143,6 +143,10 @@ function clearEverything()
     if raincount ~= nil then
         raincount:removeSelf()
         raincount = nil
+    end
+    if rainbase ~= nil then
+        rainbase:removeSelf()
+        rainbase = nil
     end
 
 end
@@ -402,7 +406,14 @@ function loadLevel()
     fire_button.y = display.contentHeight - 16
     fire_button:addEventListener("touch", useFire)
     --Setup for rain counter
-    raincount = display.newText("Rain Collected: "..balloon.img.rain.."/"..rainRequirement, 80, display.contentHeight-32, native.systemFont, 32)
+    --raincount = display.newText("Rain Collected: "..balloon.img.rain.."/"..rainRequirement, 80, display.contentHeight-32, native.systemFont, 32)
+    rainbase = display.newImage("img/rainbar_base.png")
+    rainbase.x = display.contentWidth/2
+    rainbase.y = display.contentHeight - 24
+    raincount = display.newImage("img/rainbar.png")
+    raincount.xScale = 1
+    raincount.x = display.contentWidth/2
+    raincount.y = display.contentHeight - 24
 
 end
 
@@ -426,7 +437,7 @@ function update(event)
             table.insert(rainList, Rain:new(math.random(aCloud.img.x-aCloud.img.width/4, aCloud.img.x+aCloud.img.width/4), aCloud.img.y, aCloud.frozen))
         end
         if aCloud.mood == "angry" and math.random(1,45) == 1 then
-            table.insert(boltList, Lightning:new(aCloud.img.x, aCloud.img.y, balloon.img.x, balloon.img.y))
+            table.insert(boltList, Lightning:new(aCloud.img.x, aCloud.img.y, aCloud.img.x, aCloud.img.y + 1))
             num_frames = 0
         end
     end
@@ -472,7 +483,13 @@ function update(event)
     --Player
     balloon:update(event, accelSpeed)
     --Fix rain
-    raincount.text = "Rain Collected: "..balloon.img.rain.."/"..rainRequirement
+    if balloon.img.rain > 0 then
+        raincount.xScale = (300*balloon.img.rain)/rainRequirement
+    end
+    --print((25*balloon.img.rain)/rainRequirement)
+    if raincount.xScale > 300 then
+        raincount.xScale = 300
+    end
     --Finished updating? Now change the previous time
     lastFrameTime = event.time
     
