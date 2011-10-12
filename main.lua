@@ -17,12 +17,13 @@ linesPrinted = 0
 line = {}
 
 function print_d(text)
-    print(text)
-    if linesPrinted >= 10 then
-        line[linesPrinted%10 + 1]:removeSelf()
+    --OOPS! I switched debug mode off!
+    --[[print(text)
+    if linesPrinted >= 100 then
+        line[linesPrinted%100 + 1]:removeSelf()
     end
-    line[linesPrinted%10 + 1] = display.newText(text, 0, 20*(linesPrinted%10), native.systemFont, 16)
-    linesPrinted = linesPrinted + 1
+    line[linesPrinted%100 + 1] = display.newText(text, 0, 20*(linesPrinted%100), native.systemFont, 16)
+    linesPrinted = linesPrinted + 1]]
 end
 
 --Some global spriteset variables
@@ -265,30 +266,35 @@ function loadLevel()
     num_frames = 0
     startlevel = startlevel + 1
     if(startlevel > maxlevel) then
-        print_d ("no more levels to load")
+        --print_d ("no more levels to load")
         return
     end
     local pathval = (levelkey[1] .. startlevel .. levelkey[2])
     local path = system.pathForFile(pathval)
-    io.input(path, "r")
-    print_d("path now points to our file")
+    --Print the whole file
+    --local file = io.input(path, "r")
+    --local levelVal = file:read("*a")
+    --print_d("LEVEL"..levelVal)
+    --Carry on...
+    local file = io.input(path, "r")
     --first get our level
-    local levelVal = io.read("*l")
-    print_d("levelVal: "..levelVal)
+    local levelVal = file:read("*l")
+    --print_d("levelVal: "..levelVal)
     local levelDescription = Split(levelVal, delimiter)
     --set the description of the level
     levelList[levelDescription[1]] = {levelDescription[2], levelDescription[3]}
     --set the variables for this level
     rainRequirement = 0 + levelDescription[3]--force number
-    print_d(rainRequirement)
+    --print_d(rainRequirement)
     levelTime = 0 + levelDescription[2]--force number, in frames
-    print_d(levelTime)
+    --print_d(levelTime)
     --establish variable to decide whether or not we are done reading
     local eof = false
     local wave = {}
     local obj = {}
     wave["time"] = 0
-    local fullLine = io.read("*l")
+    local fullLine = file:read("*l")
+    --print_d("fullLine = "..fullLine)
     while fullLine ~= nil do
         local splitLine = Split(fullLine, delimiter)
         if(fullLine == "ENDWAVE" ) then
@@ -320,10 +326,14 @@ function loadLevel()
             print_d("Bird at "..splitLine[2]..", "..splitLine[3])
         else
             print_d("error reading file")
+            print_d("fullLine = "..fullLine)
+            table.insert(levelList, wave["time"], wave)
         end
         
-        fullLine = io.read("*l")
-        
+        fullLine = file:read("*l")
+        if fullLine ~= nil then
+            --print_d("fullLine = "..fullLine)
+        end
     end
     
     wave={}
@@ -429,11 +439,11 @@ function populate(event)
         print_d("waveFound")
         for index, value in ipairs(levelList[event.count]) do
             if (value[1] == "Cloud") then
-                print_d("inserting cloud")
+                --print_d("inserting cloud")
                 local newCloud = Cloud:new(value[2], value[3], value[4], value[5])
                 table.insert(cloudList, newCloud)
             elseif (value[1] == "Bird") then
-                print_d("inserting bird")
+                --print_d("inserting bird")
                 local newBird = Bird:new(value[2], value[3], value[4])
                 table.insert(birdList, newBird)
             else
